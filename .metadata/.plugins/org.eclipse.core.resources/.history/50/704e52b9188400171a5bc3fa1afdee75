@@ -1,0 +1,118 @@
+package main;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+
+/**
+ * Hello world!
+ *
+ */
+public class App {
+	
+	
+	public static void main(String[] args) throws Exception {
+	    Repository repository = new FileRepositoryBuilder()
+	            .setGitDir(new File("/tmp/EasyAcceptLab/.git")).build();
+	    
+	    // Here we get the head commit and it's first parent.
+	    // Adjust to your needs to locate the proper commits.
+	    RevCommit headCommit = getHeadCommit(repository);
+	    RevCommit diffWith = headCommit.getParent(0);
+	    RevCommit diffWith2 = diffWith.getParent(0);
+
+	    FileOutputStream stdout = new FileOutputStream(FileDescriptor.out);
+    	DiffFormatter diffFormatter = new DiffFormatter(stdout);
+        diffFormatter.setRepository(repository);
+                
+        System.out.println(headCommit.getAuthorIdent().getEmailAddress());
+        for (DiffEntry entry : diffFormatter.scan(diffWith, headCommit)) {
+        	System.out.println(entry.getNewPath());
+        	System.out.println(entry.getChangeType());
+        }
+        
+        System.out.println("====");
+        
+        System.out.println(diffWith.getAuthorIdent().getEmailAddress());
+        for (DiffEntry entry : diffFormatter.scan(diffWith2, diffWith)) {
+        	System.out.println(entry.getNewPath());
+        	System.out.println(entry.getChangeType());
+        }
+        
+	}
+
+	private static RevCommit getHeadCommit(Repository repository) throws Exception {
+	    Git git = new Git(repository);
+        Iterable<RevCommit> history = git.log().all().call();
+        return history.iterator().next();
+	}
+	
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws GitAPIException 
+	 */
+	public static void main2(String[] args) throws IOException, GitAPIException {
+
+		// Open an existing repository
+		Repository r = new FileRepositoryBuilder().setGitDir(new File("/tmp/EasyAcceptLab/.git")).build();
+		Git git = new Git(r);
+		RevWalk walk = new RevWalk(r);
+
+		List<Ref> branches = git.branchList().call();
+
+		for (Ref branch : branches) {
+			String branchName = branch.getName();
+
+			System.out.println("Commits of branch: " + branch.getName());
+			System.out.println("-------------------------------------");
+
+			Iterable<RevCommit> commits = git.log().all().call();
+
+			for (RevCommit commit : commits) {
+				boolean foundInThisBranch = false;
+
+				RevCommit targetCommit = walk.parseCommit(r.resolve(commit.getName()));
+				for (Map.Entry<String, Ref> e : r.getAllRefs().entrySet()) {
+					if (e.getKey().startsWith(Constants.R_HEADS)) {
+						if (walk.isMergedInto(targetCommit, walk.parseCommit(e.getValue().getObjectId()))) {
+							String foundInBranch = e.getValue().getName();
+							if (branchName.equals(foundInBranch)) {
+								foundInThisBranch = true;
+								break;
+							}
+						}
+					}
+				}
+
+				if (foundInThisBranch) {
+					System.out.println(commit.getName());
+					System.out.println(commit.getAuthorIdent().getName());
+					System.out.println(new Date(commit.getCommitTime()));
+					System.out.println(commit.getFullMessage());
+					System.out.println(commit);
+				}
+			}
+			// Config
+			Config cfg = r.getConfig();
+			String name = cfg.getString("user", null, "name");
+			System.out.println(name);
+		}
+	}
+}

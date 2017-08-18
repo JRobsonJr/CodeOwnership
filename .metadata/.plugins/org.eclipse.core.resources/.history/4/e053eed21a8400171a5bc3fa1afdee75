@@ -1,0 +1,14 @@
+package main;
+
+
+import student.StudentController;
+
+public class App {
+
+	public static void main(String[] args) throws Exception {
+		Repository repo = new FileRepository(
+				"/home/petcomputacao/Área de Trabalho/David/ProjetoDePesquisa - CodeOwnership/CodeOwnership/ProjetoP2 - Grupo de Rosbon/.git");
+	
+	}
+
+}

@@ -1,0 +1,27 @@
+package student;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jgit.lib.PersonIdent;
+
+public class StudentController {
+
+	private List<Student> students;
+
+	public StudentController() {
+		this.students = new ArrayList<Student>();
+	}
+
+	public void addStudent(PersonIdent id) {
+		Student student = new Student(id);
+
+		if (!students.contains(student)) {
+			students.add(student);
+		}
+	}
+	
+	public void getStudent(String email) {
+		
+	}
+}

@@ -1,0 +1,14 @@
+package main;
+
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Repository;
+
+public class App {
+
+	public static void main(String[] args) throws Exception {
+		Repository repo = new FileRepository(
+				"/home/petcomputacao/Área de Trabalho/ProjetoCodeOwnership/ProjetoP2 - Grupo de Rosbon");
+	
+	}
+
+}

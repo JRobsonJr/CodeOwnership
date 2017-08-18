@@ -1,0 +1,34 @@
+package main;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffEntry.ChangeType;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+
+import student.StudentController;
+
+public class App {
+
+	StudentController students = new StudentController();
+
+	public static void main(String[] args) throws Exception {
+		Repository repo = new FileRepository(
+				"/home/petcomputacao/Área de Trabalho/David/ProjetoDePesquisa - CodeOwnership/CodeOwnership/ProjetoP2 - Grupo de Rosbon/.git");
+	}
+
+}
