@@ -1,0 +1,29 @@
+package codeOwnership;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PairServer {
+
+	List<PairStudentClass> pairs;
+	
+	public PairServer() {
+		this.pairs =  new ArrayList<PairStudentClass>();
+	}
+	
+	public ArrayList<PairStudentClass> getPairsByStudentName(String Nome){
+		ArrayList<PairStudentClass> studentArtifacts = new ArrayList<PairStudentClass>();
+		
+		for (int i = 0; i < pairs.size(); i++) {
+			if(pairs.get(i).student.)
+		}
+		
+		
+		return studentArtifacts;
+	}
+	
+	
+	
+	
+	
+}

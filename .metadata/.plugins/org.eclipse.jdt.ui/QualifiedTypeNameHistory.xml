@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="student.Student"/>
 <fullyQualifiedTypeName name="codeOwnership.CodeOwnership"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.lib.Ref"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.revwalk.RevCommit"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.api.Git"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.lib.ObjectId"/>
+<fullyQualifiedTypeName name="student.Student"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="codeOwnership.PairServer"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="codeOwnership.PairStudentClass"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.api.errors.GitAPIException"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.lib.Repository"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.internal.storage.file.FileRepository"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.revwalk.RevWalk"/>
 </qualifiedTypeNameHistroy>

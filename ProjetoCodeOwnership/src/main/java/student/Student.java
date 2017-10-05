@@ -24,6 +24,15 @@ public class Student {
 	public String getEmail() {
 		return this.email;
 	}
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public void addCreatedArtifact(String artifact) {
 		this.createdArtifacts.add(artifact);
@@ -32,12 +41,12 @@ public class Student {
 	@Override
 	public String toString() {
 		String resp = "";
-		resp = "Name: " + this.name + LS + "Email: " + this.email + LS ;
+		resp = "Name: " + this.name + LS + "Email: " + this.email + LS;
 
 		for (int i = 0; i < createdArtifacts.size(); i++) {
 			resp += createdArtifacts.get(i) + LS;
 		}
-		
+
 		return resp;
 	}
 
@@ -70,7 +79,4 @@ public class Student {
 		return true;
 	}
 
-	public void addNewArtifacts(RevCommit commit) {
-
-	}
 }

@@ -1,0 +1,76 @@
+package main;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.errors.RevisionSyntaxException;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+
+public class test {
+
+	public static void main(String[] args) {
+		Repository repo = new FileRepository("C:\\Users\\Documentos\\Desktop\\p\\ProjetoP2 - Grupo de Rosbon\\.git");
+	    Git git = new Git(repo);
+		
+	    
+	    ObjectId master = git.repository.resolve("refs/heads/master")
+		ObjectId branch = git.repository.resolve("refs/heads/mybranch")
+		git.log().addRange(master,branch).call()
+	}
+	
+	
+//	public static void main(String[] args) throws IOException, RevisionSyntaxException, NoHeadException, GitAPIException {
+//	
+//
+//	Repository repository = new FileRepository("C:\\Users\\Documentos\\Desktop\\p\\ProjetoP2 - Grupo de Rosbon\\.git");
+//
+//	Iterable<RevCommit> logs = new Git(repository).log()
+//	            .add(repository.resolve("remotes/origin/testbranch"))
+//	            .call();
+//	    int count = 0;
+//	    for (RevCommit rev : logs) {
+//	        System.out.println("Commit: " + rev /* + ", name: " + rev.getName() + ", id: " + rev.getId().getName() */);
+//	        count++;
+//	    }
+//	    System.out.println("Had " + count + " commits overall on test-branch");
+//	}
+	
+//
+//	
+//	public static void main(String[] args) throws IOException, GitAPIException {
+//	    Repository repo = new FileRepository("C:\\Users\\Documentos\\Desktop\\p\\ProjetoP2 - Grupo de Rosbon\\.git");
+//	    Git git = new Git(repo);
+//
+//	    List<Ref> branches = git.branchList().call();
+//
+//	    for (Ref branch : branches) {
+//	        String branchName = branch.getName();
+//
+//	        System.out.println("Commits of branch: " + branchName);
+//	        System.out.println("-------------------------------------");
+//
+//	        Iterable<RevCommit> commits = git.log().add(repo.resolve(branchName)).call();
+//
+//	        List<RevCommit> commitsList = Lists.newArrayList(commits.iterator());
+//
+//	        for (RevCommit commit : commitsList) {
+//	            System.out.println(commit.getName());
+//	            System.out.println(commit.getAuthorIdent().getName());
+//	            System.out.println(new Date(commit.getCommitTime() * 1000L));
+//	            System.out.println(commit.getFullMessage());
+//	        }
+//	    }
+//
+//	    git.close();
+
+	}
+
+
