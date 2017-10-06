@@ -8,15 +8,17 @@
 <fullyQualifiedTypeName name="org.eclipse.jgit.revwalk.RevCommit"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.api.Git"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.lib.ObjectId"/>
-<fullyQualifiedTypeName name="student.Student"/>
 <fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="codeOwnership.PairServer"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="codeOwnership.PairStudentClass"/>
-<fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.api.errors.GitAPIException"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
-<fullyQualifiedTypeName name="org.eclipse.jgit.lib.Repository"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.internal.storage.file.FileRepository"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.revwalk.RevWalk"/>
+<fullyQualifiedTypeName name="student.StudentServer"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.lib.PersonIdent"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.lib.Repository"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="student.Student"/>
+<fullyQualifiedTypeName name="codeOwnership.PairServer"/>
+<fullyQualifiedTypeName name="codeOwnership.PairStudentClass"/>
 </qualifiedTypeNameHistroy>

@@ -5,13 +5,13 @@ import java.util.List;
 
 public class PairServer {
 
-	private List<PairStudentClass> pairs;
+	private List<PairStudentClass> pairs;  // TODO: colocar um Map sendo a chave o nome
 	
 	public PairServer() {
 		this.pairs =  new ArrayList<PairStudentClass>();
 	}
 	
-	public ArrayList<PairStudentClass> getPairsByStudentName(String nome){
+	public String getPairsByStudentName(String nome){
 		ArrayList<PairStudentClass> studentArtifacts = new ArrayList<PairStudentClass>();
 		
 		for (int i = 0; i < pairs.size(); i++) {
@@ -25,7 +25,13 @@ public class PairServer {
 			//TODO: Melhora esta condição, especificar se nao tem ou se o nome ta errado. 
 		}
 		
-		return studentArtifacts;
+		String resp = "";
+		for (int i = 0; i < studentArtifacts.size(); i++) {
+			resp += studentArtifacts.get(i).toString() + "\n";
+		}
+		
+		
+		return resp;
 	}
 	
 	public void addPair(PairStudentClass pair) {
