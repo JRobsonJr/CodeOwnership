@@ -28,7 +28,6 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
-import artifact.Artifact;
 import student.Student;
 import student.StudentServer;
 
@@ -77,10 +76,8 @@ public class CodeOwnership {
 
 			for (DiffEntry entry : diffFormatter.scan(diffWith, commit)) {
 				if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
-					Artifact artifact = new Artifact(entry.getNewPath());
-					
 					PairStudentClass auxPair = new PairStudentClass(
-							students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
+							students.getStudent(commit.getAuthorIdent().getEmailAddress()), entry.getNewPath());
 					pairs.addPair(auxPair);
 
 				}
@@ -108,8 +105,8 @@ public class CodeOwnership {
 		while (tWalk.next()) {
 			if (isJavaClass(tWalk.getPathString())) {
 				// como eh o primeiro commit nem precisa verificar se eh ADD.
-				Artifact artifact = new Artifact(tWalk.getPathString());
-				PairStudentClass auxPair = new PairStudentClass(students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
+				PairStudentClass auxPair = new PairStudentClass(
+						students.getStudent(commit.getAuthorIdent().getEmailAddress()), tWalk.getPathString());
 				pairs.addPair(auxPair);
 			}
 		}

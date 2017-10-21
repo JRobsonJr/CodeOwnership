@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="codeOwnership.CodeOwnership"/>
-<fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.lib.Ref"/>
@@ -9,7 +8,6 @@
 <fullyQualifiedTypeName name="org.eclipse.jgit.api.Git"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.lib.ObjectId"/>
 <fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.api.errors.GitAPIException"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.internal.storage.file.FileRepository"/>
@@ -19,6 +17,14 @@
 <fullyQualifiedTypeName name="org.eclipse.jgit.lib.Repository"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="student.Student"/>
-<fullyQualifiedTypeName name="codeOwnership.PairServer"/>
 <fullyQualifiedTypeName name="codeOwnership.PairStudentClass"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.lib.ObjectReader"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.revwalk.RevTree"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.treewalk.CanonicalTreeParser"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.treewalk.TreeWalk"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="org.eclipse.jgit.errors.SymlinksNotSupportedException"/>
+<fullyQualifiedTypeName name="codeOwnership.PairServer"/>
 </qualifiedTypeNameHistroy>

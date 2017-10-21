@@ -1409,3 +1409,32 @@
 2017-10-05 22:55:06,302 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
 2017-10-05 22:55:06,322 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2017-10-05 22:55:06,341 [Worker-38] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
+2017-10-06 00:25:24,143 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-06 00:25:24,155 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
+2017-10-06 00:25:24,309 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-06 00:25:24,322 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
+2017-10-20 21:39:35,974 [Worker-4] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2017-10-20 22:49:07,919 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:49:07,921 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
+2017-10-20 22:49:07,926 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:49:07,927 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
+2017-10-20 22:49:21,536 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:49:21,536 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
+2017-10-20 22:49:21,541 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:49:21,541 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
+2017-10-20 22:50:04,778 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:50:04,779 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
+2017-10-20 22:50:04,782 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:50:04,783 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
+2017-10-20 22:58:57,633 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:58:57,634 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
+2017-10-20 22:58:57,652 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:58:57,814 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
+2017-10-20 22:58:59,235 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:58:59,235 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
+2017-10-20 22:58:59,271 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 22:58:59,307 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
+2017-10-20 23:02:01,088 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 23:02:01,099 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\main\resources
+2017-10-20 23:02:01,112 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-20 23:02:01,122 [Worker-28] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Documentos\Desktop\CodeOwnership\ProjetoCodeOwnership\src\test\resources
