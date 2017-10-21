@@ -5,14 +5,14 @@ import java.util.List;
 
 public class PairServer {
 
-	private List<PairStudentArtifact> pairs;  // TODO: colocar um Map sendo a chave o nome
+	private List<PairStudentClass> pairs;  // TODO: colocar um Map sendo a chave o nome
 	
 	public PairServer() {
-		this.pairs =  new ArrayList<PairStudentArtifact>();
+		this.pairs =  new ArrayList<PairStudentClass>();
 	}
 	
 	public String getPairsByStudentName(String nome){
-		ArrayList<PairStudentArtifact> studentArtifacts = new ArrayList<PairStudentArtifact>();
+		ArrayList<PairStudentClass> studentArtifacts = new ArrayList<PairStudentClass>();
 		
 		for (int i = 0; i < pairs.size(); i++) {
 			if(pairs.get(i).student.getName().equals(nome)) {
@@ -34,7 +34,7 @@ public class PairServer {
 		return resp;
 	}
 	
-	public void addPair(PairStudentArtifact pair) {
+	public void addPair(PairStudentClass pair) {
 		this.pairs.add(pair);
 	}
 

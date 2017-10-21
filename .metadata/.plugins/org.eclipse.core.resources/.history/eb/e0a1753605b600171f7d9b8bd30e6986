@@ -8,7 +8,7 @@ import org.eclipse.jgit.lib.Repository;
 
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairServer;
-import codeOwnership.PairStudentArtifact;
+import codeOwnership.PairStudentClass;
 
 public class Main {
 

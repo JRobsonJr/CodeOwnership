@@ -79,7 +79,7 @@ public class CodeOwnership {
 				if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
 					Artifact artifact = new Artifact(entry.getNewPath());
 					
-					PairStudentArtifact auxPair = new PairStudentArtifact(
+					PairStudentClass auxPair = new PairStudentClass(
 							students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
 					pairs.addPair(auxPair);
 
@@ -109,7 +109,7 @@ public class CodeOwnership {
 			if (isJavaClass(tWalk.getPathString())) {
 				// como eh o primeiro commit nem precisa verificar se eh ADD.
 				Artifact artifact = new Artifact(tWalk.getPathString());
-				PairStudentArtifact auxPair = new PairStudentArtifact(students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
+				PairStudentClass auxPair = new PairStudentClass(students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
 				pairs.addPair(auxPair);
 			}
 		}

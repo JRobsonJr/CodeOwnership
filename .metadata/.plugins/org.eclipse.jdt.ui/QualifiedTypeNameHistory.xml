@@ -27,4 +27,6 @@
 <fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="org.eclipse.jgit.errors.SymlinksNotSupportedException"/>
 <fullyQualifiedTypeName name="codeOwnership.PairServer"/>
+<fullyQualifiedTypeName name="artifact.ArtifactSubject"/>
+<fullyQualifiedTypeName name="artifact.Artifact"/>
 </qualifiedTypeNameHistroy>
