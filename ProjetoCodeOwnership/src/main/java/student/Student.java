@@ -11,7 +11,7 @@ public class Student {
 
 	private String name, email;
 	private PersonIdent id;
-	private List<String> createdArtifacts;
+	private List<String> createdArtifacts;  //TODO: vai manter isso ? salva nos dois lugares?  
 	private static final String LS = System.lineSeparator();
 
 	public Student(PersonIdent id) {

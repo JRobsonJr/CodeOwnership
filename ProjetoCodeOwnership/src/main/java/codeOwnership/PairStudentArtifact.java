@@ -19,4 +19,10 @@ public class PairStudentArtifact {
 		return student.getId().getName() + "  is the owner of: " + artifact.getArtifacName();
 	}
 
+	public Artifact getArtifact() {
+		return artifact;
+	}
+	
+	
+
 }

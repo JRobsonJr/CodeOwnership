@@ -91,6 +91,43 @@ public class CodeOwnership {
 	}
 
 	
+	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception {
+		Git git = new Git(repo);
+		RevWalk walk = new RevWalk(repo);
+		Iterable<RevCommit> commits = git.log().all().call();
+		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
+		diffFormatter.setRepository(repo);
+
+		for (RevCommit commit : commits) {
+
+			RevCommit diffWith = null;
+
+			// Acontece ArrayOutOfBounce
+			try {
+				diffWith = commit.getParent(0);
+			} catch (Exception e) {
+
+			}
+			
+			// Se fo primeiro commit:
+			if (diffWith == null) {
+				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
+				return;
+			}
+
+			for (DiffEntry entry : diffFormatter.scan(diffWith, commit)) {
+			
+				if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
+					Artifact artifact = new Artifact(entry.getOldPath());
+					pairs.removePair(artifact);
+				}
+			}
+		}
+	}
+
+	
+	
+	
 	/**
 	 * Fix up for the first commit case
 	 * 
@@ -121,6 +158,14 @@ public class CodeOwnership {
 	 */
 	private boolean isNewArtifact(DiffEntry entry) {
 		return entry.getChangeType() == ChangeType.ADD;
+	}
+	
+	
+	/**
+	 * Returns whether the change is the type DELETE
+	 */
+	private boolean isRemovedArtifact(DiffEntry entry) {
+		return entry.getChangeType() == ChangeType.DELETE;
 	}
 
 	/**

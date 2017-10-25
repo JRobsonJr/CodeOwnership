@@ -3,6 +3,8 @@ package codeOwnership;
 import java.util.ArrayList;
 import java.util.List;
 
+import artifact.Artifact;
+
 public class PairServer {
 
 	private List<PairStudentArtifact> pairs;  // TODO: colocar um Map sendo a chave o nome
@@ -33,6 +35,18 @@ public class PairServer {
 		
 		return resp;
 	}
+	
+	public void removePair(Artifact artifact) {
+		for (int i = 0; i < pairs.size(); i++) {
+			if(pairs.get(i).getArtifact().equals(artifact)) {
+				pairs.remove(i);
+			}
+		}
+		
+		
+		
+	}
+	
 	
 	public void addPair(PairStudentArtifact pair) {
 		this.pairs.add(pair);

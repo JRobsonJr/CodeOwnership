@@ -25,7 +25,7 @@ public class Main {
 		
 		co.registerAllStudents(git);
 		co.creatPairs(repo, pairs);
-		
+		co.deleteRemovedArtifacts(repo, pairs);
 		
 		System.out.println("ToString de PairsServer:\n");
 		System.out.println(pairs.toString());
