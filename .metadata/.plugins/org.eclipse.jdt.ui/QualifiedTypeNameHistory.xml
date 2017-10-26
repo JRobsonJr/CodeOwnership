@@ -29,4 +29,5 @@
 <fullyQualifiedTypeName name="codeOwnership.PairServer"/>
 <fullyQualifiedTypeName name="artifact.ArtifactSubject"/>
 <fullyQualifiedTypeName name="artifact.Artifact"/>
+<fullyQualifiedTypeName name="competencia.ManipuladorArquivo"/>
 </qualifiedTypeNameHistroy>

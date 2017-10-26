@@ -1,10 +1,11 @@
 package artifact;
 
+import java.util.ArrayList;
+
 public class Artifact {
 	
 	private String artifacName;
-	private ArtifactSubject subject;
-	//TODO: subject, como acessar a classe? como ver sua competencia ? 
+	private ArrayList<ArtifactSubject> subjects;
 	
 	public Artifact(String artifactName) {
 		this.artifacName = artifactName;
@@ -17,12 +18,26 @@ public class Artifact {
 	public void setArtifacName(String artifacName) {
 		this.artifacName = artifacName;
 	}
-	public ArtifactSubject getSubject() {
-		return subject;
+	public ArrayList<ArtifactSubject> getSubject() {
+		return subjects;
 	}
-	public void setSubject(ArtifactSubject subject) {
-		this.subject = subject;
+	
+	/**
+	 * 
+	 * Adiciona um subject de acordo com o nome passado com paramentro ao artefato
+	 * @param subject
+	 */
+	public void addSubjectByName(String subject) {
+		if(subject.equals("heranca")) {
+			this.subjects.add(ArtifactSubject.HERANCA);
+		} else if(subject.equals("teste")) {
+			this.subjects.add(ArtifactSubject.TESTES);
+		}else if (subject.equals("interface")) {
+			this.subjects.add(ArtifactSubject.COMPOSICAO);
+		}
 	}
+	
+	
 
 	@Override
 	public int hashCode() {

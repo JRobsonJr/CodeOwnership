@@ -1,10 +1,13 @@
 package codeOwnership;
 
+import java.io.BufferedReader;
 import java.io.FileDescriptor;
 
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -125,7 +128,46 @@ public class CodeOwnership {
 		}
 	}
 
-	
+	/**
+	 * Determina as compentencias do artifact
+	 * @param path - caminho do artifact
+	 * @throws IOException
+	 */
+	public void determinateArtifactSubject(String path) throws IOException {
+		BufferedReader buffRead = new BufferedReader(new FileReader(path));
+		String linha = "";
+
+		//TODO: como faz para salvar em artifact o seu subject? preciso recuperar o artifact, mas nao consigo pegar o nome dele pelo caminho, não consigo fazer split de \\ para tentar recuperar o nome !!!! 
+		//String a = path.replaceAll("\"", " ");
+		//System.out.println(a);
+		//String[] aux = path.split("\\");
+		//System.out.println(Arrays.toString(aux));
+		
+		while (true) {
+			if (linha != null) {
+				
+				String[] palavrasDaLinha = linha.split(" ");
+				
+				
+				for (int i = 0; i < palavrasDaLinha.length; i++) {
+					if (palavrasDaLinha[i].trim().equals("implements")) {
+					System.out.println("A classe "+ path + "tem como subject interface" );
+					
+					}
+					if (palavrasDaLinha[i].trim().equals("extends")) {
+						System.out.println("A classe:  "+ path + " tem como subject heranaça" );
+					}
+					if (palavrasDaLinha[i].trim().equals("@Test")) {
+						System.out.println("A classe   "+ path + "tem como subject Testes" );
+					}
+				}
+			} else {
+				break;
+			}
+			linha = buffRead.readLine();
+		}
+		buffRead.close();
+	}
 	
 	
 	/**

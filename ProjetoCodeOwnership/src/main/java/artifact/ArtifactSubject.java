@@ -1,5 +1,5 @@
 package artifact;
 
 public enum ArtifactSubject {
-	HERANACA, COMPOSICAO, POLIMORFISMO, TESTES;
+	HERANCA, COMPOSICAO, POLIMORFISMO, TESTES, INTERFACE;
 }
