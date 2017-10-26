@@ -14,12 +14,13 @@ public class Main {
 
 	private static CodeOwnership co;
 	static PairServer pairs;
+	private static String repositorio;
 	
 	public static void main(String[] args) throws Exception {
+		repositorio = "/home/mariana/projetop2/.git";
 		co = new CodeOwnership();
 		pairs = new PairServer();
-		Repository repo = new FileRepository(
-				"C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon\\.git");
+		Repository repo = new FileRepository(repositorio);
 		
 		Git git = new Git(repo);
 		
