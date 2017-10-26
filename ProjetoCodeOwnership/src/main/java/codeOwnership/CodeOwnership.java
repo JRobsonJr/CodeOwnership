@@ -55,110 +55,118 @@ public class CodeOwnership {
 	}
 
 	public void creatPairs(Repository repo, PairServer pairs) throws Exception {
-		Git git = new Git(repo);
 		RevWalk walk = new RevWalk(repo);
-		Iterable<RevCommit> commits = git.log().all().call();
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
 
+		List<RevCommit> commits = getCommits(repo);
+
 		for (RevCommit commit : commits) {
-
-			RevCommit diffWith = null;
-
-			// Acontece ArrayOutOfBounce
-			try {
-				diffWith = commit.getParent(0);
-			} catch (Exception e) {
-
-			}
-			
-			// Se fo primeiro commit:
-			if (diffWith == null) {
+			if (ehPrimeiroCommit(commit)) {
 				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
 				return;
-			}
-
-			for (DiffEntry entry : diffFormatter.scan(diffWith, commit)) {
-				if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
-					Artifact artifact = new Artifact(entry.getNewPath());
-					
-					PairStudentArtifact auxPair = new PairStudentArtifact(
-							students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
-					pairs.addPair(auxPair);
-
+			}else{
+				
+				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
+					if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
+						Artifact artifact = new Artifact(entry.getNewPath());
+						PairStudentArtifact auxPair = new PairStudentArtifact(
+								students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
+						pairs.addPair(auxPair);
+					}
 				}
-			}
-
+			}	
 		}
 
 	}
 
-	
 	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception {
-		Git git = new Git(repo);
 		RevWalk walk = new RevWalk(repo);
-		Iterable<RevCommit> commits = git.log().all().call();
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
 
-		for (RevCommit commit : commits) {
+		List<RevCommit> commits = getCommits(repo);
 
-			RevCommit diffWith = null;
-
-			// Acontece ArrayOutOfBounce
-			try {
-				diffWith = commit.getParent(0);
-			} catch (Exception e) {
-
-			}
-			
-			// Se fo primeiro commit:
-			if (diffWith == null) {
+		for(RevCommit commit : commits) {
+			if (ehPrimeiroCommit(commit)) {
 				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
-				return;
-			}
 
-			for (DiffEntry entry : diffFormatter.scan(diffWith, commit)) {
-			
-				if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
-					Artifact artifact = new Artifact(entry.getOldPath());
-					pairs.removePair(artifact);
+			}else{
+				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
+					if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
+						Artifact artifact = new Artifact(entry.getOldPath());
+						pairs.removePair(artifact);}
 				}
 			}
 		}
+	}
+
+	private boolean ehPrimeiroCommit(RevCommit commit) {
+		RevCommit testing = null;
+		try {
+			testing = commit.getParent(0);
+		} catch (Exception e) {
+		}
+
+		return testing == null;
+
+	};
+
+	/**
+	 * 
+	 * @param repositorio
+	 * @return lista com todos os commits
+	 * @throws NoHeadException
+	 * @throws GitAPIException
+	 * @throws IOException
+	 */
+	private List<RevCommit> getCommits(Repository repositorio) throws NoHeadException, GitAPIException, IOException {
+		Git git = new Git(repositorio);
+		Iterable<RevCommit> commits = git.log().all().call();
+		List<RevCommit> listCommits = new ArrayList<RevCommit>();
+
+		for (RevCommit commit : commits) {
+			listCommits.add(commit);
+
+		}
+		return listCommits;
+
 	}
 
 	/**
 	 * Determina as compentencias do artifact
-	 * @param path - caminho do artifact
+	 * 
+	 * @param path
+	 *            - caminho do artifact
 	 * @throws IOException
 	 */
 	public void determinateArtifactSubject(String path) throws IOException {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
 		String linha = "";
 
-		//TODO: como faz para salvar em artifact o seu subject? preciso recuperar o artifact, mas nao consigo pegar o nome dele pelo caminho, não consigo fazer split de \\ para tentar recuperar o nome !!!! 
-		//String a = path.replaceAll("\"", " ");
-		//System.out.println(a);
-		//String[] aux = path.split("\\");
-		//System.out.println(Arrays.toString(aux));
-		
+		// TODO: como faz para salvar em artifact o seu subject? preciso recuperar o
+		// artifact, mas nao consigo pegar o nome dele pelo caminho, não consigo fazer
+		// split de \\ para tentar recuperar o nome !!!!
+		// String a = path.replaceAll("\"", " ");
+		// System.out.println(a);
+		// String[] aux = path.split("\\");
+		// System.out.println(Arrays.toString(aux));
+
 		while (true) {
 			if (linha != null) {
-				
+
 				String[] palavrasDaLinha = linha.split(" ");
-				
-				
+
 				for (int i = 0; i < palavrasDaLinha.length; i++) {
 					if (palavrasDaLinha[i].trim().equals("implements")) {
-					System.out.println("A classe "+ path + "tem como subject interface" );
-					
+						System.out.println("A classe " + path + "tem como subject interface");
+
 					}
 					if (palavrasDaLinha[i].trim().equals("extends")) {
-						System.out.println("A classe:  "+ path + " tem como subject heranaça" );
+						System.out.println("A classe:  " + path + " tem como subject heranaça");
 					}
 					if (palavrasDaLinha[i].trim().equals("@Test")) {
-						System.out.println("A classe   "+ path + "tem como subject Testes" );
+						System.out.println("A classe   " + path + "tem como subject Testes");
 					}
 				}
 			} else {
@@ -168,8 +176,7 @@ public class CodeOwnership {
 		}
 		buffRead.close();
 	}
-	
-	
+
 	/**
 	 * Fix up for the first commit case
 	 * 
@@ -188,7 +195,8 @@ public class CodeOwnership {
 			if (isJavaClass(tWalk.getPathString())) {
 				// como eh o primeiro commit nem precisa verificar se eh ADD.
 				Artifact artifact = new Artifact(tWalk.getPathString());
-				PairStudentArtifact auxPair = new PairStudentArtifact(students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
+				PairStudentArtifact auxPair = new PairStudentArtifact(
+						students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
 				pairs.addPair(auxPair);
 			}
 		}
@@ -201,8 +209,7 @@ public class CodeOwnership {
 	private boolean isNewArtifact(DiffEntry entry) {
 		return entry.getChangeType() == ChangeType.ADD;
 	}
-	
-	
+
 	/**
 	 * Returns whether the change is the type DELETE
 	 */
