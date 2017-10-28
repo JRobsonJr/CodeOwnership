@@ -12,16 +12,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.CorruptObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -62,11 +66,11 @@ public class CodeOwnership {
 		List<RevCommit> commits = getCommits(repo);
 
 		for (RevCommit commit : commits) {
-			if (ehPrimeiroCommit(commit)) {
+			if (isFirstCommit(commit)) {
 				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
 				return;
-			}else{
-				
+			} else {
+
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
 					if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
 						Artifact artifact = new Artifact(entry.getNewPath());
@@ -75,7 +79,7 @@ public class CodeOwnership {
 						pairs.addPair(auxPair);
 					}
 				}
-			}	
+			}
 		}
 
 	}
@@ -87,21 +91,22 @@ public class CodeOwnership {
 
 		List<RevCommit> commits = getCommits(repo);
 
-		for(RevCommit commit : commits) {
-			if (ehPrimeiroCommit(commit)) {
+		for (RevCommit commit : commits) {
+			if (isFirstCommit(commit)) {
 				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
 
-			}else{
+			} else {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
 					if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
 						Artifact artifact = new Artifact(entry.getOldPath());
-						pairs.removePair(artifact);}
+						pairs.removePair(artifact);
+					}
 				}
 			}
 		}
 	}
 
-	private boolean ehPrimeiroCommit(RevCommit commit) {
+	private boolean isFirstCommit(RevCommit commit) {
 		RevCommit testing = null;
 		try {
 			testing = commit.getParent(0);
@@ -217,6 +222,39 @@ public class CodeOwnership {
 		return entry.getChangeType() == ChangeType.DELETE;
 	}
 
+	public void getDiffHead(Repository repository) throws IncorrectObjectTypeException, IOException, GitAPIException {
+
+		/*Isso aqui mostra o que aconteceu entre 1 estado do repositorio e outro, nao sei como escolher
+		 * HEAD especifica ainda, mas acho que é mais ou menos assim "HEAD~97^{tree}" 97 commits atrás da atual
+		 * "HEAD^{tree}"
+		 * 
+		 * mostra o que foi feito ADD/DELETE/MODIFY e em que arquivo, agora falta descobrir uma forma de pegar quem
+		 * modificou e o quanto modificou 
+		 * 
+		 * Entry: DiffEntry[MODIFY src/projeto/Projeto.java]
+		 * 
+		 * */
+		Git git = new Git(repository);
+		ObjectId oldHead = repository.resolve("HEAD~97^{tree}");
+		ObjectId head = repository.resolve("HEAD^{tree}");
+
+		ObjectReader reader = repository.newObjectReader();
+
+		CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+		oldTreeIter.reset(reader, oldHead);
+		CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+		newTreeIter.reset(reader, head);
+
+		List<DiffEntry> diffs = git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
+		for (DiffEntry entry : diffs) {
+			System.out.println("Entry: " + entry);
+		
+		}
+	}
+
+	
+	
+	
 	/**
 	 * Returns whether the current artifact is a Java Class.
 	 */
@@ -229,7 +267,5 @@ public class CodeOwnership {
 			return false;
 		}
 	}
-
-	
 
 }

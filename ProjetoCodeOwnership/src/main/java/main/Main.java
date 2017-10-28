@@ -31,6 +31,9 @@ public class Main {
 		System.out.println("ToString de PairsServer:\n");
 		System.out.println(pairs.toString());
 		
+		System.out.println("Diffs entre o inicio do projeto e o estado atual: \n");
+		/*Novo metodo*/
+		co.getDiffHead(repo);
 		
 	 
 		co.determinateArtifactSubject("C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon\\src\\projeto\\ProjetoPET.java");
