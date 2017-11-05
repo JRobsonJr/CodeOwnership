@@ -12,12 +12,6 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-/**
- * 
- * @author mariana
- *
- */
-
 public class Blame {
 	
 
