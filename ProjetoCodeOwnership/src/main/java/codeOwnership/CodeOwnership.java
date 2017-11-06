@@ -224,19 +224,17 @@ public class CodeOwnership {
 
 	public void getDiffHead(Repository repository) throws IncorrectObjectTypeException, IOException, GitAPIException {
 
-		/*Isso aqui mostra o que aconteceu entre 1 estado do repositorio e outro, nao sei como escolher
-		 * HEAD especifica ainda, mas acho que é mais ou menos assim "HEAD~97^{tree}" 97 commits atrás da atual
+		/* Mostra o que aconteceu entre 1 estado do repositorio e outro, "HEAD~97^{tree}" 97 commits atrás da atual
 		 * "HEAD^{tree}"
-		 * 
-		 * mostra o que foi feito ADD/DELETE/MODIFY e em que arquivo, agora falta descobrir uma forma de pegar quem
-		 * modificou e o quanto modificou 
+		 * mostra o que foi feito em cada arquivo: ADD/DELETE/MODIFY
 		 * 
 		 * Entry: DiffEntry[MODIFY src/projeto/Projeto.java]
 		 * 
 		 * */
+		
 		Git git = new Git(repository);
-		ObjectId oldHead = repository.resolve("HEAD~97^{tree}");
-		ObjectId head = repository.resolve("HEAD^{tree}");
+		ObjectId oldHead = repository.resolve("HEAD^{tree}");
+		ObjectId head = repository.resolve("HEAD^^^^^{tree}");
 
 		ObjectReader reader = repository.newObjectReader();
 
