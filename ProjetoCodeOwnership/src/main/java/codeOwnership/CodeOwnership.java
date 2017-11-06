@@ -49,94 +49,6 @@ public class CodeOwnership {
 		this.students = new StudentServer();
 	}
 
-	public void registerAllStudents(Git git) throws GitAPIException, IOException {
-		Iterable<RevCommit> commits = git.log().all().call();
-
-		for (RevCommit commit : commits) {
-			students.addStudent(commit.getAuthorIdent());
-		}
-		// TODO: como lidar com mesma pessoas mas com Id diferente
-	}
-
-	public void creatPairs(Repository repo, PairServer pairs) throws Exception {
-		RevWalk walk = new RevWalk(repo);
-		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
-		diffFormatter.setRepository(repo);
-
-		List<RevCommit> commits = getCommits(repo);
-
-		for (RevCommit commit : commits) {
-			if (isFirstCommit(commit)) {
-				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
-				return;
-			} else {
-
-				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-					if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
-						Artifact artifact = new Artifact(entry.getNewPath());
-						PairStudentArtifact auxPair = new PairStudentArtifact(
-								students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
-						pairs.addPair(auxPair);
-					}
-				}
-			}
-		}
-
-	}
-
-	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception {
-		RevWalk walk = new RevWalk(repo);
-		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
-		diffFormatter.setRepository(repo);
-
-		List<RevCommit> commits = getCommits(repo);
-
-		for (RevCommit commit : commits) {
-			if (isFirstCommit(commit)) {
-				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
-
-			} else {
-				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-					if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
-						Artifact artifact = new Artifact(entry.getOldPath());
-						pairs.removePair(artifact);
-					}
-				}
-			}
-		}
-	}
-
-	private boolean isFirstCommit(RevCommit commit) {
-		RevCommit testing = null;
-		try {
-			testing = commit.getParent(0);
-		} catch (Exception e) {
-		}
-
-		return testing == null;
-
-	};
-
-	/**
-	 * 
-	 * @param repositorio
-	 * @return lista com todos os commits
-	 * @throws NoHeadException
-	 * @throws GitAPIException
-	 * @throws IOException
-	 */
-	private List<RevCommit> getCommits(Repository repositorio) throws NoHeadException, GitAPIException, IOException {
-		Git git = new Git(repositorio);
-		Iterable<RevCommit> commits = git.log().all().call();
-		List<RevCommit> listCommits = new ArrayList<RevCommit>();
-
-		for (RevCommit commit : commits) {
-			listCommits.add(commit);
-
-		}
-		return listCommits;
-
-	}
 
 	/**
 	 * Determina as compentencias do artifact
@@ -182,45 +94,8 @@ public class CodeOwnership {
 		buffRead.close();
 	}
 
-	/**
-	 * Fix up for the first commit case
-	 * 
-	 */
-	private void AddArtifactsFromFirtsCommit(Repository repo, PairServer pairs, RevWalk walk, RevCommit commit)
-			throws MissingObjectException, IncorrectObjectTypeException, IOException, CorruptObjectException {
-
-		ObjectReader reader = repo.newObjectReader();
-		RevTree tree = walk.parseTree(commit);
-		CanonicalTreeParser aParser = new CanonicalTreeParser();
-		aParser.reset(reader, tree);
-		TreeWalk tWalk = new TreeWalk(reader);
-		tWalk.addTree(aParser);
-		tWalk.setRecursive(true);
-		while (tWalk.next()) {
-			if (isJavaClass(tWalk.getPathString())) {
-				// como eh o primeiro commit nem precisa verificar se eh ADD.
-				Artifact artifact = new Artifact(tWalk.getPathString());
-				PairStudentArtifact auxPair = new PairStudentArtifact(
-						students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
-				pairs.addPair(auxPair);
-			}
-		}
-
-	}
-
-	/**
-	 * Returns whether the change is the type ADD(created for the first time)
-	 */
-	private boolean isNewArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.ADD;
-	}
-
-	/**
-	 * Returns whether the change is the type DELETE
-	 */
-	private boolean isRemovedArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.DELETE;
-	}
+	
+	
 
 	public void getDiffHead(Repository repository) throws IncorrectObjectTypeException, IOException, GitAPIException {
 
@@ -242,28 +117,33 @@ public class CodeOwnership {
 		oldTreeIter.reset(reader, oldHead);
 		CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
 		newTreeIter.reset(reader, head);
+		
+
 
 		List<DiffEntry> diffs = git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
 		for (DiffEntry entry : diffs) {
-			System.out.println("Entry: " + entry);
+			
+				if(isRemovedArtifact(entry)) {
+					Artifact artifact = new Artifact(entry.getOldPath());
+					pairs.removePair(artifact);
+				
+					
+				}
+			
 		
 		}
 	}
-
-	
-	
 	
 	/**
-	 * Returns whether the current artifact is a Java Class.
+	 * Returns whether the change is the type DELETE
 	 */
-	private boolean isJavaClass(String string) {
-		String[] splitted = string.split("\\.");
-
-		if (splitted.length == 2) {
-			return splitted[1].equals("java");
-		} else {
-			return false;
-		}
+	private boolean isRemovedArtifact(DiffEntry entry) {
+		return entry.getChangeType() == ChangeType.DELETE;
 	}
+
+
+	
+	
+	
 
 }
