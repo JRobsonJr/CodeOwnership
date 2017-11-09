@@ -51,12 +51,7 @@ public class Main {
 		// co.determinateArtifactSubject("C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2
 		// - Grupo de Rosbon\\src\\projeto\\ProjetoPET.java");
 
-		System.out.println(
-				"\n " + "----------------------------Print by student name-------------------------------" + "\n");
-		// System.out.println(pairs.getPairsByStudentName("JRobsonJr"));
-
-		// co.getCreatedArtifacts(repo);
-		// System.out.println(co.aaa());
+		
 	}
 
 }

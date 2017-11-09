@@ -47,9 +47,9 @@ public class CodeOwnership {
 	PairServer pairs;
 	private final String LS = System.lineSeparator();
 
-	public CodeOwnership(Analise analisyType) {
+	public CodeOwnership(Analise analysisType) {
 		this.students = new StudentServer();
-		this.analise = analisyType;
+		this.analise = analysisType;
 	}
 
 
