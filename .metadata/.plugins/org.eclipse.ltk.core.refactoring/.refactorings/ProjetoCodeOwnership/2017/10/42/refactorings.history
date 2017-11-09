@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename type &apos;codeOwnership.PairStudentClass&apos; to &apos;PairStudentArtifact&apos;&#x0D;&#x0A;- Original project: &apos;ProjetoCodeOwnership&apos;&#x0D;&#x0A;- Original element: &apos;codeOwnership.PairStudentClass&apos;&#x0D;&#x0A;- Renamed element: &apos;codeOwnership.PairStudentArtifact&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;PairStudentClass&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java&lt;codeOwnership{PairStudentClass.java[PairStudentClass" matchStrategy="1" name="PairStudentArtifact" qualified="false" references="true" similarDeclarations="false" stamp="1508551916719" textual="false" version="1.0"/>
-</session>

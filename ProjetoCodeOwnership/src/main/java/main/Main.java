@@ -21,7 +21,7 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		analise = new AnaliseCriacao();
-		repositorio = "/home/marianams/homemade-dynamite/.git";
+		repositorio = "/home/mariana/homemade-dynamite/.git";
 		co = new CodeOwnership();
 		pairs = new PairServer();
 		blamer = new Blame();
