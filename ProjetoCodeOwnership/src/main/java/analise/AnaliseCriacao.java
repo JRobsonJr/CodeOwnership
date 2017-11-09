@@ -1,4 +1,4 @@
-package codeOwnership;
+package analise;
 
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
@@ -25,28 +25,17 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import artifact.Artifact;
+import codeOwnership.PairServer;
+import codeOwnership.PairStudentArtifact;
 import student.StudentServer;
 
 public class AnaliseCriacao implements Analise {
 
-	StudentServer students;
-
-	public AnaliseCriacao() {
-		this.students = new StudentServer();
 	
-	}
-	
-	
-	public void registerAllStudents(Git git) throws GitAPIException, IOException {
-		Iterable<RevCommit> commits = git.log().all().call();
 
-		for (RevCommit commit : commits) {
-			students.addStudent(commit.getAuthorIdent());
-		}
-		// TODO: como lidar com mesma pessoas mas com Id diferente
-	}
-
-	public void criaPares(Repository repo, PairServer pairs) throws Exception {
+	public AnaliseCriacao() {}
+	
+	public void makePairs(Repository repo, PairServer pairs, StudentServer students) throws NoHeadException, GitAPIException, IOException {
 		RevWalk walk = new RevWalk(repo);
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
@@ -55,7 +44,7 @@ public class AnaliseCriacao implements Analise {
 
 		for (RevCommit commit : commits) {
 			if (isFirstCommit(commit)) {
-				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit);
+				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit, students);
 				return;
 			} else {
 
@@ -71,7 +60,7 @@ public class AnaliseCriacao implements Analise {
 		}
 		
 	}
-
+	
 	/**
 	 * 
 	 * @param repositorio
@@ -92,12 +81,19 @@ public class AnaliseCriacao implements Analise {
 		return listCommits;
 
 	}
+	
+	/**
+	 * Returns whether the change is the type DELETE
+	 */
+	private boolean isRemovedArtifact(DiffEntry entry) {
+		return entry.getChangeType() == ChangeType.DELETE;
+	}
 
 	/**
 	 * Fix up for the first commit case
 	 * 
 	 */
-	private void AddArtifactsFromFirtsCommit(Repository repo, PairServer pairs, RevWalk walk, RevCommit commit)
+	private void AddArtifactsFromFirtsCommit(Repository repo, PairServer pairs, RevWalk walk, RevCommit commit, StudentServer students)
 			throws MissingObjectException, IncorrectObjectTypeException, IOException, CorruptObjectException {
 
 		ObjectReader reader = repo.newObjectReader();
@@ -147,7 +143,6 @@ public class AnaliseCriacao implements Analise {
 	
 
 	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception {
-		RevWalk walk = new RevWalk(repo);
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
 
@@ -177,11 +172,11 @@ public class AnaliseCriacao implements Analise {
 		return entry.getChangeType() == ChangeType.ADD;
 	}
 
-	/**
-	 * Returns whether the change is the type DELETE
-	 */
-	private boolean isRemovedArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.DELETE;
-	}
+	
 
+
+	
+
+
+	
 }

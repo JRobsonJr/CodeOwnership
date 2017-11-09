@@ -35,21 +35,46 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
+import analise.Analise;
 import artifact.Artifact;
 import student.Student;
 import student.StudentServer;
 
 public class CodeOwnership {
 
+	private Analise analise;
 	StudentServer students;
 	PairServer pairs;
 	private final String LS = System.lineSeparator();
 
-	public CodeOwnership() {
+	public CodeOwnership(Analise analisyType) {
 		this.students = new StudentServer();
+		this.analise = analisyType;
 	}
 
 
+	
+	public void makePairs(Repository repo, PairServer pairs) throws Exception {
+		analise.makePairs( repo,pairs,students);
+		
+	}
+	
+	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception{
+		this.analise.deleteRemovedArtifacts(repo,pairs);
+	}
+	
+	
+
+	
+	
+	public void registerAllStudents(Git git) throws GitAPIException, IOException {
+		Iterable<RevCommit> commits = git.log().all().call();
+
+		for (RevCommit commit : commits) {
+			students.addStudent(commit.getAuthorIdent());
+		}
+		// TODO: como lidar com mesma pessoas mas com Id diferente
+	}
 	/**
 	 * Determina as compentencias do artifact
 	 * 
@@ -97,51 +122,45 @@ public class CodeOwnership {
 	
 	
 
-	public void getDiffHead(Repository repository) throws IncorrectObjectTypeException, IOException, GitAPIException {
-
-		/* Mostra o que aconteceu entre 1 estado do repositorio e outro, "HEAD~97^{tree}" 97 commits atrás da atual
-		 * "HEAD^{tree}"
-		 * mostra o que foi feito em cada arquivo: ADD/DELETE/MODIFY
-		 * 
-		 * Entry: DiffEntry[MODIFY src/projeto/Projeto.java]
-		 * 
-		 * */
-		
-		Git git = new Git(repository);
-		ObjectId oldHead = repository.resolve("HEAD^{tree}");
-		ObjectId head = repository.resolve("HEAD^^^^^{tree}");
-
-		ObjectReader reader = repository.newObjectReader();
-
-		CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-		oldTreeIter.reset(reader, oldHead);
-		CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-		newTreeIter.reset(reader, head);
-		
-
-
-		List<DiffEntry> diffs = git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
-		for (DiffEntry entry : diffs) {
-			
-				if(isRemovedArtifact(entry)) {
-					Artifact artifact = new Artifact(entry.getOldPath());
-					pairs.removePair(artifact);
-				
-					
-				}
-			
-		
-		}
-	}
+//	public void getDiffHead(Repository repository) throws IncorrectObjectTypeException, IOException, GitAPIException {
+//
+//		/* Mostra o que aconteceu entre 1 estado do repositorio e outro, "HEAD~97^{tree}" 97 commits atrás da atual
+//		 * "HEAD^{tree}"
+//		 * mostra o que foi feito em cada arquivo: ADD/DELETE/MODIFY
+//		 * 
+//		 * Entry: DiffEntry[MODIFY src/projeto/Projeto.java]
+//		 * 
+//		 * */
+//		
+//		Git git = new Git(repository);
+//		ObjectId oldHead = repository.resolve("HEAD^{tree}");
+//		ObjectId head = repository.resolve("HEAD^^^^^{tree}");
+//
+//		ObjectReader reader = repository.newObjectReader();
+//
+//		CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+//		oldTreeIter.reset(reader, oldHead);
+//		CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+//		newTreeIter.reset(reader, head);
+//		
+//
+//
+//		List<DiffEntry> diffs = git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
+//		for (DiffEntry entry : diffs) {
+//			
+//				if(isRemovedArtifact(entry)) {
+//					Artifact artifact = new Artifact(entry.getOldPath());
+//					pairs.removePair(artifact);
+//				
+//					
+//				}
+//			
+//		
+//		}
+//	}
 	
-	/**
-	 * Returns whether the change is the type DELETE
-	 */
-	private boolean isRemovedArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.DELETE;
-	}
-
-
+	
+	
 	
 	
 	
