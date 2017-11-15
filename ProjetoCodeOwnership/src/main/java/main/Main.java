@@ -10,6 +10,7 @@ import analise.AnaliseLOC;
 import analise.Blame;
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairServer;
+import competencia.Competencia;
 
 public class Main {
 
@@ -19,27 +20,26 @@ public class Main {
 	private static String repositorio;
 	private static Blame blamer;
 	private static String analysisType = "criacao";
+	private static Competencia competencia = new Competencia();
 
 	public static void main(String[] args) throws Exception {
-		
+
 		if (analysisType.equals("criacao")) {
 			analise = new AnaliseCriacao();
-		}else {
+		} else {
 			analise = new AnaliseLOC();
-			
 		}
-		
-		repositorio = "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon\\.git";
+
+		repositorio = "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon";
 		co = new CodeOwnership(analise);
 		pairs = new PairServer();
 		blamer = new Blame();
-		Repository repo = new FileRepository(repositorio);
+		Repository repo = new FileRepository(repositorio + "\\.git");
 
 		Git git = new Git(repo);
 
 		co.registerAllStudents(git);
 		co.makePairs(repo, pairs);
-		// ano eh mais preciso chama dentro do final do metodo de adc co.deleteRemovedArtifacts(repo, pairs);
 
 		System.out.println("ToString de PairsServer:\n");
 		System.out.println(pairs.toString());
@@ -50,10 +50,9 @@ public class Main {
 		// analisar.
 		// blamer.gitBlame(repo, "HEAD", "src/album/Album.java");
 
-		// co.determinateArtifactSubject("C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2
-		// - Grupo de Rosbon\\src\\projeto\\ProjetoPET.java");
+		System.out.println("Competencia:");
+		competencia.listClassesAndSubjects(repositorio);
 
-		
 	}
 
 }

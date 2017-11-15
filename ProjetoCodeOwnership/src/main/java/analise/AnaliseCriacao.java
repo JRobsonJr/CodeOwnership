@@ -31,10 +31,9 @@ import student.StudentServer;
 
 public class AnaliseCriacao implements Analise {
 
-	
+	public AnaliseCriacao() {
+	}
 
-	public AnaliseCriacao() {}
-	
 	public void makePairs(Repository repo, PairServer pairs, StudentServer students) throws Exception {
 		RevWalk walk = new RevWalk(repo);
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
@@ -58,9 +57,9 @@ public class AnaliseCriacao implements Analise {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param repositorio
@@ -81,7 +80,7 @@ public class AnaliseCriacao implements Analise {
 		return listCommits;
 
 	}
-	
+
 	/**
 	 * Returns whether the change is the type DELETE
 	 */
@@ -93,7 +92,8 @@ public class AnaliseCriacao implements Analise {
 	 * Fix up for the first commit case
 	 * 
 	 */
-	private void AddArtifactsFromFirtsCommit(Repository repo, PairServer pairs, RevWalk walk, RevCommit commit, StudentServer students)
+	private void AddArtifactsFromFirtsCommit(Repository repo, PairServer pairs, RevWalk walk, RevCommit commit,
+			StudentServer students)
 			throws MissingObjectException, IncorrectObjectTypeException, IOException, CorruptObjectException {
 
 		ObjectReader reader = repo.newObjectReader();
@@ -138,9 +138,6 @@ public class AnaliseCriacao implements Analise {
 		return testing == null;
 
 	};
-	
-
-	
 
 	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception {
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
@@ -153,7 +150,7 @@ public class AnaliseCriacao implements Analise {
 				return;
 			} else {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-					
+
 					if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
 						Artifact artifact = new Artifact(entry.getOldPath());
 						pairs.removePair(artifact);
@@ -163,8 +160,6 @@ public class AnaliseCriacao implements Analise {
 		}
 	}
 
-
-
 	/**
 	 * Returns whether the change is the type ADD(created for the first time)
 	 */
@@ -172,11 +167,4 @@ public class AnaliseCriacao implements Analise {
 		return entry.getChangeType() == ChangeType.ADD;
 	}
 
-	
-
-
-	
-
-
-	
 }

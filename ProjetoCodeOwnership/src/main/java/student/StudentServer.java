@@ -15,7 +15,6 @@ public class StudentServer {
 
 	public void addStudent(PersonIdent id) {
 		Student student = new Student(id);
-
 		if (!students.contains(student)) {
 			students.add(student);
 		}
