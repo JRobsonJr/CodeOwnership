@@ -19,29 +19,35 @@ public class Main {
 	static PairServer pairs;
 	private static String repositorio;
 	private static Blame blamer;
-	private static String analysisType = "criacao";
+	private static String analysisType;
 	private static Competencia competencia = new Competencia();
 
+	//Args[caminho do repositorio, tipo de analise('criacao' ou 'loc')]
+	
 	public static void main(String[] args) throws Exception {
 
+//		repositorio = args[0];
+//		analysisType = args[1];
+		
+		analysisType = "criacao";
+		repositorio = "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon";
+		
 		if (analysisType.equals("criacao")) {
 			analise = new AnaliseCriacao();
 		} else {
 			analise = new AnaliseLOC();
 		}
-
-		repositorio = "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon";
+		
 		co = new CodeOwnership(analise);
 		pairs = new PairServer();
 		blamer = new Blame();
 		Repository repo = new FileRepository(repositorio + "\\.git");
-
 		Git git = new Git(repo);
-
 		co.registerAllStudents(git);
 		co.makePairs(repo, pairs);
 
-		System.out.println("ToString de PairsServer:\n");
+		System.out.println("ToString de PairsServer:\n \n");
+		
 		System.out.println(pairs.toString());
 
 		// System.out.println("Quem buliu em que num arquivo especifico: (HEAD - Estado
