@@ -35,7 +35,7 @@ public class AnaliseCriacao implements Analise {
 
 	public AnaliseCriacao() {}
 	
-	public void makePairs(Repository repo, PairServer pairs, StudentServer students) throws NoHeadException, GitAPIException, IOException {
+	public void makePairs(Repository repo, PairServer pairs, StudentServer students) throws Exception {
 		RevWalk walk = new RevWalk(repo);
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
@@ -45,9 +45,9 @@ public class AnaliseCriacao implements Analise {
 		for (RevCommit commit : commits) {
 			if (isFirstCommit(commit)) {
 				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit, students);
+				this.deleteRemovedArtifacts(repo, pairs);
 				return;
 			} else {
-
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
 					if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
 						Artifact artifact = new Artifact(entry.getNewPath());

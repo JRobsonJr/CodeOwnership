@@ -21,13 +21,15 @@ public class Main {
 	private static String analysisType = "criacao";
 
 	public static void main(String[] args) throws Exception {
+		
 		if (analysisType.equals("criacao")) {
 			analise = new AnaliseCriacao();
 		}else {
 			analise = new AnaliseLOC();
 			
 		}
-		repositorio = "/home/mariana/homemade-dynamite/.git";
+		
+		repositorio = "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon\\.git";
 		co = new CodeOwnership(analise);
 		pairs = new PairServer();
 		blamer = new Blame();
@@ -37,7 +39,7 @@ public class Main {
 
 		co.registerAllStudents(git);
 		co.makePairs(repo, pairs);
-		co.deleteRemovedArtifacts(repo, pairs);
+		// ano eh mais preciso chama dentro do final do metodo de adc co.deleteRemovedArtifacts(repo, pairs);
 
 		System.out.println("ToString de PairsServer:\n");
 		System.out.println(pairs.toString());

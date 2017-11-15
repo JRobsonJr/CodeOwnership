@@ -11,10 +11,7 @@ import student.StudentServer;
 
 public interface Analise {
 
-	void makePairs(Repository repo, PairServer pairs,StudentServer students) throws NoHeadException, GitAPIException, IOException;
-
-	void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception;
-	
+	void makePairs(Repository repo, PairServer pairs,StudentServer students) throws NoHeadException, GitAPIException, IOException, Exception;
 	
 	
 

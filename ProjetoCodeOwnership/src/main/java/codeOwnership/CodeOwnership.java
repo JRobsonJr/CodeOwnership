@@ -59,9 +59,9 @@ public class CodeOwnership {
 		
 	}
 	
-	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception{
-		this.analise.deleteRemovedArtifacts(repo,pairs);
-	}
+//	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception{
+//		this.analise.deleteRemovedArtifacts(repo,pairs);
+//	}
 	
 	
 
