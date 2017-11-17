@@ -1,16 +1,27 @@
 package codeOwnership;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import artifact.Artifact;
 
-public class PairServer {
+public class PairRepository {
 
 	private List<PairStudentArtifact> pairs;  // TODO: colocar um Map sendo a chave o nome
 	
-	public PairServer() {
+	public PairRepository() {
 		this.pairs =  new ArrayList<PairStudentArtifact>();
+	}
+	
+	public PairStudentArtifact getPairByArtifactName(String artifactName) {
+		for ( PairStudentArtifact pair : this.pairs) {
+			if(pair.getArtifact().getArtifacName().equals(artifactName)) {
+				return pair;
+			}
+		}
+		
+		return null;
 	}
 	
 	public String getPairsByStudentName(String nome){

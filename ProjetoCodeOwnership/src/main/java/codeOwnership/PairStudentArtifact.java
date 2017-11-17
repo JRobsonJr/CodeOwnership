@@ -16,7 +16,7 @@ public class PairStudentArtifact {
 
 	@Override
 	public String toString() {
-		return student.getId().getName() + "  is the owner of: " + artifact.getArtifacName();
+		return student.getId().getName() + "  is the owner of: " + artifact.getArtifacName() +  "\nArtifact details:\n" + artifact.toString() + "\n" ;
 	}
 
 	public Artifact getArtifact() {

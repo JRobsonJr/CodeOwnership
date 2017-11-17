@@ -19,19 +19,19 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import analise.Analise;
 import analise.AnaliseCriacao;
 import codeOwnership.CodeOwnership;
+import codeOwnership.PairRepository;
 
 public class Competencia {
-	
-	public void listClassesAndSubjects(String repoPath) throws IOException {
+
+	public void listClassesAndSubjects(String repoPath, PairRepository pairs) throws IOException {
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
-		Repository repository = builder
-				.setGitDir(new File(repoPath + "\\.git"))
-				.readEnvironment().findGitDir().build();
-		listRepositoryContents(repository, repoPath);
+		Repository repository = builder.setGitDir(new File(repoPath + "\\.git")).readEnvironment().findGitDir().build();
+		listRepositoryContents(repository, repoPath, pairs);
 		repository.close();
 	}
 
-	private static void listRepositoryContents(Repository repository, String repoPath) throws IOException {
+	private static void listRepositoryContents(Repository repository, String repoPath, PairRepository pairs)
+			throws IOException {
 		Ref head = repository.getRef("HEAD");
 		RevWalk walk = new RevWalk(repository);
 		RevCommit commit = walk.parseCommit(head.getObjectId());
@@ -41,26 +41,31 @@ public class Competencia {
 		treeWalk.setRecursive(true);
 		while (treeWalk.next()) {
 			if (isJavaClass(treeWalk.getPathString())) {
-				String caminho =  makePath(treeWalk.getPathString(), repoPath);			
-				System.out.println("A classe: " + treeWalk.getPathString() + " tem como competencia");
-				determinateArtifactSubject(caminho);
+				String caminho = makePath(treeWalk.getPathString(), repoPath);
+				Set<String> competencia = determinateArtifactSubject(caminho);
+				if (pairs.getPairByArtifactName(treeWalk.getPathString()) != null) {
+					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(competencia);	
+				}
 			}
 		}
 	}
 
 	/**
 	 * Tranforma o caminho de forma que seja possivel ler no windows
-	 * @param pathString - src/exception/LogicaException.java
-	 * @return - C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon\\src\\exception\\LogicaException.java
+	 * 
+	 * @param pathString
+	 *            - src/exception/LogicaException.java
+	 * @return - C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de
+	 *         Rosbon\\src\\exception\\LogicaException.java
 	 */
 	private static String makePath(String pathString, String repoPath) {
 		String aux = "\\" + pathString.replace("/", "\\");
 		pathString = repoPath + aux;
-		
+
 		return pathString;
-		
+
 	}
-	
+
 	/**
 	 * Determina as compentencias do artifact atraves de palavras chaves
 	 * 
@@ -68,7 +73,7 @@ public class Competencia {
 	 *            - caminho do artifact
 	 * @throws IOException
 	 */
-	public static void determinateArtifactSubject(String path) throws IOException {
+	public static Set<String> determinateArtifactSubject(String path) throws IOException {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
 		Set<String> competencias = new HashSet<String>();
 		String linha = "";
@@ -91,8 +96,8 @@ public class Competencia {
 					if (palavrasDaLinha[i].trim().equals("try") || palavrasDaLinha[i].trim().equals("catch")) {
 						competencias.add("Tratamentos de Exceptions");
 					}
-					if (palavrasDaLinha[i].trim().equals("IOException")) {
-						competencias.add("Arquivos");
+					if (palavrasDaLinha[i].trim().equals("IOException") || palavrasDaLinha[i].trim().equals("File")) {
+						competencias.add("Persistência(arquivos)");
 					}
 				}
 			} else {
@@ -101,7 +106,7 @@ public class Competencia {
 			linha = buffRead.readLine();
 		}
 		buffRead.close();
-		System.out.println(Arrays.toString(competencias.toArray()));
+		return competencias;
 	}
 
 	/**

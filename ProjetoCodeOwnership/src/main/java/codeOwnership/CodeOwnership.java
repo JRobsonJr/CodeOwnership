@@ -37,6 +37,7 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 
 import analise.Analise;
 import artifact.Artifact;
+import competencia.Competencia;
 import student.Student;
 import student.StudentServer;
 
@@ -44,7 +45,8 @@ public class CodeOwnership {
 
 	private Analise analise;
 	StudentServer students;
-	PairServer pairs;
+	PairRepository pairs;
+	Competencia competencia = new Competencia();
 	private final String LS = System.lineSeparator();
 
 	public CodeOwnership(Analise  analise) {
@@ -52,7 +54,7 @@ public class CodeOwnership {
 		this.analise = analise;
 	}
 
-	public void makePairs(Repository repo, PairServer pairs,String path) throws Exception {
+	public void makePairs(Repository repo, PairRepository pairs,String path) throws Exception {
 		analise.makePairs(repo, pairs, students,path );
 
 	}
@@ -64,46 +66,9 @@ public class CodeOwnership {
 		}
 		// TODO: como lidar com mesma pessoas mas com Id diferente
 	}
-
-
-	// public void getDiffHead(Repository repository) throws
-	// IncorrectObjectTypeException, IOException, GitAPIException {
-	//
-	// /* Mostra o que aconteceu entre 1 estado do repositorio e outro,
-	// "HEAD~97^{tree}" 97 commits atrás da atual
-	// * "HEAD^{tree}"
-	// * mostra o que foi feito em cada arquivo: ADD/DELETE/MODIFY
-	// *
-	// * Entry: DiffEntry[MODIFY src/projeto/Projeto.java]
-	// *
-	// * */
-	//
-	// Git git = new Git(repository);
-	// ObjectId oldHead = repository.resolve("HEAD^{tree}");
-	// ObjectId head = repository.resolve("HEAD^^^^^{tree}");
-	//
-	// ObjectReader reader = repository.newObjectReader();
-	//
-	// CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-	// oldTreeIter.reset(reader, oldHead);
-	// CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-	// newTreeIter.reset(reader, head);
-	//
-	//
-	//
-	// List<DiffEntry> diffs =
-	// git.diff().setNewTree(newTreeIter).setOldTree(oldTreeIter).call();
-	// for (DiffEntry entry : diffs) {
-	//
-	// if(isRemovedArtifact(entry)) {
-	// Artifact artifact = new Artifact(entry.getOldPath());
-	// pairs.removePair(artifact);
-	//
-	//
-	// }
-	//
-	//
-	// }
-	// }
-
+	
+	public void determinateAtifactSubjects(String repositorio, PairRepository pairs) throws IOException {
+		competencia.listClassesAndSubjects(repositorio, pairs);
+	}
+	
 }

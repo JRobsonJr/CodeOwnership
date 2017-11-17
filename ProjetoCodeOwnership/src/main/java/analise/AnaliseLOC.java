@@ -20,12 +20,12 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
-import codeOwnership.PairServer;
+import codeOwnership.PairRepository;
 import student.StudentServer;
 
 public class AnaliseLOC implements Analise {
 
-	public void makePairs(Repository repo, PairServer pairs, StudentServer students, String path)
+	public void makePairs(Repository repo, PairRepository pairs, StudentServer students, String path)
 			throws NoHeadException, GitAPIException, IOException {
 		this.listRepositoryContents(repo, path);
 

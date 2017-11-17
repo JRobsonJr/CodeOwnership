@@ -1,14 +1,17 @@
 package artifact;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Artifact {
 	
 	private String artifacName;
-	private ArrayList<ArtifactSubject> subjects;
+	private Set<String> subjects;
 	
 	public Artifact(String artifactName) {
 		this.artifacName = artifactName;
+		this.subjects = new HashSet();
 		
 	}
 	
@@ -18,26 +21,14 @@ public class Artifact {
 	public void setArtifacName(String artifacName) {
 		this.artifacName = artifacName;
 	}
-	public ArrayList<ArtifactSubject> getSubject() {
+	public Set<String> getSubject() {
 		return subjects;
 	}
 	
-	/**
-	 * 
-	 * Adiciona um subject de acordo com o nome passado com paramentro ao artefato
-	 * @param subject
-	 */
-	public void addSubjectByName(String subject) {
-		if(subject.equals("heranca")) {
-			this.subjects.add(ArtifactSubject.HERANCA);
-		} else if(subject.equals("teste")) {
-			this.subjects.add(ArtifactSubject.TESTES);
-		}else if (subject.equals("interface")) {
-			this.subjects.add(ArtifactSubject.COMPOSICAO);
-		}
+	
+	public void setSubjects(Set<String> subjects) {
+		this.subjects = subjects;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -64,7 +55,10 @@ public class Artifact {
 		return true;
 	}
 
-	
+	@Override
+	public String toString() {
+		return  "Subjects: " + this.subjects.toString();
+	}
 	
 	
 	

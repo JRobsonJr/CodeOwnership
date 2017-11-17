@@ -25,7 +25,7 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import artifact.Artifact;
-import codeOwnership.PairServer;
+import codeOwnership.PairRepository;
 import codeOwnership.PairStudentArtifact;
 import student.StudentServer;
 
@@ -34,7 +34,7 @@ public class AnaliseCriacao implements Analise {
 	public AnaliseCriacao() {
 	}
 
-	public void makePairs(Repository repo, PairServer pairs, StudentServer students,String path) throws Exception {
+	public void makePairs(Repository repo, PairRepository pairs, StudentServer students,String path) throws Exception {
 		RevWalk walk = new RevWalk(repo);
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
@@ -75,7 +75,6 @@ public class AnaliseCriacao implements Analise {
 
 		for (RevCommit commit : commits) {
 			listCommits.add(commit);
-
 		}
 		return listCommits;
 
@@ -92,7 +91,7 @@ public class AnaliseCriacao implements Analise {
 	 * Fix up for the first commit case
 	 * 
 	 */
-	private void AddArtifactsFromFirtsCommit(Repository repo, PairServer pairs, RevWalk walk, RevCommit commit,
+	private void AddArtifactsFromFirtsCommit(Repository repo, PairRepository pairs, RevWalk walk, RevCommit commit,
 			StudentServer students)
 			throws MissingObjectException, IncorrectObjectTypeException, IOException, CorruptObjectException {
 
@@ -139,7 +138,7 @@ public class AnaliseCriacao implements Analise {
 
 	};
 
-	public void deleteRemovedArtifacts(Repository repo, PairServer pairs) throws Exception {
+	public void deleteRemovedArtifacts(Repository repo, PairRepository pairs) throws Exception {
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
 
