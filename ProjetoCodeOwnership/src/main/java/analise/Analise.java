@@ -11,6 +11,6 @@ import student.StudentServer;
 
 public interface Analise {
 
-	void makePairs(Repository repo, PairServer pairs, StudentServer students) throws NoHeadException, GitAPIException, IOException, Exception;
+	void makePairs(Repository repo, PairServer pairs, StudentServer students,String path) throws NoHeadException, GitAPIException, IOException, Exception;
 
 }

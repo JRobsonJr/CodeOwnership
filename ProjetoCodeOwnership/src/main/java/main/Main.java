@@ -7,7 +7,6 @@ import org.eclipse.jgit.lib.Repository;
 import analise.Analise;
 import analise.AnaliseCriacao;
 import analise.AnaliseLOC;
-import analise.Blame;
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairServer;
 import competencia.Competencia;
@@ -18,7 +17,6 @@ public class Main {
 	private static Analise analise;
 	static PairServer pairs;
 	private static String repositorio;
-	private static Blame blamer;
 	private static String analysisType;
 	private static Competencia competencia = new Competencia();
 
@@ -29,35 +27,36 @@ public class Main {
 //		repositorio = args[0];
 //		analysisType = args[1];
 		
-		analysisType = "criacao";
-		repositorio = "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon";
-		
+		analysisType = "linha";
+		repositorio = "D:\\Users\\PET Computacao\\Documents\\David Eduardo\\codeOwnership\\ProjetoP2 - Grupo de Rosbon\\homemade-dynamite";
+		String rep = "/home/mariana/homemade-dynamite/.git";
 		if (analysisType.equals("criacao")) {
+			System.out.println("Analise por criação:\n ");
 			analise = new AnaliseCriacao();
 		} else {
+			 System.out.println("Analise por linha de código:\n");
 			analise = new AnaliseLOC();
 		}
 		
 		co = new CodeOwnership(analise);
 		pairs = new PairServer();
-		blamer = new Blame();
-		Repository repo = new FileRepository(repositorio + "\\.git");
+		Repository repo = new FileRepository(rep);
 		Git git = new Git(repo);
 		co.registerAllStudents(git);
-		co.makePairs(repo, pairs);
+		
+		co.makePairs(repo, pairs, rep);
 
 		System.out.println("ToString de PairsServer:\n \n");
 		
 		System.out.println(pairs.toString());
 
-		// System.out.println("Quem buliu em que num arquivo especifico: (HEAD - Estado
-		// atual do repositorio) \n");
-		// Especificar repositorio, qual HEAD (estado do repositorio) e arquivo que quer
-		// analisar.
-		// blamer.gitBlame(repo, "HEAD", "src/album/Album.java");
+		
+//		 Especificar repositorio, qual HEAD (estado do repositorio) e arquivo que quer
+//		 analisar.
+	
 
 		System.out.println("Competencia:");
-		competencia.listClassesAndSubjects(repositorio);
+		competencia.listClassesAndSubjects(rep);
 
 	}
 

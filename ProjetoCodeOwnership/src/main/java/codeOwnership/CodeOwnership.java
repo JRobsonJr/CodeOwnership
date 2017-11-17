@@ -52,8 +52,8 @@ public class CodeOwnership {
 		this.analise = analise;
 	}
 
-	public void makePairs(Repository repo, PairServer pairs) throws Exception {
-		analise.makePairs(repo, pairs, students);
+	public void makePairs(Repository repo, PairServer pairs,String path) throws Exception {
+		analise.makePairs(repo, pairs, students,path );
 
 	}
 	

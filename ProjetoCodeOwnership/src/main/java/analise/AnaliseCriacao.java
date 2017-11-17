@@ -34,7 +34,7 @@ public class AnaliseCriacao implements Analise {
 	public AnaliseCriacao() {
 	}
 
-	public void makePairs(Repository repo, PairServer pairs, StudentServer students) throws Exception {
+	public void makePairs(Repository repo, PairServer pairs, StudentServer students,String path) throws Exception {
 		RevWalk walk = new RevWalk(repo);
 		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repo);
