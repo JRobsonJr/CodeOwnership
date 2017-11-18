@@ -21,13 +21,14 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import codeOwnership.PairRepository;
+import git.GitRepository;
 import student.StudentServer;
 
 public class AnaliseLOC implements Analise {
 
-	public void makePairs(Repository repo, PairRepository pairs, StudentServer students, String path)
+	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students)
 			throws NoHeadException, GitAPIException, IOException {
-		this.listRepositoryContents(repo, path);
+		this.listRepositoryContents(git);
 
 	}
 
@@ -72,9 +73,10 @@ public class AnaliseLOC implements Analise {
 
 	}
 
-	private void listRepositoryContents(Repository repository, String repoPath) throws IOException, RevisionSyntaxException, GitAPIException {
+	private void listRepositoryContents(GitRepository git) throws IOException, RevisionSyntaxException, GitAPIException {
+		Repository repository = git.getRepository();
 		Ref head = repository.getRef("HEAD");
-		RevWalk walk = new RevWalk(repository);
+		RevWalk walk = git.getRevWalk();
 		RevCommit commit = walk.parseCommit(head.getObjectId());
 		RevTree tree = commit.getTree();
 		TreeWalk treeWalk = new TreeWalk(repository);

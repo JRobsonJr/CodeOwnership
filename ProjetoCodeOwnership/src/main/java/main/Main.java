@@ -21,7 +21,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {		
 		
 		analysisType = "criacao";
-		repositorio = "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon";
+		repositorio = "/home/mariana/homemade-dynamite/";
 		
 		//Deixa aqui o caminho do repositoria do seu PC para facilitar na hora de mudar(sem o .git):
 		
@@ -37,10 +37,10 @@ public class Main {
 		}
 		co = new CodeOwnership(analise);
 		
-		Repository repo = new FileRepository(repositorio + "\\.git");
+		Repository repo = new FileRepository(repositorio+".git");
 		Git git = new Git(repo);
 
-		co.registerAllStudents(git);
+		co.registerAllStudents();
 		co.makePairs(repo, pairs, repositorio);
 		co.determinateAtifactSubjects(repositorio, pairs);
 		 

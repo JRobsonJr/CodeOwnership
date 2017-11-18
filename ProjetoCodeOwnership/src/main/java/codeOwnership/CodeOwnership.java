@@ -3,41 +3,19 @@ package codeOwnership;
 import java.io.BufferedReader;
 import java.io.FileDescriptor;
 
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
-import org.eclipse.jgit.api.CommitCommand;
-import org.eclipse.jgit.api.Git;
+import java.io.IOException;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.diff.DiffEntry;
-import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.errors.AmbiguousObjectException;
-import org.eclipse.jgit.errors.CorruptObjectException;
-import org.eclipse.jgit.errors.IncorrectObjectTypeException;
-import org.eclipse.jgit.errors.MissingObjectException;
-import org.eclipse.jgit.errors.RevisionSyntaxException;
-import org.eclipse.jgit.diff.DiffEntry.ChangeType;
-import org.eclipse.jgit.lib.Constants;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectReader;
-import org.eclipse.jgit.lib.Ref;
+
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevTree;
-import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.treewalk.CanonicalTreeParser;
-import org.eclipse.jgit.treewalk.TreeWalk;
+
 
 import analise.Analise;
-import artifact.Artifact;
+
 import competencia.Competencia;
+import git.GitRepository;
 import student.Student;
 import student.StudentServer;
 
@@ -47,20 +25,22 @@ public class CodeOwnership {
 	StudentServer students;
 	PairRepository pairs;
 	Competencia competencia = new Competencia();
+	GitRepository git;
 	private final String LS = System.lineSeparator();
 
-	public CodeOwnership(Analise  analise) {
+	public CodeOwnership(Analise  analise) throws IOException {
 		this.students = new StudentServer();
 		this.analise = analise;
+		this.git = new GitRepository("/home/mariana/homemade-dynamite/.git");
 	}
 
 	public void makePairs(Repository repo, PairRepository pairs,String path) throws Exception {
-		analise.makePairs(repo, pairs, students,path );
+		analise.makePairs(git, pairs, students);
 
 	}
 	
-	public void registerAllStudents(Git git) throws GitAPIException, IOException {
-		Iterable<RevCommit> commits = git.log().all().call();
+	public void registerAllStudents() throws GitAPIException, IOException {
+		Iterable<RevCommit> commits = this.git.getCommits();
 		for (RevCommit commit : commits) {
 			students.addStudent(commit.getAuthorIdent());
 		}

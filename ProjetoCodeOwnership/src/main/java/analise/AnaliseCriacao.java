@@ -1,21 +1,14 @@
 package analise;
 
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
+import java.io.IOException;
+
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.errors.CorruptObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
-import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -27,6 +20,7 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import artifact.Artifact;
 import codeOwnership.PairRepository;
 import codeOwnership.PairStudentArtifact;
+import git.GitRepository;
 import student.StudentServer;
 
 public class AnaliseCriacao implements Analise {
@@ -34,17 +28,16 @@ public class AnaliseCriacao implements Analise {
 	public AnaliseCriacao() {
 	}
 
-	public void makePairs(Repository repo, PairRepository pairs, StudentServer students,String path) throws Exception {
-		RevWalk walk = new RevWalk(repo);
-		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
-		diffFormatter.setRepository(repo);
-
-		List<RevCommit> commits = getCommits(repo);
-
+	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students) throws Exception {
+		Repository repo = git.getRepository();	
+		RevWalk walk = git.getRevWalk();
+		DiffFormatter diffFormatter = git.getDiffFormatter();
+		Iterable<RevCommit> commits = git.getCommits();
+		
 		for (RevCommit commit : commits) {
 			if (isFirstCommit(commit)) {
 				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit, students);
-				this.deleteRemovedArtifacts(repo, pairs);
+				this.deleteRemovedArtifacts(git,pairs);
 				return;
 			} else {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
@@ -60,25 +53,7 @@ public class AnaliseCriacao implements Analise {
 
 	}
 
-	/**
-	 * 
-	 * @param repositorio
-	 * @return lista com todos os commits
-	 * @throws NoHeadException
-	 * @throws GitAPIException
-	 * @throws IOException
-	 */
-	private List<RevCommit> getCommits(Repository repositorio) throws NoHeadException, GitAPIException, IOException {
-		Git git = new Git(repositorio);
-		Iterable<RevCommit> commits = git.log().all().call();
-		List<RevCommit> listCommits = new ArrayList<RevCommit>();
 
-		for (RevCommit commit : commits) {
-			listCommits.add(commit);
-		}
-		return listCommits;
-
-	}
 
 	/**
 	 * Returns whether the change is the type DELETE
@@ -138,11 +113,9 @@ public class AnaliseCriacao implements Analise {
 
 	};
 
-	public void deleteRemovedArtifacts(Repository repo, PairRepository pairs) throws Exception {
-		DiffFormatter diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
-		diffFormatter.setRepository(repo);
-
-		List<RevCommit> commits = getCommits(repo);
+	public void deleteRemovedArtifacts(GitRepository git, PairRepository pairs) throws Exception {
+		DiffFormatter diffFormatter = git.getDiffFormatter();
+		Iterable<RevCommit> commits = git.getCommits();
 
 		for (RevCommit commit : commits) {
 			if (isFirstCommit(commit)) {
