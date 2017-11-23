@@ -25,8 +25,7 @@ public class Competencia {
 
 	public void listClassesAndSubjects(String repoPath, PairRepository pairs) throws IOException {
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
-		//+ .git 
-		Repository repository = builder.setGitDir(new File(repoPath + ".git" )).readEnvironment().findGitDir().build();
+		Repository repository = builder.setGitDir(new File(repoPath + ".git")).readEnvironment().findGitDir().build();
 		listRepositoryContents(repository, repoPath, pairs);
 		repository.close();
 	}
@@ -45,7 +44,6 @@ public class Competencia {
 				//using windows:
 				//String caminho = makePath(treeWalk.getPathString(), repoPath);
 				
-				 
 				String caminho = repoPath + "/" + treeWalk.getPathString();
 				Set<String> competencia = determinateArtifactSubject(caminho);
 				if (pairs.getPairByArtifactName(treeWalk.getPathString()) != null) {

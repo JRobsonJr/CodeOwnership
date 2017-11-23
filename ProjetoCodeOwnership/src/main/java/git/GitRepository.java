@@ -31,13 +31,10 @@ public class GitRepository {
 		diffFormatter.setRepository(repository);
 	}
 	
-	
 	public Iterable<RevCommit> getCommits() throws NoHeadException, GitAPIException, IOException{
 		Iterable<RevCommit> commits = git.log().all().call();
-		return commits;
-		
+		return commits;	
 	}
-	
 	
 	public Repository getRepository() {
 		return this.repository;

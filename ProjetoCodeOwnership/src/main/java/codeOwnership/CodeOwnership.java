@@ -28,10 +28,10 @@ public class CodeOwnership {
 	GitRepository git;
 	private final String LS = System.lineSeparator();
 
-	public CodeOwnership(Analise  analise) throws IOException {
+	public CodeOwnership(Analise  analise, String repoPath) throws IOException {
 		this.students = new StudentServer();
 		this.analise = analise;
-		this.git = new GitRepository("/home/mariana/homemade-dynamite/.git");
+		this.git = new GitRepository(repoPath);
 	}
 
 	public void makePairs(Repository repo, PairRepository pairs,String path) throws Exception {
