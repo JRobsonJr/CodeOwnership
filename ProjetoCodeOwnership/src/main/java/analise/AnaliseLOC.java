@@ -1,7 +1,9 @@
 package analise;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,6 +11,9 @@ import org.eclipse.jgit.api.BlameCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.blame.BlameResult;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
@@ -20,29 +25,36 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
+import artifact.Artifact;
 import codeOwnership.PairRepository;
+import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
+import student.Student;
 import student.StudentServer;
 
 public class AnaliseLOC implements Analise {
 
-	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students)
-			throws NoHeadException, GitAPIException, IOException {
-		this.listRepositoryContents(git);
+	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students) throws Exception {
+		List<String> paths = listRepositoryContents(git);
+		for (String className : paths) {
+			Student greater = getGreaterContributor(git.getRepository(), className);
+			Artifact artifact = new Artifact(className);
+			PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact);
+			pairs.addPair(auxPair);
 
+		}
 	}
 
-	public void gitBlame(Repository repository, String pathFile) throws RevisionSyntaxException,
+	public BlameResult getBlameResult(Repository repository, String pathFile) throws RevisionSyntaxException,
 			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
-
 		BlameCommand blamed = new BlameCommand(repository);
 		ObjectId commitID = repository.resolve("HEAD");
 		blamed.setStartCommit(commitID);
 		blamed.setFilePath(pathFile);
 		BlameResult blameResult = blamed.call();
 
-		int lines = blameResult.getResultContents().size();
-		showBlame(lines, blameResult);
+		return  blameResult;
+		
 	}
 
 	/**
@@ -51,53 +63,63 @@ public class AnaliseLOC implements Analise {
 	 * @param lines
 	 * @param blameResult
 	 */
-	private void showBlame(int lines, BlameResult blameResult) {
-		Map<String,Integer> frequency = new HashMap<String, Integer>();
-		
+	private Map<Student, Integer> getFrequency(int lines, BlameResult blameResult) {
+		Map<Student, Integer> frequency = new HashMap<Student, Integer>();
 		for (int i = 0; i < lines; i++) {
 			RevCommit commit = blameResult.getSourceCommit(i);
 			if (!blameResult.getResultContents().getString(i).trim().equalsIgnoreCase("")) {
-				String authorName = commit.getAuthorIdent().getName();
-				if(frequency.containsKey(authorName)){
-					frequency.put(authorName, frequency.get(authorName) + 1);
-				}else{
-					frequency.put(authorName, 1);
+				Student newStudent = new Student(commit.getAuthorIdent());
+				if (frequency.containsKey(newStudent)) {
+					frequency.put(newStudent, frequency.get(newStudent) + 1);
+				} else {
+					frequency.put(newStudent, 1);
 				}
 			}
 		}
-		Set<String> chaves = frequency.keySet();
-		for (String nome : chaves) {
-			System.out.println("Author: " + nome + "\nLinhas: " + frequency.get(nome) + "\n");
-			
+		return frequency;
+	}
+	
+	
+	private Student getGreaterContributor(Repository repository, String pathFile) throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
+		BlameResult result = getBlameResult(repository, pathFile);
+		Map<Student, Integer>  frequency = getFrequency(result.getResultContents().size(), result);
+		Student greater = null;
+		int max = 0;
+		Set<Student> keys = frequency.keySet();
+	
+		for (Student student : keys) {
+			if(frequency.get(student) > max){
+				max = frequency.get(student);
+				greater = student;
+			}
 		}
-
+		
+		return greater;
+		
 	}
 
-	private void listRepositoryContents(GitRepository git) throws IOException, RevisionSyntaxException, GitAPIException {
-		Repository repository = git.getRepository();
-		Ref head = repository.getRef("HEAD");
+	private List<String> listRepositoryContents(GitRepository git)
+			throws IOException, RevisionSyntaxException, GitAPIException {
+	
+		List<String> classes = new ArrayList<String>();
+		Ref head = git.getRepository().getRef("HEAD");
 		RevWalk walk = git.getRevWalk();
 		RevCommit commit = walk.parseCommit(head.getObjectId());
 		RevTree tree = commit.getTree();
-		TreeWalk treeWalk = new TreeWalk(repository);
+		TreeWalk treeWalk = new TreeWalk(git.getRepository());
 		treeWalk.addTree(tree);
 		treeWalk.setRecursive(true);
 		while (treeWalk.next()) {
 			if (isJavaClass(treeWalk.getPathString())) {
-				System.out.println("--------------------------------------------");
-				System.out.println("Classe:" + treeWalk.getPathString() + ":");
+				classes.add(treeWalk.getPathString());
 				
-				
-				gitBlame(repository, treeWalk.getPathString());
 
 			}
 		}
+		return classes;
 	}
 
-
-
-
-	private static boolean isJavaClass(String string) {
+	private boolean isJavaClass(String string) {
 		String[] splitted = string.split("\\.");
 
 		if (splitted.length == 2) {
@@ -105,6 +127,50 @@ public class AnaliseLOC implements Analise {
 		} else {
 			return false;
 		}
+	}
+
+	private boolean isFirstCommit(RevCommit commit) {
+		RevCommit testing = null;
+		try {
+			testing = commit.getParent(0);
+		} catch (Exception e) {
+		}
+
+		return testing == null;
+
+	};
+
+	public void deleteRemovedArtifacts(GitRepository git, PairRepository pairs) throws Exception {
+		DiffFormatter diffFormatter = git.getDiffFormatter();
+		Iterable<RevCommit> commits = git.getCommits();
+
+		for (RevCommit commit : commits) {
+			if (isFirstCommit(commit)) {
+				return;
+			} else {
+				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
+
+					if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
+						Artifact artifact = new Artifact(entry.getOldPath());
+						pairs.removePair(artifact);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Returns whether the change is the type ADD(created for the first time)
+	 */
+	private boolean isNewArtifact(DiffEntry entry) {
+		return entry.getChangeType() == ChangeType.ADD;
+	}
+
+	/**
+	 * Returns whether the change is the type DELETE
+	 */
+	private boolean isRemovedArtifact(DiffEntry entry) {
+		return entry.getChangeType() == ChangeType.DELETE;
 	}
 
 }

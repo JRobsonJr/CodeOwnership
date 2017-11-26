@@ -24,7 +24,7 @@ public class app {
 	public static void main(String[] args) throws Exception {		
 		
 		
-		repository = JOptionPane.showInputDialog("Cainho do repositorio:");
+		repository = JOptionPane.showInputDialog("Caminho do repositorio:");
 		analysisType = JOptionPane.showInputDialog("Tipo de analise (criacao ou LOC)");
 		
  		//analysisType = "criacao";
@@ -32,7 +32,7 @@ public class app {
 
 		//Deixa aqui o caminho do repositoria do seu PC para facilitar na hora de mudar(sem o .git):
 		//C:\\Users\\Documentos\\Desktop\\CodeOwnership\\homemade-dynamite\\
-		//"/home/mariana/homemade-dynamite/";
+		//"/home/mariana/Documents/Didatica_LP2/homemade-dynamite/";
 		//"C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon\\"
 		
 		if (analysisType.equals("criacao")) {
@@ -43,14 +43,16 @@ public class app {
 			analise = new AnaliseLOC();
 		}
 		
-		co = new CodeOwnership(analise, repository + ".git");
+		co = new CodeOwnership(analise, "/home/mariana/Documents/Didatica_LP2/homemade-dynamite/.git");
 		
 		Repository repo = new FileRepository(repository + ".git");
-		Git git = new Git(repo);
-
+	
+		
 		co.registerAllStudents();
 		co.makePairs(repo, pairs, repository);
-		co.determinateAtifactSubjects(repository, pairs);
+	//	co.determinateAtifactSubjects(repository, pairs);
+	
+		pairs.toString();
 		
 		JOptionPane.showMessageDialog(null, pairs.toString());
 		//System.out.println(pairs.toString());

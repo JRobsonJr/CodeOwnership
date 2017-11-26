@@ -40,6 +40,7 @@ public class CodeOwnership {
 	}
 	
 	public void registerAllStudents() throws GitAPIException, IOException {
+		System.out.println(git.getDirectory());
 		Iterable<RevCommit> commits = this.git.getCommits();
 		for (RevCommit commit : commits) {
 			students.addStudent(commit.getAuthorIdent());

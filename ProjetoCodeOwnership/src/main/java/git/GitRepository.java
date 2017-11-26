@@ -25,7 +25,7 @@ public class GitRepository {
 	public GitRepository(String directory) throws IOException {
 		this.directory = directory;
 		this.repository = new FileRepository(directory);
-		this.git = new Git(repository);
+		this.git = new Git(repository );
 		this.walk = new RevWalk(repository);
 		this.diffFormatter = new DiffFormatter(new FileOutputStream(FileDescriptor.out));
 		diffFormatter.setRepository(repository);
