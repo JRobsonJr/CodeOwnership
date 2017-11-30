@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.eclipse.jgit.lib.PersonIdent;
 
+import util.Util;
+
 public class StudentServer {
 
 	private List<Student> students;
@@ -15,6 +17,7 @@ public class StudentServer {
 
 	public void addStudent(PersonIdent id) {
 		Student student = new Student(id);
+		
 		if (!students.contains(student)) {
 			students.add(student);
 		}
@@ -27,15 +30,16 @@ public class StudentServer {
 			}
 		}
 	
-		// TODO Exception?
+		// TODO Exception? RESP: Se o sistema só usa isso caso devesse existir o aluno, sim.
 		return null;
 	}
 	
 	@Override
 	public String toString() {
 		String resp = "";
+		
 		for (int i = 0; i < students.size(); i++) {
-			resp += students.get(i).toString() + "\n";
+			resp += students.get(i).toString() + Util.LS;
 		}
 		
 		return resp;

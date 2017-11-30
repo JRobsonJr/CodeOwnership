@@ -1,30 +1,29 @@
 package artifact;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Artifact {
 	
-	private String artifacName;
+	private String name;
 	private Set<String> subjects;
 	
 	public Artifact(String artifactName) {
-		this.artifacName = artifactName;
-		this.subjects = new HashSet();
-		
+		this.name = artifactName;
+		this.subjects = new HashSet<String>();
 	}
 	
-	public String getArtifacName() {
-		return artifacName;
+	public String getName() {
+		return this.name;
 	}
-	public void setArtifacName(String artifacName) {
-		this.artifacName = artifacName;
+	
+	public void setName(String name) {
+		this.name = name;
 	}
+	
 	public Set<String> getSubject() {
-		return subjects;
+		return this.subjects;
 	}
-	
 	
 	public void setSubjects(Set<String> subjects) {
 		this.subjects = subjects;
@@ -34,7 +33,7 @@ public class Artifact {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((artifacName == null) ? 0 : artifacName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -47,19 +46,16 @@ public class Artifact {
 		if (getClass() != obj.getClass())
 			return false;
 		Artifact other = (Artifact) obj;
-		if (artifacName == null) {
-			if (other.artifacName != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!artifacName.equals(other.artifacName))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return  "Subjects: " + this.subjects.toString();
-	}
-	
-	
-	
+		return "Subjects: " + this.subjects.toString();
+	}	
 }

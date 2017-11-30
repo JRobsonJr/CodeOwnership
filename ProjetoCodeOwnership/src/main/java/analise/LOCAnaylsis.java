@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.eclipse.jgit.api.BlameCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -31,8 +30,9 @@ import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
 import student.Student;
 import student.StudentServer;
+import util.Util;
 
-public class AnaliseLOC implements Analise {
+public class LOCAnaylsis implements Analysis {
 
 	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students) throws Exception {
 		List<String> paths = listRepositoryContents(git);
@@ -41,7 +41,6 @@ public class AnaliseLOC implements Analise {
 			Artifact artifact = new Artifact(className);
 			PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact);
 			pairs.addPair(auxPair);
-
 		}
 	}
 
@@ -53,8 +52,7 @@ public class AnaliseLOC implements Analise {
 		blamed.setFilePath(pathFile);
 		BlameResult blameResult = blamed.call();
 
-		return  blameResult;
-		
+		return blameResult;
 	}
 
 	/**
@@ -65,6 +63,7 @@ public class AnaliseLOC implements Analise {
 	 */
 	private Map<Student, Integer> getFrequency(int lines, BlameResult blameResult) {
 		Map<Student, Integer> frequency = new HashMap<Student, Integer>();
+
 		for (int i = 0; i < lines; i++) {
 			RevCommit commit = blameResult.getSourceCommit(i);
 			if (!blameResult.getResultContents().getString(i).trim().equalsIgnoreCase("")) {
@@ -76,31 +75,30 @@ public class AnaliseLOC implements Analise {
 				}
 			}
 		}
+
 		return frequency;
 	}
-	
-	
-	private Student getGreaterContributor(Repository repository, String pathFile) throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
+
+	private Student getGreaterContributor(Repository repository, String pathFile) throws RevisionSyntaxException,
+			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
 		BlameResult result = getBlameResult(repository, pathFile);
-		Map<Student, Integer>  frequency = getFrequency(result.getResultContents().size(), result);
+		Map<Student, Integer> frequency = getFrequency(result.getResultContents().size(), result);
 		Student greater = null;
 		int max = 0;
 		Set<Student> keys = frequency.keySet();
-	
+
 		for (Student student : keys) {
-			if(frequency.get(student) > max){
+			if (frequency.get(student) > max) {
 				max = frequency.get(student);
 				greater = student;
 			}
 		}
-		
+
 		return greater;
-		
 	}
 
 	private List<String> listRepositoryContents(GitRepository git)
 			throws IOException, RevisionSyntaxException, GitAPIException {
-	
 		List<String> classes = new ArrayList<String>();
 		Ref head = git.getRepository().getRef("HEAD");
 		RevWalk walk = git.getRevWalk();
@@ -110,27 +108,19 @@ public class AnaliseLOC implements Analise {
 		treeWalk.addTree(tree);
 		treeWalk.setRecursive(true);
 		while (treeWalk.next()) {
-			if (isJavaClass(treeWalk.getPathString())) {
+			if (Util.isJavaClass(treeWalk.getPathString())) {
 				classes.add(treeWalk.getPathString());
-				
 
 			}
 		}
 		return classes;
 	}
 
-	private boolean isJavaClass(String string) {
-		String[] splitted = string.split("\\.");
-
-		if (splitted.length == 2) {
-			return splitted[1].equals("java");
-		} else {
-			return false;
-		}
-	}
+	
 
 	private boolean isFirstCommit(RevCommit commit) {
 		RevCommit testing = null;
+		
 		try {
 			testing = commit.getParent(0);
 		} catch (Exception e) {

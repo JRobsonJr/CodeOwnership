@@ -8,8 +8,9 @@ import codeOwnership.PairRepository;
 import git.GitRepository;
 import student.StudentServer;
 
-public interface Analise {
+public interface Analysis {
 
-	void makePairs(GitRepository git, PairRepository pairs, StudentServer students) throws NoHeadException, GitAPIException, IOException, Exception;
+	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students)
+			throws NoHeadException, GitAPIException, IOException, Exception;
 
 }

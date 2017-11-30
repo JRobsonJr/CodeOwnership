@@ -1,18 +1,18 @@
 package student;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.revwalk.RevCommit;
+
+import util.Util;
 
 public class Student {
 
 	private String name, email;
 	private PersonIdent id;
-	private List<String> createdArtifacts;  //TODO: vai manter isso ? salva nos dois lugares?  
-	private static final String LS = System.lineSeparator();
+	private List<String> createdArtifacts; 
+	// TODO: vai manter isso? salva nos dois lugares?
 
 	public Student(PersonIdent id) {
 		this.id = id;
@@ -21,17 +21,16 @@ public class Student {
 		this.createdArtifacts = new ArrayList<String>();
 	}
 
+	public PersonIdent getId() {
+		return this.id;
+	}
+	
 	public String getEmail() {
 		return this.email;
 	}
-	
-	
-	public String getName() {
-		return name;
-	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getName() {
+		return this.name;
 	}
 
 	public void addCreatedArtifact(String artifact) {
@@ -40,18 +39,13 @@ public class Student {
 
 	@Override
 	public String toString() {
-		String resp = "";
-		resp = "Name: " + this.name + LS + "Email: " + this.email + LS;
+		String resp = "Name: " + this.name + Util.LS + "Email: " + this.email + Util.LS;
 
 		for (int i = 0; i < createdArtifacts.size(); i++) {
-			resp += createdArtifacts.get(i) + LS;
+			resp += createdArtifacts.get(i) + Util.LS;
 		}
 
 		return resp;
-	}
-
-	public PersonIdent getId() {
-		return id;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package analise;
 
-
 import java.io.IOException;
 
 import org.eclipse.jgit.diff.DiffEntry;
@@ -23,21 +22,18 @@ import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
 import student.StudentServer;
 
-public class AnaliseCriacao implements Analise {
-
-	public AnaliseCriacao() {
-	}
+public class CreationAnalysis implements Analysis {
 
 	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students) throws Exception {
-		Repository repo = git.getRepository();	
+		Repository repo = git.getRepository();
 		RevWalk walk = git.getRevWalk();
 		DiffFormatter diffFormatter = git.getDiffFormatter();
 		Iterable<RevCommit> commits = git.getCommits();
-		
+
 		for (RevCommit commit : commits) {
 			if (isFirstCommit(commit)) {
 				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit, students);
-				this.deleteRemovedArtifacts(git,pairs);
+				this.deleteRemovedArtifacts(git, pairs);
 				return;
 			} else {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
@@ -50,10 +46,7 @@ public class AnaliseCriacao implements Analise {
 				}
 			}
 		}
-
 	}
-
-
 
 	/**
 	 * Returns whether the change is the type DELETE
@@ -64,7 +57,6 @@ public class AnaliseCriacao implements Analise {
 
 	/**
 	 * Fix up for the first commit case
-	 * 
 	 */
 	private void AddArtifactsFromFirtsCommit(Repository repo, PairRepository pairs, RevWalk walk, RevCommit commit,
 			StudentServer students)

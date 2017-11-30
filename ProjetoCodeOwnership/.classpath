@@ -22,5 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/josersaj/Documentos/CodeOwnership/ProjetoCodeOwnership/lib/org.eclipse.jgit-3.4.1.201406201815-r.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

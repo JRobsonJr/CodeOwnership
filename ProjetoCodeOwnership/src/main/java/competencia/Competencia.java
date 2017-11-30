@@ -41,13 +41,14 @@ public class Competencia {
 		treeWalk.setRecursive(true);
 		while (treeWalk.next()) {
 			if (isJavaClass(treeWalk.getPathString())) {
-				//using windows:
-				//String caminho = makePath(treeWalk.getPathString(), repoPath);
-				
+				// using windows:
+				// String caminho = makePath(treeWalk.getPathString(),
+				// repoPath);
+
 				String caminho = repoPath + "/" + treeWalk.getPathString();
 				Set<String> competencia = determinateArtifactSubject(caminho);
 				if (pairs.getPairByArtifactName(treeWalk.getPathString()) != null) {
-					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(competencia);	
+					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(competencia);
 				}
 			}
 		}
@@ -58,8 +59,8 @@ public class Competencia {
 	 * 
 	 * @param pathString
 	 *            - src/exception/LogicaException.java
-	 * @return - C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de
-	 *         Rosbon\\src\\exception\\LogicaException.java
+	 * @return - C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 -
+	 *         Grupo de Rosbon\\src\\exception\\LogicaException.java
 	 */
 	private static String makePath(String pathString, String repoPath) {
 		String aux = "\\" + pathString.replace("/", "\\");
@@ -70,7 +71,7 @@ public class Competencia {
 	}
 
 	/**
-	 * Determina as compentencias do artifact atraves de palavras chaves
+	 * Determina as competencias do artifact atraves de palavras chaves
 	 * 
 	 * @param path
 	 *            - caminho do artifact
@@ -80,6 +81,7 @@ public class Competencia {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
 		Set<String> competencias = new HashSet<String>();
 		String linha = "";
+		
 		while (true) {
 			if (linha != null) {
 				String[] palavrasDaLinha = linha.split(" ");
@@ -106,8 +108,10 @@ public class Competencia {
 			} else {
 				break;
 			}
+		
 			linha = buffRead.readLine();
 		}
+		
 		buffRead.close();
 		return competencias;
 	}
