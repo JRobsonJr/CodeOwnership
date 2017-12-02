@@ -3,7 +3,7 @@ package util;
 public class Util {
 	public static final String LS = System.lineSeparator();
 	
-	public boolean isJavaClass(String string) {
+	public static boolean isJavaClass(String string) {
 		String[] splitted = string.split("\\.");
 
 		if (splitted.length == 2) {

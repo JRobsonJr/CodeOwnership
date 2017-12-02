@@ -140,7 +140,7 @@ public class LOCAnaylsis implements Analysis {
 			} else {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
 
-					if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
+					if (isRemovedArtifact(entry) && Util.isJavaClass(entry.getOldPath())) {
 						Artifact artifact = new Artifact(entry.getOldPath());
 						pairs.removePair(artifact);
 					}

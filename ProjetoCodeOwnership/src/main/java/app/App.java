@@ -2,16 +2,14 @@ package app;
 
 import javax.swing.JOptionPane;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 
 import analise.Analysis;
-import analise.AnaliseCriacao;
-import analise.AnaliseLOC;
+import analise.CreationAnalysis;
+import analise.LOCAnaylsis;
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairRepository;
-import competencia.Competencia;
 import util.Util;
 
 public class App {
@@ -35,29 +33,27 @@ public class App {
 		// de mudar(sem o .git):
 		// C:\\Users\\Documentos\\Desktop\\CodeOwnership\\homemade-dynamite\\
 		// "/home/mariana/Documents/Didatica_LP2/homemade-dynamite/";
-		// "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de
-		// Rosbon\\"
+		// "C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 - Grupo de Rosbon\\"
 
 		if (analysisType.equals("criacao")) {
 			System.out.println("Analise por criação:" + Util.LS);
-			analysis = new AnaliseCriacao();
+			analysis = new CreationAnalysis();
 		} else {
 			System.out.println("Analise por linha de código:" + Util.LS);
-			analysis = new AnaliseLOC();
+			analysis = new LOCAnaylsis();
 		}
 
-		co = new CodeOwnership(analysis, "/home/mariana/Documents/Didatica_LP2/homemade-dynamite/.git");
+		co = new CodeOwnership(analysis, repository + ".git");
 
 		Repository repo = new FileRepository(repository + ".git");
 
 		co.registerAllStudents();
+		
 		co.makePairs(repo, pairs, repository);
-		// co.determinateAtifactSubjects(repository, pairs);
+		co.determinateAtifactSubjects(repository, pairs);
 
-		pairs.toString();
-
-		JOptionPane.showMessageDialog(null, pairs.toString());
-		// System.out.println(pairs.toString());
+		//JOptionPane.showMessageDialog(null, pairs.toString());
+		System.out.println(pairs.toString());
 	}
 
 }

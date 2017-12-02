@@ -16,8 +16,6 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
-import analise.Analise;
-import analise.AnaliseCriacao;
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairRepository;
 
