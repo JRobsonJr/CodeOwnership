@@ -57,7 +57,7 @@ public class PairRepository {
 
 			return resp;
 		} else {
-			throw new Exception("Student not found!");
+			throw new Exception("Student not found! Maybe the student currently has no artifacts in this project.");
 			// TODO Create an Exception hierarchy.
 		}
 	}

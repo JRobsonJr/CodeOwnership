@@ -20,11 +20,11 @@ import artifact.Artifact;
 import codeOwnership.PairRepository;
 import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
-import student.StudentServer;
+import student.StudentRepository;
 
 public class CreationAnalysis implements Analysis {
 
-	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students) throws Exception {
+	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		Repository repo = git.getRepository();
 		RevWalk walk = git.getRevWalk();
 		DiffFormatter diffFormatter = git.getDiffFormatter();
@@ -59,7 +59,7 @@ public class CreationAnalysis implements Analysis {
 	 * Fix up for the first commit case
 	 */
 	private void AddArtifactsFromFirtsCommit(Repository repo, PairRepository pairs, RevWalk walk, RevCommit commit,
-			StudentServer students)
+			StudentRepository students)
 			throws MissingObjectException, IncorrectObjectTypeException, IOException, CorruptObjectException {
 
 		ObjectReader reader = repo.newObjectReader();

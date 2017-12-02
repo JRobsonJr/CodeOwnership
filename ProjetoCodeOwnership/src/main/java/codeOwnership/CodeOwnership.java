@@ -9,17 +9,18 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import analise.Analysis;
 import competencia.Competencia;
 import git.GitRepository;
-import student.StudentServer;
+import student.StudentRepository;
+import student.Student;
 
 public class CodeOwnership {
 
 	private Analysis analise;
-	private StudentServer students;
+	private StudentRepository students;
 	private Competencia competencia;
 	private GitRepository git;
 
 	public CodeOwnership(Analysis analise, String repoPath) throws IOException {
-		this.students = new StudentServer();
+		this.students = new StudentRepository();
 		this.analise = analise;
 		this.git = new GitRepository(repoPath);
 		this.competencia = new Competencia();
@@ -41,4 +42,15 @@ public class CodeOwnership {
 		competencia.listClassesAndSubjects(repositorio, pairs);
 	}
 
+	public StudentRepository getStudents() {
+		return students;
+	}
+	
+	public Student[] arrayOfStudents() {
+		Student[] arrayOfStudents = this.getStudents().getStudents().toArray(new Student[this.getStudents().getStudents().size()]);
+		return arrayOfStudents;
+	}
+	
+	
+	
 }

@@ -7,11 +7,11 @@ import org.eclipse.jgit.lib.PersonIdent;
 
 import util.Util;
 
-public class StudentServer {
+public class StudentRepository {
 
 	private List<Student> students;
 
-	public StudentServer() {
+	public StudentRepository() {
 		this.students = new ArrayList<Student>();
 	}
 
@@ -29,7 +29,6 @@ public class StudentServer {
 				return student;
 			}
 		}
-	
 		// TODO Exception? RESP: Se o sistema só usa isso caso devesse existir o aluno, sim.
 		return null;
 	}
@@ -44,4 +43,10 @@ public class StudentServer {
 		
 		return resp;
 	}
+
+	public List<Student> getStudents() {
+		return students;
+	}
+	
+	
 }

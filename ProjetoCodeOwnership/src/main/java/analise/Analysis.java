@@ -6,11 +6,11 @@ import org.eclipse.jgit.api.errors.NoHeadException;
 
 import codeOwnership.PairRepository;
 import git.GitRepository;
-import student.StudentServer;
+import student.StudentRepository;
 
 public interface Analysis {
 
-	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students)
+	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students)
 			throws NoHeadException, GitAPIException, IOException, Exception;
 
 }

@@ -29,12 +29,12 @@ import codeOwnership.PairRepository;
 import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
 import student.Student;
-import student.StudentServer;
+import student.StudentRepository;
 import util.Util;
 
 public class LOCAnaylsis implements Analysis {
 
-	public void makePairs(GitRepository git, PairRepository pairs, StudentServer students) throws Exception {
+	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		List<String> paths = listRepositoryContents(git);
 		for (String className : paths) {
 			Student greater = getGreaterContributor(git.getRepository(), className);

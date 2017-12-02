@@ -11,14 +11,11 @@ public class Student {
 
 	private String name, email;
 	private PersonIdent id;
-	private List<String> createdArtifacts; 
-	// TODO: vai manter isso? salva nos dois lugares?
 
 	public Student(PersonIdent id) {
 		this.id = id;
 		this.name = id.getName();
 		this.email = id.getEmailAddress();
-		this.createdArtifacts = new ArrayList<String>();
 	}
 
 	public PersonIdent getId() {
@@ -33,19 +30,9 @@ public class Student {
 		return this.name;
 	}
 
-	public void addCreatedArtifact(String artifact) {
-		this.createdArtifacts.add(artifact);
-	}
-
 	@Override
 	public String toString() {
-		String resp = "Name: " + this.name + Util.LS + "Email: " + this.email + Util.LS;
-
-		for (int i = 0; i < createdArtifacts.size(); i++) {
-			resp += createdArtifacts.get(i) + Util.LS;
-		}
-
-		return resp;
+		return "Name: " + this.name + Util.LS + "Email: " + this.email + Util.LS;
 	}
 
 	@Override
