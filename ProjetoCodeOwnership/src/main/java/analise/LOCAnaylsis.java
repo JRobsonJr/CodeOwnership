@@ -148,14 +148,7 @@ public class LOCAnaylsis implements Analysis {
 			}
 		}
 	}
-
-	/**
-	 * Returns whether the change is the type ADD(created for the first time)
-	 */
-	private boolean isNewArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.ADD;
-	}
-
+	
 	/**
 	 * Returns whether the change is the type DELETE
 	 */

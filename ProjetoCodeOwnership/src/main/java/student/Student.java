@@ -1,7 +1,5 @@
 package student;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.jgit.lib.PersonIdent;
 
