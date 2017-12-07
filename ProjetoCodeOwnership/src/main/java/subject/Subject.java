@@ -1,4 +1,4 @@
-package competencia;
+package subject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,8 +16,9 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import codeOwnership.PairRepository;
+import util.Util;
 
-public class Competencia {
+public class Subject {
 
 	public void listClassesAndSubjects(String repoPath, PairRepository pairs) throws IOException {
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -36,34 +37,19 @@ public class Competencia {
 		treeWalk.addTree(tree);
 		treeWalk.setRecursive(true);
 		while (treeWalk.next()) {
-			if (isJavaClass(treeWalk.getPathString())) {
+			if (Util.isJavaClass(treeWalk.getPathString())) {
 				// using windows:
 				// String caminho = makePath(treeWalk.getPathString(),
 				// repoPath);
 
-				String caminho = repoPath + "/" + treeWalk.getPathString();
-				Set<String> competencia = determinateArtifactSubject(caminho);
+				String path = repoPath + "/" + treeWalk.getPathString();
+				Set<String> subjects = determinateArtifactSubject(path);
+				
 				if (pairs.getPairByArtifactName(treeWalk.getPathString()) != null) {
-					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(competencia);
+					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(subjects);
 				}
 			}
 		}
-	}
-
-	/**
-	 * Tranforma o caminho de forma que seja possivel ler no windows
-	 * 
-	 * @param pathString
-	 *            - src/exception/LogicaException.java
-	 * @return - C:\\Users\\Documentos\\Desktop\\CodeOwnership\\ProjetoP2 -
-	 *         Grupo de Rosbon\\src\\exception\\LogicaException.java
-	 */
-	private static String makePath(String pathString, String repoPath) {
-		String aux = "\\" + pathString.replace("/", "\\");
-		pathString = repoPath + aux;
-
-		return pathString;
-
 	}
 
 	/**
@@ -77,7 +63,7 @@ public class Competencia {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
 		Set<String> competencias = new HashSet<String>();
 		String linha = "";
-		
+
 		while (true) {
 			if (linha != null) {
 				String[] palavrasDaLinha = linha.split(" ");
@@ -104,25 +90,12 @@ public class Competencia {
 			} else {
 				break;
 			}
-		
+
 			linha = buffRead.readLine();
 		}
-		
+
 		buffRead.close();
 		return competencias;
-	}
-
-	/**
-	 * Returns whether the current artifact is a Java Class.
-	 */
-	private static boolean isJavaClass(String string) {
-		String[] splitted = string.split("\\.");
-
-		if (splitted.length == 2) {
-			return splitted[1].equals("java");
-		} else {
-			return false;
-		}
 	}
 
 }

@@ -1,4 +1,4 @@
-package analise;
+package analysis;
 
 import java.io.IOException;
 import org.eclipse.jgit.api.errors.GitAPIException;
