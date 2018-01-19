@@ -34,7 +34,10 @@ import util.Util;
 
 public class LOCAnaylsis implements Analysis {
 
+	StudentRepository students;
+	
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
+		this.students = students;
 		List<String> paths = listRepositoryContents(git);
 		for (String className : paths) {
 			Student greater = getGreaterContributor(git.getRepository(), className);
@@ -67,7 +70,7 @@ public class LOCAnaylsis implements Analysis {
 		for (int i = 0; i < lines; i++) {
 			RevCommit commit = blameResult.getSourceCommit(i);
 			if (!blameResult.getResultContents().getString(i).trim().equalsIgnoreCase("")) {
-				Student newStudent = new Student(commit.getAuthorIdent());
+				Student newStudent = students.getStudent(commit.getAuthorIdent().getName());
 				if (frequency.containsKey(newStudent)) {
 					frequency.put(newStudent, frequency.get(newStudent) + 1);
 				} else {

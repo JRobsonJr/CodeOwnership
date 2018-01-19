@@ -1,10 +1,11 @@
 package codeOwnership;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
 
 import analysis.Analysis;
 import git.GitRepository;
@@ -30,13 +31,13 @@ public class CodeOwnership {
 		this.analise.makePairs(git, pairs, students);
 	}
 
-	public void registerAllStudents() throws GitAPIException, IOException {
-		Iterable<RevCommit> commits = this.git.getCommits();
-		for (RevCommit commit : commits) {
-			students.addStudent(commit.getAuthorIdent());
-		}
-		// TODO: como lidar com mesma pessoas mas com Id diferente
-	}
+//	public void registerAllStudents() throws GitAPIException, IOException {
+//		Iterable<RevCommit> commits = this.git.getCommits();
+//		for (RevCommit commit : commits) {
+//			students.addStudent(commit.getAuthorIdent());
+//		}
+//		// TODO: como lidar com mesma pessoas mas com Id diferente
+//	}
 
 	public void determinateAtifactSubjects(String repositorio, PairRepository pairs) throws IOException {
 		competencia.listClassesAndSubjects(repositorio, pairs);
@@ -46,11 +47,24 @@ public class CodeOwnership {
 		return students;
 	}
 	
+	/**
+	 * This method will list all the students names in the system, this will be useful for making the txt file
+	 */
+	public HashSet<String> listAllStudentsNames() throws NoHeadException, GitAPIException, IOException {
+		return git.listAllStudentsNames();
+	}
+	
 	public Student[] arrayOfStudents() {
 		Student[] arrayOfStudents = this.getStudents().getStudents().toArray(new Student[this.getStudents().getStudents().size()]);
 		return arrayOfStudents;
 	}
 	
+	public void registerAllStudents(String allStudentsNames) {
+		String[] auxLineSeparator = allStudentsNames.split("\n");
+		for (int i = 0; i < auxLineSeparator.length; i++) {
+			students.addStudent(auxLineSeparator[i].split(","));
+		}
+	}
 	
 	
 }

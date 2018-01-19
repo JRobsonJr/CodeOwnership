@@ -1,18 +1,29 @@
 package student;
 
 
+import java.util.ArrayList;
+
 import org.eclipse.jgit.lib.PersonIdent;
 
 import util.Util;
 
 public class Student {
 
-	private String name, email;
+	private ArrayList<String> names;
+	private String email;
 	private PersonIdent id;
 
+	
+	public Student(String[] studentNames) {
+		this.names = new ArrayList<String>();
+		for (int i = 0; i < studentNames.length; i++) {
+			names.add(studentNames[i]);
+		}
+	}
+	
 	public Student(PersonIdent id) {
 		this.id = id;
-		this.name = id.getName();
+		this.names = new ArrayList<String>();
 		this.email = id.getEmailAddress();
 	}
 
@@ -25,12 +36,12 @@ public class Student {
 	}
 
 	public String getName() {
-		return this.name;
+		return this.names.toString();	
 	}
 
 	@Override
 	public String toString() {
-		return "Name: " + this.name + Util.LS + "Email: " + this.email + Util.LS;
+		return "Name: " + this.names.toString() + Util.LS + "Email: " + this.email + Util.LS;
 	}
 
 	@Override
@@ -41,6 +52,8 @@ public class Student {
 		return result;
 	}
 
+	
+	// se achar um nome igual já eh igual !
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -50,12 +63,20 @@ public class Student {
 		if (getClass() != obj.getClass())
 			return false;
 		Student other = (Student) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		return true;
+		for (int i = 0; i < this.names.size(); i++) {
+			if(other.getOneName().equals(names.get(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private String getOneName() {
+		return this.names.get(0);
+	}
+
+	public boolean hasName(String name) {
+		return name.contains(name);
 	}
 
 }

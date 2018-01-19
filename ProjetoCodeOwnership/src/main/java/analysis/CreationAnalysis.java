@@ -20,6 +20,7 @@ import artifact.Artifact;
 import codeOwnership.PairRepository;
 import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
+import student.Student;
 import student.StudentRepository;
 
 public class CreationAnalysis implements Analysis {
@@ -39,8 +40,11 @@ public class CreationAnalysis implements Analysis {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
 					if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
 						Artifact artifact = new Artifact(entry.getNewPath());
+						Student student = students.getStudent(commit.getAuthorIdent().getName());
 						PairStudentArtifact auxPair = new PairStudentArtifact(
-								students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
+								student, artifact);
+						
+						//TODO: mudar isso aqui para nome ao inves do email vai ter que faze um logica de percorrer os nomes
 						pairs.addPair(auxPair);
 					}
 				}

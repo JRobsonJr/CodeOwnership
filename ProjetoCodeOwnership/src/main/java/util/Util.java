@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Arrays;
+
 public class Util {
 	public static final String LS = System.lineSeparator();
 	
@@ -12,4 +14,10 @@ public class Util {
 			return false;
 		}
 	}
+
+	public static String getNamesFromTxt(String txtPath) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

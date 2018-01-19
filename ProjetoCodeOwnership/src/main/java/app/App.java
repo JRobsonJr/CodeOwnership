@@ -23,8 +23,11 @@ public class App {
 	private static String[] analysisOption = { "creation", "loc" };
 
 	public static void main(String[] args) throws Exception {
-		repository = JOptionPane.showInputDialog("Enter your repository path:");
-
+		//repository = JOptionPane.showInputDialog("Enter your repository path:");
+		
+		repository = "C:\\Users\\David Eduardo\\Documents\\CodeOwnershipAux\\Homemade-dynamite\\homemade-dynamite\\";
+		 
+		
 		analysisType = (String) JOptionPane.showInputDialog(null, "Choose the type of analysis:", "Analysis type", JOptionPane.QUESTION_MESSAGE, null, analysisOption, analysisOption[0]);
 
 		// analysisType = "criacao";
@@ -48,9 +51,16 @@ public class App {
 
 		
 		co = new CodeOwnership(analysis, repository + ".git");
+		
+		
+		System.out.println(co.listAllStudentsNames().toString());
+		co.registerAllStudents("JRobsonJr\nMariana Mendes,mariana-mendes,MARIANA MENDES E SILVA 115211452");
+		System.out.println(co.getStudents().toString());
 		Repository repo = new FileRepository(repository + ".git");
 
-		co.registerAllStudents();
+		//String txtPath = JOptionPane.showInputDialog("Enter your txt file path:") ;
+		//String allStudentsNames = Util.getNamesFromTxt(txtPath);
+		//co.registerAllStudents(allStudentsNames );
 		co.makePairs(repo, pairs, repository);
 		// co.determinateAtifactSubjects(repository, pairs);
 
