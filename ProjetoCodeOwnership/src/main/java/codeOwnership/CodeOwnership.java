@@ -31,14 +31,6 @@ public class CodeOwnership {
 		this.analise.makePairs(git, pairs, students);
 	}
 
-//	public void registerAllStudents() throws GitAPIException, IOException {
-//		Iterable<RevCommit> commits = this.git.getCommits();
-//		for (RevCommit commit : commits) {
-//			students.addStudent(commit.getAuthorIdent());
-//		}
-//		// TODO: como lidar com mesma pessoas mas com Id diferente
-//	}
-
 	public void determinateAtifactSubjects(String repositorio, PairRepository pairs) throws IOException {
 		competencia.listClassesAndSubjects(repositorio, pairs);
 	}
