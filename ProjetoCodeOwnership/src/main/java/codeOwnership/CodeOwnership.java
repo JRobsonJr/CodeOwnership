@@ -57,6 +57,17 @@ public class CodeOwnership {
 			students.addStudent(auxLineSeparator[i].split(","));
 		}
 	}
+
+	public String listStudents() {
+		Student [] students = this.arrayOfStudents();
+		String returnString = "";
+		for (int i = 0; i < students.length; i++) {
+			returnString += i+1 + students[i].getName() + '\n';
+		}
+		
+		return returnString;
+	
+	}
 	
 	
 }

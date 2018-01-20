@@ -30,8 +30,7 @@ public class App {
 		// Deixa aqui o caminho do repositorio do seu PC para facilitar na hora
 		// de mudar(sem o .git):
 		// "/home/mariana/Documents/Didatica_LP2/homemade-dynamite/";
-		// "C:\\Users\\David
-		// Eduardo\\Documents\\CodeOwnershipAux\\GrupoRobson\\projetop2\\"
+		// "C:\\Users\\DavidEduardo\\Documents\\CodeOwnershipAux\\GrupoRobson\\projetop2\\"
 
 		if (analysisType.equals("creation")) {
 			System.out.println("Analysis by creation:" + Util.LS);

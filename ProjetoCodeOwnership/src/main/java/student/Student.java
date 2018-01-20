@@ -41,7 +41,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Name: " + this.names.toString() + Util.LS + "Email: " + this.email + Util.LS;
+		return "Name: " + this.names.toString() + Util.LS;
 	}
 
 	@Override
