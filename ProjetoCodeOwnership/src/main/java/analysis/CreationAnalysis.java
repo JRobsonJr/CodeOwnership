@@ -40,9 +40,9 @@ public class CreationAnalysis implements Analysis {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
 					if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
 						Artifact artifact = new Artifact(entry.getNewPath());
-						Student student = students.getStudent(commit.getAuthorIdent().getName());
-						PairStudentArtifact auxPair = new PairStudentArtifact(
-								student, artifact);
+						String studentName = commit.getAuthorIdent().getName();
+						Student student = students.getStudent(studentName);
+						PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact);
 						
 						//TODO: mudar isso aqui para nome ao inves do email vai ter que faze um logica de percorrer os nomes
 						pairs.addPair(auxPair);
@@ -51,6 +51,7 @@ public class CreationAnalysis implements Analysis {
 			}
 		}
 	}
+	
 
 	/**
 	 * Returns whether the change is the type DELETE
@@ -77,8 +78,10 @@ public class CreationAnalysis implements Analysis {
 			if (isJavaClass(tWalk.getPathString())) {
 				// como eh o primeiro commit nem precisa verificar se eh ADD.
 				Artifact artifact = new Artifact(tWalk.getPathString());
-				PairStudentArtifact auxPair = new PairStudentArtifact(
-						students.getStudent(commit.getAuthorIdent().getEmailAddress()), artifact);
+				String studentName = commit.getAuthorIdent().getName();
+				Student student = students.getStudent(studentName);
+				PairStudentArtifact auxPair = new PairStudentArtifact(student
+						, artifact);
 				pairs.addPair(auxPair);
 			}
 		}

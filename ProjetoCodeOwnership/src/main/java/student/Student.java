@@ -76,7 +76,7 @@ public class Student {
 	}
 
 	public boolean hasName(String name) {
-		return name.contains(name);
+		return names.contains(name);
 	}
 
 }

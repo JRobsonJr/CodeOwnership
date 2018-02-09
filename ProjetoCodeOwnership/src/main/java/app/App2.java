@@ -39,7 +39,10 @@ public class App2 {
 		// C:\\Users\\DavidEduardo\\Documents\\CodeOwnershipAux\\GrupoRobson\\projetop2\\
 		// C:\\Users\\DavidEduardo\\Documents\\CodeOwnershipAux\\Homemade-dynamite\\homemade-dynamite\\
 		// C:\\Users\\DavidEduardo\\Documents\\CodeOwnership\\homemade-dynamite-names.txt
-
+		// /home/davidep/Área de Trabalho/dhomemade-dynamite/
+		// /home/davidep/Área de Trabalho/t3emp/code/CodeOwnership/homemade-dynamite-names.txt
+		
+		
 		if (analysisType.equals("creation")) {
 			System.out.println("Analysis by creation was chosen" + Util.LS);
 			analysis = new CreationAnalysis();
