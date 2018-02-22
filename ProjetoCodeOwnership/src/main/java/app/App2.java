@@ -1,9 +1,6 @@
 package app;
 
-import java.util.Arrays;
 import java.util.Scanner;
-
-import javax.swing.JOptionPane;
 
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
@@ -13,7 +10,6 @@ import analysis.CreationAnalysis;
 import analysis.LOCAnaylsis;
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairRepository;
-import student.Student;
 import util.Util;
 
 public class App2 {
@@ -23,7 +19,6 @@ public class App2 {
 	private static PairRepository pairs = new PairRepository();
 	private static String repository;
 	private static String analysisType;
-	private static String[] analysisOption = { "creation", "loc" };
 
 	public static void main(String[] args) throws Exception {
 		Scanner in = new Scanner(System.in);
@@ -69,14 +64,17 @@ public class App2 {
 		co.determinateAtifactSubjects(repository, pairs);
 
 		System.out.println(pairs.toString());
-
-		System.out.println("Which student contribution would you like to see?");
-		System.out.println(co.listStudents());
-		System.out.println("Type student position in the array to se it's contributions or press F to fisish");
-		String student = in.nextLine();
-
+		
+		String student = "";
+		
 		while (!student.equalsIgnoreCase("F")) {
+			System.out.println("Which student contribution would you like to see?");
+			System.out.println(co.listStudents());
+			System.out.println("Type student position in the array to se it's contributions or press F to finish");
+			student = in.nextLine();
+
 			String studentAux = co.arrayOfStudents()[Integer.parseInt(student) - 1].getName();
+			
 			try {
 				System.out.println(pairs.getPairsByStudentName(studentAux.toString()));
 			} catch (Exception e) {
@@ -84,9 +82,6 @@ public class App2 {
 				System.out.println("try another student");
 			}
 
-			System.out.println("Which student contribution would you like to see now?");
-			System.out.println(co.listStudents());
-			student = in.nextLine();
 		}
 	}
 
