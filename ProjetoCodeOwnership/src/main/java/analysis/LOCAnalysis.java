@@ -35,7 +35,7 @@ import util.Util;
 public class LOCAnalysis implements Analysis {
 
 	private StudentRepository students;
-	
+
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		this.students = students; // Isso faz mais sentido em um construtor.
 		List<String> paths = listRepositoryContents(git);
@@ -47,7 +47,25 @@ public class LOCAnalysis implements Analysis {
 		}
 	}
 
-	public BlameResult getBlameResult(Repository repository, String pathFile) throws RevisionSyntaxException,
+	private Student getGreatestContributor(Repository repository, String pathFile) throws RevisionSyntaxException,
+			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
+		BlameResult result = getBlameResult(repository, pathFile);
+		Map<Student, Integer> frequency = getFrequency(result.getResultContents().size(), result);
+		Student greatestContributor = null;
+		int max = 0;
+		Set<Student> keys = frequency.keySet();
+
+		for (Student student : keys) {
+			if (frequency.get(student) > max) {
+				max = frequency.get(student);
+				greatestContributor = student;
+			}
+		}
+
+		return greatestContributor;
+	}
+
+	private BlameResult getBlameResult(Repository repository, String pathFile) throws RevisionSyntaxException,
 			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
 		BlameCommand blamed = new BlameCommand(repository);
 		ObjectId commitID = repository.resolve("HEAD");
@@ -82,24 +100,6 @@ public class LOCAnalysis implements Analysis {
 		return frequency;
 	}
 
-	private Student getGreatestContributor(Repository repository, String pathFile) throws RevisionSyntaxException,
-			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
-		BlameResult result = getBlameResult(repository, pathFile);
-		Map<Student, Integer> frequency = getFrequency(result.getResultContents().size(), result);
-		Student greatestContributor = null;
-		int max = 0;
-		Set<Student> keys = frequency.keySet();
-
-		for (Student student : keys) {
-			if (frequency.get(student) > max) {
-				max = frequency.get(student);
-				greatestContributor = student;
-			}
-		}
-
-		return greatestContributor;
-	}
-
 	private List<String> listRepositoryContents(GitRepository git)
 			throws IOException, RevisionSyntaxException, GitAPIException {
 		List<String> classes = new ArrayList<String>();
@@ -110,19 +110,19 @@ public class LOCAnalysis implements Analysis {
 		TreeWalk treeWalk = new TreeWalk(git.getRepository());
 		treeWalk.addTree(tree);
 		treeWalk.setRecursive(true);
-		
+
 		while (treeWalk.next()) {
 			if (Util.isJavaClass(treeWalk.getPathString())) {
 				classes.add(treeWalk.getPathString());
 			}
 		}
-		
+
 		return classes;
 	}
 
 	private boolean isFirstCommit(RevCommit commit) {
 		RevCommit testing = null;
-		
+
 		try {
 			testing = commit.getParent(0);
 		} catch (Exception e) {
@@ -151,7 +151,7 @@ public class LOCAnalysis implements Analysis {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns whether the change is the type DELETE
 	 */

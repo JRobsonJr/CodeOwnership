@@ -38,6 +38,9 @@ public class App2 {
 		// C:\\Users\\jrobs\\Documents\\Projects\\homemade-dynamite\\homemade-dynamite-names.json
 		// /home/davidep/Área de Trabalho/dhomemade-dynamite/
 		// /home/davidep/Área de Trabalho/t3emp/code/CodeOwnership/homemade-dynamite-names.txt
+		// /home/josersaj/Projects/CodeOwnership/homemade-dynamite-names.json
+		// /home/josersaj/Projects/homemade-dynamite/
+		
 		
 		
 		if (analysisType.equals("creation")) {
