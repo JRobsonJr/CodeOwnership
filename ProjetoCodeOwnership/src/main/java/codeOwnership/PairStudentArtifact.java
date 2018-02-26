@@ -8,8 +8,9 @@ public class PairStudentArtifact {
 	
 	private Student student;
 	private Artifact artifact;
+	public double ownershipPercentage; 
 
-	public PairStudentArtifact(Student student, Artifact artifact) {
+	public PairStudentArtifact(Student student, Artifact artifact, double ownershipPercentage ) {
 		this.student = student;
 		this.artifact = artifact;
 	}
@@ -28,6 +29,6 @@ public class PairStudentArtifact {
 
 	@Override
 	public String toString() {
-		return student.getName() + " is the owner of: " + artifact.getName() + Util.LS + "Artifact details:" + Util.LS + artifact.toString();
+		return student.getName() + " is the owner of: " + artifact.getName() + " (" + this.ownershipPercentage + "%) " + Util.LS + "Artifact details:" + Util.LS + artifact.toString();
 	}
 }

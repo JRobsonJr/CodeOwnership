@@ -43,7 +43,7 @@ public class CreationAnalysis implements Analysis {
 						Artifact artifact = new Artifact(entry.getNewPath());
 						String studentName = commit.getAuthorIdent().getName();
 						Student student = students.getStudent(studentName);
-						PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact);
+						PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact, 100.0);
 
 						// TODO: mudar isso aqui para nome ao inves do email vai ter que faze um logica
 						// de percorrer os nomes
@@ -75,7 +75,7 @@ public class CreationAnalysis implements Analysis {
 				Artifact artifact = new Artifact(treeWalk.getPathString());
 				String studentName = commit.getAuthorIdent().getName();
 				Student student = students.getStudent(studentName);
-				PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact);
+				PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact, 100.0);
 				pairs.addPair(auxPair);
 			}
 		}

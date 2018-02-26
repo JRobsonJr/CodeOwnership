@@ -42,7 +42,7 @@ public class LOCAnalysis implements Analysis {
 		for (String className : paths) {
 			Student greater = getGreatestContributor(git.getRepository(), className);
 			Artifact artifact = new Artifact(className);
-			PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact);
+			PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact, 100.0);
 			pairs.addPair(auxPair);
 		}
 	}
