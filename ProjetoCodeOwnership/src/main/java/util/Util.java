@@ -1,9 +1,13 @@
 package util;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+
+import student.Student;
 
 public class Util {
 	public static final String LS = System.lineSeparator();
@@ -18,26 +22,37 @@ public class Util {
 		}
 	}
 
-	public static String getNamesFromTxt(String txtPath) {
-		String returnString = "";
+	public static List<Student> getStudentsFromJson(String jsonPath) {
+		List<Student> students = new ArrayList<Student>();
+
 		try {
-			FileReader arq = new FileReader(txtPath);
-			BufferedReader lerArq = new BufferedReader(arq);
+			JSONParser parser = new JSONParser();
+			JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(jsonPath));
+			JSONArray jsonStudents = (JSONArray) jsonObject.get("students");
 
-			String linha = lerArq.readLine();
-			while (linha != null) {
-				returnString += linha + "\n";
+			for (int index = 0; index < jsonStudents.size(); index++) {
+				JSONObject jsonStudent = (JSONObject) jsonStudents.get(index);
+				String studentName = (String) jsonStudent.get("name");
+				JSONArray studentAliasesJson = (JSONArray) jsonStudent.get("aliases");
+				String[] studentAliases = convertToStringArray(studentAliasesJson);
 
-				linha = lerArq.readLine(); // lê da segunda até a última linha
+				students.add(new Student(studentName, studentAliases));
 			}
+		} catch (Exception e) {
+			System.err.printf("Error trying to open the file: %s.", e.getMessage());
 
-			arq.close();
-		} catch (IOException e) {
-			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
 		}
 
-		System.out.println();
-		return returnString;
+		return students;
 	}
 
+	private static String[] convertToStringArray(JSONArray jsonArray) {
+		String[] convertedArray = new String[jsonArray.size()];
+
+		for (int index = 0; index < jsonArray.size(); index++) {
+			convertedArray[index] = (String) jsonArray.get(index);
+		}
+
+		return convertedArray;
+	}
 }

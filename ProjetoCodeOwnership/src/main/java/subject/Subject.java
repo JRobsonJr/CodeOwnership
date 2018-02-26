@@ -43,7 +43,7 @@ public class Subject {
 				// repoPath);
 
 				String path = repoPath + "/" + treeWalk.getPathString();
-				Set<String> subjects = determinateArtifactSubject(path);
+				Set<String> subjects = determineArtifactSubjects(path);
 				
 				if (pairs.getPairByArtifactName(treeWalk.getPathString()) != null) {
 					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(subjects);
@@ -59,43 +59,44 @@ public class Subject {
 	 *            - caminho do artifact
 	 * @throws IOException
 	 */
-	public static Set<String> determinateArtifactSubject(String path) throws IOException {
+	public static Set<String> determineArtifactSubjects(String path) throws IOException {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
-		Set<String> competencias = new HashSet<String>();
-		String linha = "";
+		Set<String> subjects = new HashSet<String>();
+		String line = "";
 
 		while (true) {
-			if (linha != null) {
-				String[] palavrasDaLinha = linha.split(" ");
-				for (int i = 0; i < palavrasDaLinha.length; i++) {
-					if (palavrasDaLinha[i].trim().equals("implements")) {
-						competencias.add("Interface");
+			if (line != null) {
+				String[] splittedLine = line.split(" ");
+				
+				for (int i = 0; i < splittedLine.length; i++) {
+					if (splittedLine[i].trim().equals("implements")) {
+						subjects.add("Interface");
 					}
-					if (palavrasDaLinha[i].trim().equals("extends")) {
-						competencias.add("Herança");
+					if (splittedLine[i].trim().equals("extends")) {
+						subjects.add("Herança");
 					}
-					if (palavrasDaLinha[i].trim().equals("@Test")) {
-						competencias.add("Testes");
+					if (splittedLine[i].trim().equals("@Test")) {
+						subjects.add("Testes");
 					}
-					if (palavrasDaLinha[i].trim().equals("throws")) {
-						competencias.add("Exceptions");
+					if (splittedLine[i].trim().equals("throws")) {
+						subjects.add("Exceptions");
 					}
-					if (palavrasDaLinha[i].trim().equals("try") || palavrasDaLinha[i].trim().equals("catch")) {
-						competencias.add("Tratamentos de Exceptions");
+					if (splittedLine[i].trim().equals("try") || splittedLine[i].trim().equals("catch")) {
+						subjects.add("Exception handling");
 					}
-					if (palavrasDaLinha[i].trim().equals("IOException") || palavrasDaLinha[i].trim().equals("File")) {
-						competencias.add("Persistência(arquivos)");
+					if (splittedLine[i].trim().equals("IOException") || splittedLine[i].trim().equals("File")) {
+						subjects.add("Persistência(arquivos)");
 					}
 				}
 			} else {
 				break;
 			}
 
-			linha = buffRead.readLine();
+			line = buffRead.readLine();
 		}
 
 		buffRead.close();
-		return competencias;
+		return subjects;
 	}
 
 }

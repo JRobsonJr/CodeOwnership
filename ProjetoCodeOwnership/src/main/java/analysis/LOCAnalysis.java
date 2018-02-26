@@ -32,15 +32,15 @@ import student.Student;
 import student.StudentRepository;
 import util.Util;
 
-public class LOCAnaylsis implements Analysis {
+public class LOCAnalysis implements Analysis {
 
-	StudentRepository students;
+	private StudentRepository students;
 	
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
-		this.students = students;
+		this.students = students; // Isso faz mais sentido em um construtor.
 		List<String> paths = listRepositoryContents(git);
 		for (String className : paths) {
-			Student greater = getGreaterContributor(git.getRepository(), className);
+			Student greater = getGreatestContributor(git.getRepository(), className);
 			Artifact artifact = new Artifact(className);
 			PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact);
 			pairs.addPair(auxPair);
@@ -82,22 +82,22 @@ public class LOCAnaylsis implements Analysis {
 		return frequency;
 	}
 
-	private Student getGreaterContributor(Repository repository, String pathFile) throws RevisionSyntaxException,
+	private Student getGreatestContributor(Repository repository, String pathFile) throws RevisionSyntaxException,
 			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
 		BlameResult result = getBlameResult(repository, pathFile);
 		Map<Student, Integer> frequency = getFrequency(result.getResultContents().size(), result);
-		Student greater = null;
+		Student greatestContributor = null;
 		int max = 0;
 		Set<Student> keys = frequency.keySet();
 
 		for (Student student : keys) {
 			if (frequency.get(student) > max) {
 				max = frequency.get(student);
-				greater = student;
+				greatestContributor = student;
 			}
 		}
 
-		return greater;
+		return greatestContributor;
 	}
 
 	private List<String> listRepositoryContents(GitRepository git)
@@ -110,16 +110,15 @@ public class LOCAnaylsis implements Analysis {
 		TreeWalk treeWalk = new TreeWalk(git.getRepository());
 		treeWalk.addTree(tree);
 		treeWalk.setRecursive(true);
+		
 		while (treeWalk.next()) {
 			if (Util.isJavaClass(treeWalk.getPathString())) {
 				classes.add(treeWalk.getPathString());
-
 			}
 		}
+		
 		return classes;
 	}
-
-	
 
 	private boolean isFirstCommit(RevCommit commit) {
 		RevCommit testing = null;
@@ -127,6 +126,7 @@ public class LOCAnaylsis implements Analysis {
 		try {
 			testing = commit.getParent(0);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return testing == null;

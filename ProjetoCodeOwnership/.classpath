@@ -22,5 +22,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/jrobs/Documents/Projects/CodeOwnership/ProjetoCodeOwnership/lib/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jrobs/Documents/Projects/CodeOwnership/ProjetoCodeOwnership/lib/json-simple-1.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

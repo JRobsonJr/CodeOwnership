@@ -7,7 +7,7 @@ import org.eclipse.jgit.lib.Repository;
 
 import analysis.Analysis;
 import analysis.CreationAnalysis;
-import analysis.LOCAnaylsis;
+import analysis.LOCAnalysis;
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairRepository;
 import student.Student;
@@ -37,7 +37,7 @@ public class App {
 			analysis = new CreationAnalysis();
 		} else {
 			System.out.println("Analysis by LOC:" + Util.LS);
-			analysis = new LOCAnaylsis();
+			analysis = new LOCAnalysis();
 		}
 
 		co = new CodeOwnership(analysis, repository + ".git");
@@ -45,21 +45,21 @@ public class App {
 		// Lista os nomes para montar o txt
 		System.out.println(co.listAllStudentsNames().toString());
 
-		String txtPath = JOptionPane.showInputDialog("Enter your txt file path:");
-		co.registerAllStudents(Util.getNamesFromTxt(txtPath));
+		String jsonPath = JOptionPane.showInputDialog("Enter your txt file path:");
+		co.registerAllStudents(Util.getStudentsFromJson(jsonPath));
 
-		System.out.println(co.getStudents().toString());
+		System.out.println(co.getStudentRepository().toString());
 		Repository repo = new FileRepository(repository + ".git");
 
 		co.makePairs(repo, pairs, repository);
-		co.determinateAtifactSubjects(repository, pairs);
+		co.determineArtifactSubjects(repository, pairs);
 
 		JOptionPane.showMessageDialog(null, pairs.toString());
 		// System.out.println(pairs.toString());
 
 		Student student = (Student) JOptionPane.showInputDialog(null,
 				"What student contribution would you like to see?", "Student Info", JOptionPane.QUESTION_MESSAGE, null,
-				co.arrayOfStudents(), co.getStudents().getStudents().get(0));
+				co.getArrayOfStudents(), co.getStudentRepository().getStudents().get(0));
 
 		JOptionPane.showMessageDialog(null,
 				student.getName() + ":\n" + pairs.getPairsByStudentName(student.getName()).toString());

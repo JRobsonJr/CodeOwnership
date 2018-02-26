@@ -34,9 +34,6 @@ public class PairRepository {
 				return pair;
 			}
 		}
-		// TODO Get [...]ready for the fact it's not going to be only one pair
-		// associated to each artifact, considering there are different
-		// approaches for the code ownership analysis.
 
 		return null;
 	}

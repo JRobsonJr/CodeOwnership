@@ -1,7 +1,6 @@
 package student;
 
-
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.jgit.lib.PersonIdent;
 
@@ -9,51 +8,49 @@ import util.Util;
 
 public class Student {
 
-	private ArrayList<String> names;
+	private String name;
+	private String[] aliases;
 	private String email;
 	private PersonIdent id;
 
-	
-	public Student(String[] studentNames) {
-		this.names = new ArrayList<String>();
-		for (int i = 0; i < studentNames.length; i++) {
-			names.add(studentNames[i]);
-		}
+	public Student(String name, String[] aliases) {
+		this.name = name;
+		this.aliases = aliases;
 	}
-	
+
+	/** 
 	public Student(PersonIdent id) {
 		this.id = id;
 		this.names = new ArrayList<String>();
 		this.email = id.getEmailAddress();
 	}
+	*/
 
 	public PersonIdent getId() {
 		return this.id;
 	}
-	
+
 	public String getEmail() {
 		return this.email;
 	}
 
 	public String getName() {
-		return this.names.toString();	
+		return this.name;
 	}
 
 	@Override
 	public String toString() {
-		return "Name: " + this.names.toString() + Util.LS;
+		return "Name: " + this.name + Util.LS + "Aliases: " + Arrays.toString(this.aliases);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
-	
-	// se achar um nome igual já eh igual !
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -63,20 +60,16 @@ public class Student {
 		if (getClass() != obj.getClass())
 			return false;
 		Student other = (Student) obj;
-		for (int i = 0; i < this.names.size(); i++) {
-			if(other.getOneName().equals(names.get(i))) {
+		return other.getName().equals(this.name);
+	}
+	
+	public boolean hasAlias(String name) {
+		for (String alias : aliases) {
+			if (name.equals(alias)) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	private String getOneName() {
-		return this.names.get(0);
-	}
-
-	public boolean hasName(String name) {
-		return names.contains(name);
 	}
 
 }

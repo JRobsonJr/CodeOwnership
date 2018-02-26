@@ -22,6 +22,7 @@ import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
 import student.Student;
 import student.StudentRepository;
+import util.Util;
 
 public class CreationAnalysis implements Analysis {
 
@@ -33,86 +34,67 @@ public class CreationAnalysis implements Analysis {
 
 		for (RevCommit commit : commits) {
 			if (isFirstCommit(commit)) {
-				AddArtifactsFromFirtsCommit(repo, pairs, walk, commit, students);
+				addArtifactsFromFirstCommit(repo, pairs, walk, commit, students);
 				this.deleteRemovedArtifacts(git, pairs);
 				return;
 			} else {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-					if (isNewArtifact(entry) && isJavaClass(entry.getNewPath())) {
+					if (this.isNewArtifact(entry) && Util.isJavaClass(entry.getNewPath())) {
 						Artifact artifact = new Artifact(entry.getNewPath());
 						String studentName = commit.getAuthorIdent().getName();
 						Student student = students.getStudent(studentName);
 						PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact);
-						
-						//TODO: mudar isso aqui para nome ao inves do email vai ter que faze um logica de percorrer os nomes
+
+						// TODO: mudar isso aqui para nome ao inves do email vai ter que faze um logica
+						// de percorrer os nomes
 						pairs.addPair(auxPair);
 					}
 				}
 			}
 		}
 	}
-	
 
 	/**
-	 * Returns whether the change is the type DELETE
+	 * Fix up for the first commit case.
 	 */
-	private boolean isRemovedArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.DELETE;
-	}
-
-	/**
-	 * Fix up for the first commit case
-	 */
-	private void AddArtifactsFromFirtsCommit(Repository repo, PairRepository pairs, RevWalk walk, RevCommit commit,
+	private void addArtifactsFromFirstCommit(Repository repo, PairRepository pairs, RevWalk walk, RevCommit commit,
 			StudentRepository students)
 			throws MissingObjectException, IncorrectObjectTypeException, IOException, CorruptObjectException {
 
 		ObjectReader reader = repo.newObjectReader();
 		RevTree tree = walk.parseTree(commit);
-		CanonicalTreeParser aParser = new CanonicalTreeParser();
-		aParser.reset(reader, tree);
-		TreeWalk tWalk = new TreeWalk(reader);
-		tWalk.addTree(aParser);
-		tWalk.setRecursive(true);
-		while (tWalk.next()) {
-			if (isJavaClass(tWalk.getPathString())) {
+		CanonicalTreeParser parser = new CanonicalTreeParser();
+		parser.reset(reader, tree);
+		TreeWalk treeWalk = new TreeWalk(reader);
+		treeWalk.addTree(parser);
+		treeWalk.setRecursive(true);
+		
+		while (treeWalk.next()) {
+			if (Util.isJavaClass(treeWalk.getPathString())) {
 				// como eh o primeiro commit nem precisa verificar se eh ADD.
-				Artifact artifact = new Artifact(tWalk.getPathString());
+				Artifact artifact = new Artifact(treeWalk.getPathString());
 				String studentName = commit.getAuthorIdent().getName();
 				Student student = students.getStudent(studentName);
-				PairStudentArtifact auxPair = new PairStudentArtifact(student
-						, artifact);
+				PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact);
 				pairs.addPair(auxPair);
 			}
 		}
-
 	}
-
-	/**
-	 * Returns whether the current artifact is a Java Class.
-	 */
-	private boolean isJavaClass(String string) {
-		String[] splitted = string.split("\\.");
-
-		if (splitted.length == 2) {
-			return splitted[1].equals("java");
-		} else {
-			return false;
-		}
-	}
-
+	
 	private boolean isFirstCommit(RevCommit commit) {
 		RevCommit testing = null;
+		
 		try {
 			testing = commit.getParent(0);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return testing == null;
 
 	};
 
-	public void deleteRemovedArtifacts(GitRepository git, PairRepository pairs) throws Exception {
+	private void deleteRemovedArtifacts(GitRepository git, PairRepository pairs) throws Exception {
 		DiffFormatter diffFormatter = git.getDiffFormatter();
 		Iterable<RevCommit> commits = git.getCommits();
 
@@ -121,8 +103,7 @@ public class CreationAnalysis implements Analysis {
 				return;
 			} else {
 				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-
-					if (isRemovedArtifact(entry) && isJavaClass(entry.getOldPath())) {
+					if (this.isRemovedArtifact(entry) && Util.isJavaClass(entry.getOldPath())) {
 						Artifact artifact = new Artifact(entry.getOldPath());
 						pairs.removePair(artifact);
 					}
@@ -130,12 +111,18 @@ public class CreationAnalysis implements Analysis {
 			}
 		}
 	}
-
+	
 	/**
-	 * Returns whether the change is the type ADD(created for the first time)
+	 * Returns whether the artifact has been just added.
 	 */
 	private boolean isNewArtifact(DiffEntry entry) {
 		return entry.getChangeType() == ChangeType.ADD;
 	}
 
+	/**
+	 * Returns whether the artifact has been removed.
+	 */
+	private boolean isRemovedArtifact(DiffEntry entry) {
+		return entry.getChangeType() == ChangeType.DELETE;
+	}
 }

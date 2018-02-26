@@ -8,15 +8,11 @@ import java.util.HashSet;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-
-import artifact.Artifact;
-import codeOwnership.PairStudentArtifact;
 
 public class GitRepository {
 
@@ -62,9 +58,8 @@ public class GitRepository {
 
 		for (RevCommit commit : commits) {
 			allStudentsNames.add(commit.getAuthorIdent().getName());
-	}
+		}
+		
 		return allStudentsNames;
-	
-
-}
+	}
 }

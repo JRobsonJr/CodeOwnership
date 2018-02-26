@@ -2,6 +2,7 @@ package codeOwnership;
 
 import artifact.Artifact;
 import student.Student;
+import util.Util;
 
 public class PairStudentArtifact {
 	
@@ -27,6 +28,6 @@ public class PairStudentArtifact {
 
 	@Override
 	public String toString() {
-		return student.getName() + " is the owner of: " + artifact.getName() + "\nArtifact details:\n" + artifact.toString() + "\n";
+		return student.getName() + " is the owner of: " + artifact.getName() + Util.LS + "Artifact details:" + Util.LS + artifact.toString();
 	}
 }
