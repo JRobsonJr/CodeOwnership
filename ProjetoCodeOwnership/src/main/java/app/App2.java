@@ -25,8 +25,7 @@ public class App2 {
 		Scanner in = new Scanner(System.in);
 
 		System.out.println("Enter your repository path:");
-		repository = "C:\\Users\\jrobs\\Documents\\Projects\\homemade-dynamite\\";
-				//in.nextLine();
+		repository = in.nextLine();
 		System.out.println("Choose the type of analysis: loc or creation");
 		analysisType = in.nextLine();
 
@@ -55,8 +54,7 @@ public class App2 {
 		System.out.println(co.listAllStudentsNames().toString() + Util.LS);
 		
 		System.out.println("Enter the path to the .json file containing the aliases:");
-		String jsonPath = "C:\\Users\\jrobs\\Documents\\Projects\\homemade-dynamite\\homemade-dynamite-names.json";
-				//in.nextLine();
+		String jsonPath = in.nextLine();
 
 		co.registerAllStudents(Util.getStudentsFromJson(jsonPath));
 
