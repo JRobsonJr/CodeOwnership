@@ -1,5 +1,7 @@
 package codeOwnership;
 
+import java.text.DecimalFormat;
+
 import artifact.Artifact;
 import student.Student;
 import util.Util;
@@ -30,7 +32,8 @@ public class PairStudentArtifact {
 
 	@Override
 	public String toString() {
-		return student.getName() + " is the owner of: " + artifact.getName() + " (" + this.ownershipPercentage + "%) "
+		DecimalFormat df = new DecimalFormat("#.#");
+		return student.getName() + " is the owner of: " + artifact.getName() + " (" + df.format(this.ownershipPercentage) + "%) "
 				+ Util.LS + "Artifact details:" + Util.LS + artifact.toString();
 	}
 }

@@ -41,8 +41,6 @@ public class App2 {
 		// /home/josersaj/Projects/CodeOwnership/homemade-dynamite-names.json
 		// /home/josersaj/Projects/homemade-dynamite/
 		
-		
-		
 		if (analysisType.equals("creation")) {
 			System.out.println("Analysis by creation was chosen" + Util.LS);
 			analysis = new CreationAnalysis();

@@ -64,7 +64,7 @@ public class PairRepository {
 		String resp = "";
 
 		for (int i = 0; i < pairs.size(); i++) {
-			resp += pairs.get(i).toString() + Util.LS;
+			resp += pairs.get(i).toString() + Util.LS + Util.LS;
 		}
 
 		return resp;

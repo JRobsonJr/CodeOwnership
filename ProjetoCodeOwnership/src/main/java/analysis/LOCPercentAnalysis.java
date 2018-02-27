@@ -32,41 +32,49 @@ import student.Student;
 import student.StudentRepository;
 import util.Util;
 
-public class LOCPercentAnalysis {
+public class LOCPercentAnalysis implements Analysis {
 
 	private StudentRepository students;
 
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		this.students = students; // Isso faz mais sentido em um construtor.
 		List<String> paths = listRepositoryContents(git);
-		for (String className : paths) {
-			Map<Student, Integer> contributions = new HashMap<Student, Integer>();
-			Artifact artifact = new Artifact(className);
-			Set<Student> contributors = contributions.keySet();
+		
+		for (String classPath : paths) {
+			Map<Student, Double> contributions = this.getContributions(git.getRepository(), classPath);
+			Artifact artifact = new Artifact(classPath);
 			
-			// PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact, 100.0);
-			// pairs.addPair(auxPair);
-		}
-	}
-
-	private Student getGreatestContributor(Repository repository, String pathFile) throws RevisionSyntaxException,
-			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
-		BlameResult result = getBlameResult(repository, pathFile);
-		Map<Student, Integer> frequency = getFrequency(result.getResultContents().size(), result);
-		Student greatestContributor = null;
-		int max = 0;
-		Set<Student> keys = frequency.keySet();
-
-		for (Student student : keys) {
-			if (frequency.get(student) > max) {
-				max = frequency.get(student);
-				greatestContributor = student;
+			Set<Student> keys = contributions.keySet();
+			
+			for (Student student : keys) {
+				double ownershipPercentage = contributions.get(student);
+				PairStudentArtifact newPair = new PairStudentArtifact(student, artifact, ownershipPercentage);
+				pairs.addPair(newPair);
 			}
 		}
-
-		return greatestContributor;
 	}
-	
+
+	private Map<Student, Double> getContributions(Repository repository, String pathFile)
+			throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException,
+			GitAPIException {
+		BlameResult result = getBlameResult(repository, pathFile);
+		Map<Student, Integer> frequency = this.getFrequency(result.getResultContents().size(), result);
+		Set<Student> keys = frequency.keySet();
+		Map<Student, Double> contributions = new HashMap<Student, Double>();
+		
+		int numberOfLines = 0;
+
+		for (Student student : keys) {
+			numberOfLines += frequency.get(student);
+		}
+
+		for (Student student : keys) {
+			contributions.put(student, 100.0 * frequency.get(student) / numberOfLines);
+		}
+
+		return contributions;
+	}
+
 	private BlameResult getBlameResult(Repository repository, String pathFile) throws RevisionSyntaxException,
 			AmbiguousObjectException, IncorrectObjectTypeException, IOException, GitAPIException {
 		BlameCommand blamed = new BlameCommand(repository);
