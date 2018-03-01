@@ -87,6 +87,10 @@ public class Subject {
 					if (splittedLine[i].trim().equals("IOException") || splittedLine[i].trim().equals("File")) {
 						subjects.add("Persistência(arquivos)");
 					}
+					if (splittedLine[i].trim().equals("abstract")) {
+						subjects.add("Classes abstratas");
+					}
+					
 				}
 			} else {
 				break;
