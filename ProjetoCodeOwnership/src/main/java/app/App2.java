@@ -8,6 +8,7 @@ import org.eclipse.jgit.lib.Repository;
 import analysis.Analysis;
 import analysis.CreationAnalysis;
 import analysis.LOCAnalysis;
+import analysis.LOCPercentAnalysis;
 import codeOwnership.CodeOwnership;
 import codeOwnership.PairRepository;
 import util.Util;
@@ -44,9 +45,12 @@ public class App2 {
 		if (analysisType.equals("creation")) {
 			System.out.println("Analysis by creation was chosen" + Util.LS);
 			analysis = new CreationAnalysis();
-		} else {
+		} else if(analysisType.equalsIgnoreCase("loc")) {
 			System.out.println("Analysis by LOC was chosen" + Util.LS);
 			analysis = new LOCAnalysis();
+		}else{
+			System.out.println("Analysis by LOC(%) was chosen" + Util.LS);
+			analysis = new LOCPercentAnalysis();
 		}
 
 		co = new CodeOwnership(analysis, repository + ".git");
