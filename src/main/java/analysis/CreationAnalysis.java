@@ -26,6 +26,8 @@ import util.Util;
 
 public class CreationAnalysis extends AbstractAnalysis {
 
+	private static double DEFAULT_OWNERSHIP_VALUE = 100.0;
+
 	@Override
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		Repository repo = git.getRepository();
@@ -37,22 +39,29 @@ public class CreationAnalysis extends AbstractAnalysis {
 			if (isFirstCommit(commit)) {
 				addArtifactsFromFirstCommit(repo, pairs, walk, commit, students);
 				this.deleteRemovedArtifacts(git, pairs);
-				return;
 			} else {
-				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-					if (this.isNewArtifact(entry) && Util.isJavaClass(entry.getNewPath())) {
-						Artifact artifact = new Artifact(entry.getNewPath());
-						String studentName = commit.getAuthorIdent().getName();
-						Student student = students.getStudent(studentName);
-						PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact, 100.0);
-						pairs.addPair(auxPair);
-					}
-				}
+				this.addArtifactsFromCommit(diffFormatter, commit, pairs, students);
 			}
 		}
 	}
 
-	/**
+	private void addArtifactsFromCommit(DiffFormatter diffFormatter, RevCommit commit, PairRepository pairs, StudentRepository students) throws IOException {
+		for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
+			if (this.isNewArtifact(entry) && Util.isJavaClass(entry.getNewPath())) {
+				this.addNewArtifact(entry.getNewPath(), pairs, students, commit);
+			}
+		}
+	}
+
+	private void addNewArtifact(String artifactName, PairRepository pairs, StudentRepository students, RevCommit commit) {
+		Artifact artifact = new Artifact(artifactName);
+		String studentName = commit.getAuthorIdent().getName();
+		Student student = students.getStudent(studentName);
+		PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact, DEFAULT_OWNERSHIP_VALUE);
+		pairs.addPair(auxPair);
+	}
+
+	/*
 	 * Fix up for the first commit case.
 	 */
 	private void addArtifactsFromFirstCommit(Repository repo, PairRepository pairs, RevWalk walk, RevCommit commit,
@@ -68,13 +77,10 @@ public class CreationAnalysis extends AbstractAnalysis {
 		treeWalk.setRecursive(true);
 		
 		while (treeWalk.next()) {
-			if (Util.isJavaClass(treeWalk.getPathString())) {
-				// como eh o primeiro commit nem precisa verificar se eh ADD.
-				Artifact artifact = new Artifact(treeWalk.getPathString());
-				String studentName = commit.getAuthorIdent().getName();
-				Student student = students.getStudent(studentName);
-				PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact, 100.0);
-				pairs.addPair(auxPair);
+			String pathString = treeWalk.getPathString();
+
+			if (Util.isJavaClass(pathString)) {
+				this.addNewArtifact(pathString, pairs, students, commit);
 			}
 		}
 	}
