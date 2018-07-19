@@ -2,40 +2,29 @@ package student;
 
 import java.util.Arrays;
 
-import org.eclipse.jgit.lib.PersonIdent;
-
 import util.Util;
 
 public class Student {
 
 	private String name;
 	private String[] aliases;
-	private String email;
-	private PersonIdent id;
 
 	public Student(String name, String[] aliases) {
 		this.name = name;
 		this.aliases = aliases;
 	}
 
-	/** 
-	public Student(PersonIdent id) {
-		this.id = id;
-		this.names = new ArrayList<String>();
-		this.email = id.getEmailAddress();
-	}
-	*/
-
-	public PersonIdent getId() {
-		return this.id;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
 	public String getName() {
 		return this.name;
+	}
+
+	public boolean hasAlias(String name) {
+		for (String alias : aliases) {
+			if (name.equals(alias)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -61,15 +50,6 @@ public class Student {
 			return false;
 		Student other = (Student) obj;
 		return other.getName().equals(this.name);
-	}
-	
-	public boolean hasAlias(String name) {
-		for (String alias : aliases) {
-			if (name.equals(alias)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

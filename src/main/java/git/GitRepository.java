@@ -51,10 +51,6 @@ public class GitRepository {
 		return this.diffFormatter;
 	}
 
-	public String getDirectory() {
-		return this.directory;
-	}
-
 	public HashSet<String> listAllStudentsNames() throws NoHeadException, GitAPIException, IOException {
 		HashSet<String> allStudentsNames = new HashSet<String>();
 		Iterable<RevCommit> commits = this.getCommits();

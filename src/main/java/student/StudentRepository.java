@@ -13,11 +13,6 @@ public class StudentRepository {
 		this.students = new ArrayList<Student>();
 	}
 
-	public void addStudent(String name, String[] aliases) {
-		Student student = new Student(name, aliases);
-		this.students.add(student);
-	}
-
 	public Student getStudent(String name) {
 		for (Student student : this.students) {
 			if (student.hasAlias(name)) {
