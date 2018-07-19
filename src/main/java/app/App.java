@@ -16,55 +16,60 @@ import codeOwnership.CodeOwnership;
 import codeOwnership.PairRepository;
 import util.Util;
 
+import static util.Util.LS;
+
 public class App {
 
-	private static CodeOwnership co;
-	private static Analysis analysis;
-	private static PairRepository pairs = new PairRepository();
-	private static String repository;
-	private static String analysisType;
+    private static CodeOwnership co;
 	private static Scanner in = new Scanner(System.in);
 
-	// Deixa aqui o caminho do repositorio do seu PC para facilitar na hora
-	// de mudar(sem o .git):
-	// "/home/mariana/Documents/Didatica_LP2/homemade-dynamite/";
-	// C:\\Users\\DavidEduardo\\Documents\\CodeOwnershipAux\\GrupoRobson\\projetop2\\
-	// C:\\Users\\DavidEduardo\\Documents\\CodeOwnershipAux\\Homemade-dynamite\\homemade-dynamite\\
-	// C:\\Users\\DavidEduardo\\Documents\\CodeOwnership\\homemade-dynamite-names.txt
-	// C:\\Users\\jrobs\\Documents\\Projects\\homemade-dynamite\\homemade-dynamite-names.json
-	// /home/davidep/Área de Trabalho/dhomemade-dynamite/
-	// /home/davidep/Área de
-	// Trabalho/t3emp/code/CodeOwnership/homemade-dynamite-names.txt
-	// /home/josersaj/Projects/CodeOwnership/homemade-dynamite-names.json
-	// /home/josersaj/Projects/homemade-dynamite/
-
 	public static void main(String[] args) throws Exception {
-		takeRepositoryPath();
-		chooseAnalysisType();
+		String repositoryPath = inputRepositoryPath();
+		Analysis analysis = chooseAnalysisType();
 		
-		co = new CodeOwnership(analysis, repository + ".git");
+		co = new CodeOwnership(analysis, repositoryPath + "/.git");
 
 		printAllStudentsNames();
 		registerStudentsByJsonFile();
 
-		Repository repo = new FileRepository(repository + ".git");
+		Repository repo = new FileRepository(repositoryPath + "/.git");
 
-		co.makePairs(repo, pairs, repository);
-		co.determineArtifactSubjects(repository, pairs);
-
+		PairRepository pairs = new PairRepository();
+		co.makePairs(repo, pairs, repositoryPath);
+		co.determineArtifactSubjects(repositoryPath, pairs);
 		System.out.println(pairs.toString());
 
-		printAStudentPairs();
+		printAStudentPairs(pairs);
 
 		in.close();
 	}
 
-	private static void takeRepositoryPath() {
-		System.out.println("Enter your repository path:");
-		repository = in.nextLine();
+	private static String inputRepositoryPath() {
+		System.out.println("Enter the path to your repository:");
+		return in.nextLine();
 	}
 
-	private static void printAStudentPairs() {
+	private static Analysis chooseAnalysisType() {
+		System.out.println("Choose the type of analysis:" + LS +
+                "1) Creation" + LS + "2) LOC" + LS + "3) Co-authorship");
+		int analysisType = Integer.parseInt(in.nextLine());
+
+		if (analysisType == 1) {
+			System.out.println("Analysis by creation was chosen" + LS);
+			return new CreationAnalysis();
+		} else if (analysisType == 2) {
+			System.out.println("Analysis by LOC was chosen" + LS);
+			return new LOCAnalysis();
+		} else if (analysisType == 3) {
+			System.out.println("Analysis by co-authorship was chosen" + LS);
+			return new LOCPercentAnalysis();
+		} else {
+		    System.out.println("Your input is invalid. Please, try again." + LS);
+		    return chooseAnalysisType();
+        }
+	}
+
+	private static void printAStudentPairs(PairRepository pairs) {
 		String student = "";
 
 		while (true) {
@@ -94,28 +99,12 @@ public class App {
 
 		co.registerAllStudents(Util.getStudentsFromJson(jsonPath));
 
-		System.out.println("Registered students:" + Util.LS + co.getStudentRepository());
+		System.out.println("Registered students:" + LS + co.getStudentRepository());
 	}
 
 	private static void printAllStudentsNames() throws NoHeadException, GitAPIException, IOException {
 		System.out.println("Students names in the system:");
-		System.out.println(co.listAllStudentsNames().toString() + Util.LS);
-	}
-
-	private static void chooseAnalysisType() {
-		System.out.println("Choose the type of analysis: loc, creation or loc(%)");
-		analysisType = in.nextLine();
-
-		if (analysisType.equalsIgnoreCase("creation")) {
-			System.out.println("Analysis by creation was chosen" + Util.LS);
-			analysis = new CreationAnalysis();
-		} else if (analysisType.equalsIgnoreCase("loc")) {
-			System.out.println("Analysis by LOC was chosen" + Util.LS);
-			analysis = new LOCAnalysis();
-		} else {
-			System.out.println("Analysis by LOC(%) was chosen" + Util.LS);
-			analysis = new LOCPercentAnalysis();
-		}
+		System.out.println(co.listAllStudentsNames().toString() + LS);
 	}
 
 }
