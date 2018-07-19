@@ -1,31 +1,25 @@
 package artifact;
 
+import subject.Expertise;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class Artifact {
 	
 	private String name;
-	private Set<String> subjects;
+	private Set<Expertise> subjects;
 	
 	public Artifact(String artifactName) {
 		this.name = artifactName;
-		this.subjects = new HashSet<String>();
+		this.subjects = new HashSet<Expertise>();
 	}
 	
 	public String getName() {
 		return this.name;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public Set<String> getSubject() {
-		return this.subjects;
-	}
-	
-	public void setSubjects(Set<String> subjects) {
+
+	public void setSubjects(Set<Expertise> subjects) {
 		this.subjects = subjects;
 	}
 

@@ -34,7 +34,7 @@ public class Subject {
 				// repoPath);
 
 				String path = repoPath + "/" + treeWalk.getPathString();
-				Set<String> subjects = determineArtifactSubjects(path);
+				Set<Expertise> subjects = determineArtifactSubjects(path);
 				
 				if (pairs.getPairByArtifactName(treeWalk.getPathString()) != null) {
 					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(subjects);
@@ -50,41 +50,21 @@ public class Subject {
 	 *            - caminho do artifact
 	 * @throws IOException
 	 */
-	public static Set<String> determineArtifactSubjects(String path) throws IOException {
+	public static Set<Expertise> determineArtifactSubjects(String path) throws IOException {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
-		Set<String> subjects = new HashSet<String>();
-		String line = "";
+		Set<Expertise> subjects = new HashSet<Expertise>();
+		String line = buffRead.readLine();
 
-		while (true) {
-			if (line != null) {
-				String[] splittedLine = line.split(" ");
-				
-				for (int i = 0; i < splittedLine.length; i++) {
-					if (splittedLine[i].trim().equals("implements")) {
-						subjects.add("Interface");
-					}
-					if (splittedLine[i].trim().equals("extends")) {
-						subjects.add("Herança");
-					}
-					if (splittedLine[i].trim().equals("@Test")) {
-						subjects.add("Testes");
-					}
-					if (splittedLine[i].trim().equals("throws")) {
-						subjects.add("Exceptions");
-					}
-					if (splittedLine[i].trim().equals("try") || splittedLine[i].trim().equals("catch")) {
-						subjects.add("Exception handling");
-					}
-					if (splittedLine[i].trim().equals("IOException") || splittedLine[i].trim().equals("File")) {
-						subjects.add("Persistência(arquivos)");
-					}
-					if (splittedLine[i].trim().equals("abstract")) {
-						subjects.add("Classes abstratas");
-					}
-					
+		while (line != null) {
+			String[] splitLine = line.split(" ");
+
+			for (int i = 0; i < splitLine.length; i++) {
+				String word = splitLine[i].trim();
+				Expertise expertise = extractExpertise(word);
+
+				if (expertise != null) {
+					subjects.add(expertise);
 				}
-			} else {
-				break;
 			}
 
 			line = buffRead.readLine();
@@ -94,4 +74,13 @@ public class Subject {
 		return subjects;
 	}
 
+	private static Expertise extractExpertise(String word) {
+		for (Expertise exp : Expertise.values()) {
+			if (exp.containsKeyword(word)) {
+				return exp;
+			}
+		}
+
+		return null;
+	}
 }
