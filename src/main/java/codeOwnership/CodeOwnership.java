@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
+import analysis.AbstractAnalysis;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.lib.Repository;
 
-import analysis.Analysis;
+import analysis.AbstractAnalysis;
 import git.GitRepository;
 import student.StudentRepository;
 import subject.Subject;
@@ -17,12 +18,12 @@ import student.Student;
 
 public class CodeOwnership {
 
-	private Analysis analysis;
+	private AbstractAnalysis analysis;
 	private StudentRepository studentRepository;
 	private Subject subject;
 	private GitRepository git;
 
-	public CodeOwnership(Analysis analysis, String repoPath) throws IOException {
+	public CodeOwnership(AbstractAnalysis analysis, String repoPath) throws IOException {
 		this.studentRepository = new StudentRepository();
 		this.analysis = analysis;
 		this.git = new GitRepository(repoPath);

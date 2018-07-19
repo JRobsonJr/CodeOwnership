@@ -28,10 +28,11 @@ import student.Student;
 import student.StudentRepository;
 import util.Util;
 
-public class LOCAnalysis implements Analysis {
+public class LOCAnalysis extends AbstractAnalysis {
 
 	private StudentRepository students;
 
+	@Override
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		this.students = students; // Isso faz mais sentido em um construtor.
 		List<String> paths = listRepositoryContents(git);
@@ -104,45 +105,6 @@ public class LOCAnalysis implements Analysis {
 			}
 		}
 		return classes;
-	}
-
-	private boolean isFirstCommit(RevCommit commit) {
-		RevCommit testing = null;
-		
-		try {
-			testing = commit.getParent(0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return testing == null;
-
-	};
-
-	public void deleteRemovedArtifacts(GitRepository git, PairRepository pairs) throws Exception {
-		DiffFormatter diffFormatter = git.getDiffFormatter();
-		Iterable<RevCommit> commits = git.getCommits();
-
-		for (RevCommit commit : commits) {
-			if (isFirstCommit(commit)) {
-				return;
-			} else {
-				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-
-					if (isRemovedArtifact(entry) && Util.isJavaClass(entry.getOldPath())) {
-						Artifact artifact = new Artifact(entry.getOldPath());
-						pairs.removePair(artifact);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Returns whether the change is the type DELETE
-	 */
-	private boolean isRemovedArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.DELETE;
 	}
 	
 	private boolean isValidLine(String line) {

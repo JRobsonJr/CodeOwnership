@@ -24,8 +24,9 @@ import student.Student;
 import student.StudentRepository;
 import util.Util;
 
-public class CreationAnalysis implements Analysis {
+public class CreationAnalysis extends AbstractAnalysis {
 
+	@Override
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		Repository repo = git.getRepository();
 		RevWalk walk = git.getRevWalk();
@@ -44,9 +45,6 @@ public class CreationAnalysis implements Analysis {
 						String studentName = commit.getAuthorIdent().getName();
 						Student student = students.getStudent(studentName);
 						PairStudentArtifact auxPair = new PairStudentArtifact(student, artifact, 100.0);
-
-						// TODO: mudar isso aqui para nome ao inves do email vai ter que faze um logica
-						// de percorrer os nomes
 						pairs.addPair(auxPair);
 					}
 				}
@@ -81,37 +79,6 @@ public class CreationAnalysis implements Analysis {
 		}
 	}
 	
-	private boolean isFirstCommit(RevCommit commit) {
-		RevCommit testing = null;
-		
-		try {
-			testing = commit.getParent(0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return testing == null;
-
-	};
-
-	private void deleteRemovedArtifacts(GitRepository git, PairRepository pairs) throws Exception {
-		DiffFormatter diffFormatter = git.getDiffFormatter();
-		Iterable<RevCommit> commits = git.getCommits();
-
-		for (RevCommit commit : commits) {
-			if (isFirstCommit(commit)) {
-				return;
-			} else {
-				for (DiffEntry entry : diffFormatter.scan(commit.getParent(0), commit)) {
-					if (this.isRemovedArtifact(entry) && Util.isJavaClass(entry.getOldPath())) {
-						Artifact artifact = new Artifact(entry.getOldPath());
-						pairs.removePair(artifact);
-					}
-				}
-			}
-		}
-	}
-	
 	/**
 	 * Returns whether the artifact has been just added.
 	 */
@@ -119,10 +86,4 @@ public class CreationAnalysis implements Analysis {
 		return entry.getChangeType() == ChangeType.ADD;
 	}
 
-	/**
-	 * Returns whether the artifact has been removed.
-	 */
-	private boolean isRemovedArtifact(DiffEntry entry) {
-		return entry.getChangeType() == ChangeType.DELETE;
-	}
 }

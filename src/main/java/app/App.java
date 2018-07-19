@@ -8,7 +8,7 @@ import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 
-import analysis.Analysis;
+import analysis.AbstractAnalysis;
 import analysis.CreationAnalysis;
 import analysis.LOCAnalysis;
 import analysis.LOCPercentAnalysis;
@@ -25,7 +25,7 @@ public class App {
 
 	public static void main(String[] args) throws Exception {
 		String repositoryPath = inputRepositoryPath();
-		Analysis analysis = chooseAnalysisType();
+		AbstractAnalysis analysis = chooseAnalysisType();
 		
 		co = new CodeOwnership(analysis, repositoryPath + "/.git");
 
@@ -49,7 +49,7 @@ public class App {
 		return in.nextLine();
 	}
 
-	private static Analysis chooseAnalysisType() {
+	private static AbstractAnalysis chooseAnalysisType() {
 		System.out.println("Choose the type of analysis:" + LS +
                 "1) Creation" + LS + "2) LOC" + LS + "3) Co-authorship");
 		int analysisType = Integer.parseInt(in.nextLine());
