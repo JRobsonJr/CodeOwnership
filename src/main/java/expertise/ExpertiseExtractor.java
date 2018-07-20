@@ -1,4 +1,4 @@
-package subject;
+package expertise;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +17,7 @@ import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
 import util.Util;
 
-public class Subject {
+public class ExpertiseExtractor {
 
 	public void listClassesAndExpertise(GitRepository git, String repoPath, PairRepository pairs) throws IOException {
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -34,11 +34,11 @@ public class Subject {
 
 			if (Util.isJavaClass(pathString)) {
 				String path = repoPath + "/" + pathString;
-				Set<Expertise> subjects = determineArtifactSubjects(path);
+				Set<Expertise> expertises = determineArtifactExpertises(path);
 				List<PairStudentArtifact> artifactPairs = pairs.getPairsByArtifactName(pathString);
 
 				for (PairStudentArtifact pair : artifactPairs) {
-					pair.getArtifact().setSubjects(subjects);
+					pair.getArtifact().setExpertises(expertises);
 				}
 			}
 		}
@@ -51,9 +51,9 @@ public class Subject {
 	 *            - caminho do artifact
 	 * @throws IOException
 	 */
-	public Set<Expertise> determineArtifactSubjects(String path) throws IOException {
+	public Set<Expertise> determineArtifactExpertises(String path) throws IOException {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
-		Set<Expertise> subjects = new HashSet<Expertise>();
+		Set<Expertise> expertises = new HashSet<Expertise>();
 		String line = buffRead.readLine();
 
 		while (line != null) {
@@ -64,7 +64,7 @@ public class Subject {
 				Expertise expertise = extractExpertise(word);
 
 				if (expertise != null) {
-					subjects.add(expertise);
+					expertises.add(expertise);
 				}
 			}
 
@@ -73,7 +73,7 @@ public class Subject {
 
 		buffRead.close();
 
-		return subjects;
+		return expertises;
 	}
 
 	private Expertise extractExpertise(String word) {

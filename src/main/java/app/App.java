@@ -36,7 +36,7 @@ public class App {
 
 		PairRepository pairs = new PairRepository();
 		co.makePairs(repo, pairs, repositoryPath);
-		co.determineArtifactSubjects(repositoryPath, pairs);
+		co.determineArtifactExpertises(repositoryPath, pairs);
 		System.out.println(pairs.toString());
 
 		printAStudentPairs(pairs);

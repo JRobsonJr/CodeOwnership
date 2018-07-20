@@ -1,4 +1,4 @@
-package subject;
+package expertise;
 
 public enum Expertise {
     INTERFACE("implements"),

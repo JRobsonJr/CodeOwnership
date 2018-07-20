@@ -11,7 +11,7 @@ import org.eclipse.jgit.lib.Repository;
 
 import git.GitRepository;
 import student.StudentRepository;
-import subject.Subject;
+import expertise.ExpertiseExtractor;
 import util.Util;
 import student.Student;
 
@@ -19,22 +19,22 @@ public class CodeOwnership {
 
 	private AbstractAnalysis analysis;
 	private StudentRepository studentRepository;
-	private Subject subject;
+	private ExpertiseExtractor expertiseExtractor;
 	private GitRepository git;
 
 	public CodeOwnership(AbstractAnalysis analysis, String repoPath) throws IOException {
 		this.studentRepository = new StudentRepository();
 		this.analysis = analysis;
 		this.git = new GitRepository(repoPath);
-		this.subject = new Subject();
+		this.expertiseExtractor = new ExpertiseExtractor();
 	}
 
 	public void makePairs(Repository repo, PairRepository pairs, String path) throws Exception {
 		this.analysis.makePairs(git, pairs, studentRepository);
 	}
 
-	public void determineArtifactSubjects(String repoPath, PairRepository pairs) throws IOException {
-		this.subject.listClassesAndExpertise(this.git,repoPath, pairs);
+	public void determineArtifactExpertises(String repoPath, PairRepository pairs) throws IOException {
+		this.expertiseExtractor.listClassesAndExpertise(this.git,repoPath, pairs);
 	}
 
 	public StudentRepository getStudentRepository() {

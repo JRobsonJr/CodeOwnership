@@ -1,6 +1,6 @@
 package artifact;
 
-import subject.Expertise;
+import expertise.Expertise;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,19 +8,19 @@ import java.util.Set;
 public class Artifact {
 	
 	private String name;
-	private Set<Expertise> subjects;
+	private Set<Expertise> expertises;
 	
 	public Artifact(String artifactName) {
 		this.name = artifactName;
-		this.subjects = new HashSet<Expertise>();
+		this.expertises = new HashSet<Expertise>();
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 
-	public void setSubjects(Set<Expertise> subjects) {
-		this.subjects = subjects;
+	public void setExpertises(Set<Expertise> expertises) {
+		this.expertises = expertises;
 	}
 
 	@Override
@@ -50,6 +50,6 @@ public class Artifact {
 
 	@Override
 	public String toString() {
-		return "Subjects: " + this.subjects.toString();
+		return "Expertises: " + this.expertises.toString();
 	}	
 }
