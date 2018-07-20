@@ -28,16 +28,18 @@ import util.Util;
 
 public class LOCAnalysis extends AbstractAnalysis {
 
+	private static double DEFAULT_OWNERSHIP_VALUE = 100.0;
 	private StudentRepository students;
 
 	@Override
 	public void makePairs(GitRepository git, PairRepository pairs, StudentRepository students) throws Exception {
 		this.students = students; // Isso faz mais sentido em um construtor.
 		List<String> paths = listRepositoryContents(git);
+
 		for (String className : paths) {
 			Student greater = getGreatestContributor(git.getRepository(), className);
 			Artifact artifact = new Artifact(className);
-			PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact, 100.0);
+			PairStudentArtifact auxPair = new PairStudentArtifact(greater, artifact, DEFAULT_OWNERSHIP_VALUE);
 			pairs.addPair(auxPair);
 		}
 	}
@@ -107,7 +109,7 @@ public class LOCAnalysis extends AbstractAnalysis {
 	
 	private boolean isValidLine(String line) {
 		return !((line.contains("import") && (line.trim().equals("}") || line.trim().equals("{")) 
-				&& line.trim().equals(""))); 
+				&& line.trim().equals("")));
 		
 	}
 
