@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import artifact.Artifact;
+import exception.StudentNotFoundException;
 import util.Util;
 
 public class PairRepository {
 
 	private List<PairStudentArtifact> pairs;
-	// TODO: colocar um Map sendo a chave o nome
 
 	public PairRepository() {
 		this.pairs = new ArrayList<PairStudentArtifact>();
@@ -39,25 +39,19 @@ public class PairRepository {
 		return pairs;
 	}
 
-	public String getPairsByStudentName(String studentName) throws Exception {
-		if (this.containsStudent(studentName)) {
-			ArrayList<PairStudentArtifact> studentArtifacts = this.getStudentArtifacts(studentName);
-
-			String resp = "";
-
-			for (int i = 0; i < studentArtifacts.size(); i++) {
-				resp += studentArtifacts.get(i).toString() + Util.LS;
-			}
-
-			if (studentArtifacts.size() == 0) {
-				resp = "Student " + studentName + " has currently no artifacts in this project.";
-			}
-
-			return resp;
-		} else {
-			throw new Exception("Student not found! Maybe the student currently has no artifacts in this project.");
-			// TODO Create an Exception hierarchy.
+	public String getPairsByStudentName(String studentName) throws StudentNotFoundException {
+		if (!this.containsStudent(studentName)) {
+			throw new StudentNotFoundException("Student has currently no artifacts in this project.");
 		}
+
+		ArrayList<PairStudentArtifact> studentArtifacts = this.getStudentArtifacts(studentName);
+		String resp = "";
+
+		for (int i = 0; i < studentArtifacts.size(); i++) {
+			resp += studentArtifacts.get(i).toString() + Util.LS;
+		}
+
+		return resp;
 	}
 
 	@Override
