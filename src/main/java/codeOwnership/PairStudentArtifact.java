@@ -22,6 +22,10 @@ public class PairStudentArtifact {
 		return this.artifact;
 	}
 
+	public boolean compareArtifacts(Artifact otherArtifact) {
+		return otherArtifact.getName().equals(this.artifact.getName());
+	}
+
 	public String getStudentName() {
 		return this.student.getName();
 	}

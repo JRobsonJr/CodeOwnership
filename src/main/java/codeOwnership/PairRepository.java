@@ -20,9 +20,9 @@ public class PairRepository {
 	}
 
 	public void removePairs(Artifact artifact) {
-		for (int i = 0; i < pairs.size(); i++) {
-			if (pairs.get(i).getArtifact().getName().equals(artifact.getName())) {
-				pairs.remove(i);
+		for (PairStudentArtifact pair : this.pairs) {
+			if (pair.compareArtifacts(artifact)) {
+				pairs.remove(pair);
 			}
 		}
 	}
