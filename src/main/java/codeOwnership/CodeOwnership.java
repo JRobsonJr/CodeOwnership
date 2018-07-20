@@ -9,7 +9,6 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.lib.Repository;
 
-import analysis.AbstractAnalysis;
 import git.GitRepository;
 import student.StudentRepository;
 import subject.Subject;
@@ -35,7 +34,7 @@ public class CodeOwnership {
 	}
 
 	public void determineArtifactSubjects(String repoPath, PairRepository pairs) throws IOException {
-		this.subject.listClassesAndSubjects(this.git,repoPath, pairs);
+		this.subject.listClassesAndExpertise(this.git,repoPath, pairs);
 	}
 
 	public StudentRepository getStudentRepository() {

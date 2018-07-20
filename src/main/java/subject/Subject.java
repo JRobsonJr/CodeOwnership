@@ -12,32 +12,32 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import codeOwnership.PairRepository;
+import codeOwnership.PairStudentArtifact;
 import git.GitRepository;
 import util.Util;
 
 public class Subject {
 
-	public void listClassesAndSubjects(GitRepository git, String repoPath, PairRepository pairs) throws IOException {
+	public void listClassesAndExpertise(GitRepository git, String repoPath, PairRepository pairs) throws IOException {
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
 		Repository repository = builder.setGitDir(new File(repoPath + ".git")).readEnvironment().findGitDir().build();
-		listRepositoryContents(git,repository, repoPath, pairs);
+		listRepositoryContents(git, repoPath, pairs);
 		repository.close();
 	}
 
-	private static void listRepositoryContents(GitRepository git,Repository repository, String repoPath, PairRepository pairs)
-			throws IOException {
+	private void listRepositoryContents(GitRepository git, String repoPath, PairRepository pairs) throws IOException {
 		TreeWalk treeWalk = git.getTreeWalk(git);
-		while (treeWalk.next()) {
-			if (Util.isJavaClass(treeWalk.getPathString())) {
-				// using windows:
-				// String caminho = makePath(treeWalk.getPathString(),
-				// repoPath);
 
-				String path = repoPath + "/" + treeWalk.getPathString();
+		while (treeWalk.next()) {
+			String pathString = treeWalk.getPathString();
+
+			if (Util.isJavaClass(pathString)) {
+				String path = repoPath + "/" + pathString;
 				Set<Expertise> subjects = determineArtifactSubjects(path);
-				
-				if (pairs.getPairByArtifactName(treeWalk.getPathString()) != null) {
-					pairs.getPairByArtifactName(treeWalk.getPathString()).getArtifact().setSubjects(subjects);
+				PairStudentArtifact pair = pairs.getPairByArtifactName(pathString);
+
+				if (pair != null) {
+					pair.getArtifact().setSubjects(subjects);
 				}
 			}
 		}
@@ -50,7 +50,7 @@ public class Subject {
 	 *            - caminho do artifact
 	 * @throws IOException
 	 */
-	public static Set<Expertise> determineArtifactSubjects(String path) throws IOException {
+	public Set<Expertise> determineArtifactSubjects(String path) throws IOException {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
 		Set<Expertise> subjects = new HashSet<Expertise>();
 		String line = buffRead.readLine();
@@ -71,10 +71,11 @@ public class Subject {
 		}
 
 		buffRead.close();
+
 		return subjects;
 	}
 
-	private static Expertise extractExpertise(String word) {
+	private Expertise extractExpertise(String word) {
 		for (Expertise exp : Expertise.values()) {
 			if (exp.containsKeyword(word)) {
 				return exp;
