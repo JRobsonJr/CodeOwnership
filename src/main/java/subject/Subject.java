@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jgit.lib.Repository;
@@ -34,9 +35,9 @@ public class Subject {
 			if (Util.isJavaClass(pathString)) {
 				String path = repoPath + "/" + pathString;
 				Set<Expertise> subjects = determineArtifactSubjects(path);
-				PairStudentArtifact pair = pairs.getPairByArtifactName(pathString);
+				List<PairStudentArtifact> artifactPairs = pairs.getPairsByArtifactName(pathString);
 
-				if (pair != null) {
+				for (PairStudentArtifact pair : artifactPairs) {
 					pair.getArtifact().setSubjects(subjects);
 				}
 			}

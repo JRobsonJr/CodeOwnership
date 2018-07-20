@@ -43,7 +43,7 @@ public abstract class AbstractAnalysis {
 
 				if (isRemovedArtifact(entry) && Util.isJavaClass(oldPath)) {
 					Artifact artifact = new Artifact(oldPath);
-					pairs.removePair(artifact);
+					pairs.removePairs(artifact);
 				}
 			}
 		}

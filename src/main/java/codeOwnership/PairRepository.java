@@ -19,23 +19,24 @@ public class PairRepository {
 		this.pairs.add(pair);
 	}
 
-	public void removePair(Artifact artifact) {
-		// TODO Break when it's found/return something when it's not found.
+	public void removePairs(Artifact artifact) {
 		for (int i = 0; i < pairs.size(); i++) {
-			if (pairs.get(i).getArtifact().equals(artifact)) {
+			if (pairs.get(i).getArtifact().getName().equals(artifact.getName())) {
 				pairs.remove(i);
 			}
 		}
 	}
 
-	public PairStudentArtifact getPairByArtifactName(String artifactName) {
+	public List<PairStudentArtifact> getPairsByArtifactName(String artifactName) {
+		List<PairStudentArtifact> pairs = new ArrayList<PairStudentArtifact>();
+
 		for (PairStudentArtifact pair : this.pairs) {
 			if (pair.getArtifactName().equals(artifactName)) {
-				return pair;
+				pairs.add(pair);
 			}
 		}
 
-		return null;
+		return pairs;
 	}
 
 	public String getPairsByStudentName(String studentName) throws Exception {
