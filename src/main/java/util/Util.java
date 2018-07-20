@@ -13,13 +13,9 @@ public class Util {
 	public static final String LS = System.lineSeparator();
 
 	public static boolean isJavaClass(String string) {
-		String[] splitted = string.split("\\.");
-
-		if (splitted.length == 2) {
-			return splitted[1].equals("java");
-		} else {
-			return false;
-		}
+		String[] splitString = string.split("\\.");
+		
+		return splitString.length == 2 && splitString[1].equals("java");
 	}
 
 	public static List<Student> getStudentsFromJson(String jsonPath) {
