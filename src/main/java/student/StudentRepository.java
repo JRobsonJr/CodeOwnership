@@ -25,6 +25,13 @@ public class StudentRepository {
 	public List<Student> getStudents() {
 		return this.students;
 	}
+
+	public Student[] getStudentsAsArray() {
+		int size = this.students.size();
+		Student[] studentArray = new Student[size];
+
+		return this.students.toArray(studentArray);
+	}
 	
 	public void setStudents(List<Student> students) {
 		this.students = students; 
@@ -34,10 +41,11 @@ public class StudentRepository {
 	public String toString() {
 		String resp = "";
 
-		for (Student student : this.students) {
-			resp += student.toString() + Util.LS;
+		for (int i = 0; i < this.students.size(); i++) {
+			resp += (i + 1) + ") " + students.get(i).getName() + Util.LS;
 		}
 
 		return resp;
 	}
+
 }

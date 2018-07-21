@@ -4,50 +4,65 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
-import analysis.AbstractAnalysis;
+import analysis.AnalysisFactory;
+import analysis.AnalysisType;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 
+import analysis.AbstractAnalysis;
+import artifact.ArtifactRepository;
 import git.GitRepository;
+import pair.PairRepository;
+import pair.PairStudentArtifact;
 import student.StudentRepository;
-import expertise.ExpertiseExtractor;
-import util.Util;
 import student.Student;
+import util.Util;
 
 public class CodeOwnership {
 
+    private String repoPath;
+	private GitRepository git;
 	private AbstractAnalysis analysis;
 	private StudentRepository studentRepository;
-	private ExpertiseExtractor expertiseExtractor;
+	private ArtifactRepository artifactRepository;
 	private PairRepository pairRepository;
-	private GitRepository git;
 
-	public CodeOwnership(AbstractAnalysis analysis, String repoPath) throws IOException {
+	public CodeOwnership(AnalysisType analysisType, String repoPath) throws IOException {
+	    this.repoPath = repoPath;
 		this.git = new GitRepository(repoPath + "/.git");
-		this.studentRepository = new StudentRepository();
-		this.analysis = analysis;
-		this.expertiseExtractor = new ExpertiseExtractor();
-		this.pairRepository = new PairRepository();
 
-		this.makePairs();
-		this.determineArtifactExpertises(repoPath);
+		this.createStudentRepository();
+		this.createArtifactRepository();
+		this.instantiateAnalysis(analysisType);
+		this.createPairRepository();
 	}
 
-	public PairRepository getPairRepository() {
-		return pairRepository;
+	public void createStudentRepository() {
+	    this.studentRepository = new StudentRepository();
+        List<Student> students = Util.getStudentsFromJson(this.repoPath + "/students.json");
+        this.studentRepository.setStudents(students);
 	}
 
-	public void makePairs() {
+	public void createArtifactRepository() throws IOException {
+        this.artifactRepository = new ArtifactRepository();
+        List<String> classes = this.git.listRepositoryJavaClasses();
+        this.artifactRepository.createArtifacts(this.repoPath, classes);
+    }
+
+    public void instantiateAnalysis(AnalysisType analysisType) {
+		this.analysis = AnalysisFactory.getAnalysis(analysisType, this.studentRepository, this.artifactRepository);
+	}
+	public void createPairRepository() {
 		try {
-			List<PairStudentArtifact> pairs = this.analysis.makePairs(git, studentRepository);
+		    this.pairRepository = new PairRepository();
+			List<PairStudentArtifact> pairs = this.analysis.makePairs(git);
 			this.pairRepository.setPairs(pairs);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void determineArtifactExpertises(String repoPath) throws IOException {
-		this.expertiseExtractor.listClassesAndExpertise(this.git, repoPath, pairRepository);
+	public PairRepository getPairRepository() {
+		return pairRepository;
 	}
 
 	public StudentRepository getStudentRepository() {
@@ -58,31 +73,16 @@ public class CodeOwnership {
 	 * Lists all the students names in the system; it is used for writing the .txt
 	 * file.
 	 */
-	public HashSet<String> listAllStudentsNames() throws NoHeadException, GitAPIException, IOException {
+	public HashSet<String> listAllStudentsNames() throws GitAPIException, IOException {
 		return git.listAllStudentsNames();
 	}
 
 	public Student[] getArrayOfStudents() {
-		Student[] arrayOfStudents = this.getStudentRepository().getStudents()
-				.toArray(new Student[this.getStudentRepository().getStudents().size()]);
-		
-		return arrayOfStudents;
-	}
-
-	public void registerAllStudents(List<Student> students) {	
-		this.studentRepository.setStudents(students);
+		return this.studentRepository.getStudentsAsArray();
 	}
 
 	public String listStudents() {
-		Student[] students = this.getArrayOfStudents();
-		String returnString = "";
-		
-		for (int i = 0; i < students.length; i++) {
-			returnString += (i + 1) + ") " + students[i].getName() + Util.LS;
-		}
-
-		return returnString;
-
+		return this.studentRepository.toString();
 	}
 
 }

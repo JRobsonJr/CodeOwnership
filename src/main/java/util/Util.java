@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import student.Student;
 
 public class Util {
+
 	public static final String LS = System.lineSeparator();
 
 	public static boolean isJavaClass(String string) {
@@ -51,4 +52,5 @@ public class Util {
 
 		return convertedArray;
 	}
+
 }

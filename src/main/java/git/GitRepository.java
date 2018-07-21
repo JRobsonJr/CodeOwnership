@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -19,10 +18,10 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
+
 import util.Util;
 
 public class GitRepository {
-
 	private Repository repository;
 	private Git git;
 	private String directory;
@@ -38,7 +37,7 @@ public class GitRepository {
 		diffFormatter.setRepository(repository);
 	}
 
-	public Iterable<RevCommit> getCommits() throws NoHeadException, GitAPIException, IOException {
+	public Iterable<RevCommit> getCommits() throws GitAPIException, IOException {
 		Iterable<RevCommit> commits = git.log().all().call();
 		return commits;
 	}
@@ -55,40 +54,44 @@ public class GitRepository {
 		return this.diffFormatter;
 	}
 
-	public HashSet<String> listAllStudentsNames() throws NoHeadException, GitAPIException, IOException {
-		HashSet<String> allStudentsNames = new HashSet<String>();
+    public TreeWalk getTreeWalk() throws IOException {
+        Ref head = this.getRepository().getRef("HEAD");
+        RevWalk walk = this.getRevWalk();
+        RevCommit commit = walk.parseCommit(head.getObjectId());
+        RevTree tree = commit.getTree();
+        TreeWalk treeWalk = new TreeWalk(this.getRepository());
+        treeWalk.addTree(tree);
+        treeWalk.setRecursive(true);
+
+        return treeWalk;
+    }
+
+	public HashSet<String> listAllStudentsNames() throws GitAPIException, IOException {
+		HashSet<String> names = new HashSet<String>();
 		Iterable<RevCommit> commits = this.getCommits();
 
 		for (RevCommit commit : commits) {
-			allStudentsNames.add(commit.getAuthorIdent().getName());
+			names.add(commit.getAuthorIdent().getName());
 		}
 		
-		return allStudentsNames;
-	}
-	
-	public TreeWalk getTreeWalk() throws IOException {
-		Ref head = this.getRepository().getRef("HEAD");
-		RevWalk walk = this.getRevWalk();
-		RevCommit commit = walk.parseCommit(head.getObjectId());
-		RevTree tree = commit.getTree();
-		TreeWalk treeWalk = new TreeWalk(this.getRepository());
-		treeWalk.addTree(tree);
-		treeWalk.setRecursive(true);
-		
-		return treeWalk;
+		return names;
 	}
 
-	public List<String> listRepositoryContents()
-			throws IOException, RevisionSyntaxException {
-		List<String> classes = new ArrayList<String>();
+	public List<String> listRepositoryContents() throws IOException, RevisionSyntaxException {
+		List<String> contents = new ArrayList<String>();
 		TreeWalk treeWalk = this.getTreeWalk();
 
 		while (treeWalk.next()) {
-			if (Util.isJavaClass(treeWalk.getPathString())) {
-				classes.add(treeWalk.getPathString());
-			}
+		    contents.add(treeWalk.getPathString());
 		}
 
-		return classes;
+		return contents;
 	}
+
+	public List<String> listRepositoryJavaClasses() throws IOException, RevisionSyntaxException {
+	    List<String> classes = this.listRepositoryContents();
+        classes.removeIf(content -> !Util.isJavaClass(content));
+
+        return classes;
+    }
 }

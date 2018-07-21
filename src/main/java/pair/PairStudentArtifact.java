@@ -1,4 +1,4 @@
-package codeOwnership;
+package pair;
 
 import java.text.DecimalFormat;
 
@@ -23,7 +23,7 @@ public class PairStudentArtifact {
 	}
 
 	public boolean compareArtifacts(Artifact otherArtifact) {
-		return otherArtifact.getName().equals(this.artifact.getName());
+		return otherArtifact.getPath().equals(this.artifact.getPath());
 	}
 
 	public String getStudentName() {
@@ -31,13 +31,15 @@ public class PairStudentArtifact {
 	}
 
 	public String getArtifactName() {
-		return this.artifact.getName();
+		return this.artifact.getPath();
 	}
 
 	@Override
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.#");
-		return student.getName() + " is the owner of: " + artifact.getName() + " (" + df.format(this.ownershipPercentage) + "%) "
+
+		return student.getName() + " is the owner of: " + artifact.getPath() + " (" + df.format(this.ownershipPercentage) + "%) "
 				+ Util.LS + "Artifact details:" + Util.LS + artifact.toString();
 	}
+
 }

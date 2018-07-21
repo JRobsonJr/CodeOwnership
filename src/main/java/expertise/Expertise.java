@@ -1,6 +1,7 @@
 package expertise;
 
 public enum Expertise {
+
     INTERFACE("implements"),
     INHERITANCE("extends"),
     TESTS("@Test"),
@@ -24,4 +25,5 @@ public enum Expertise {
 
         return false;
     }
+
 }

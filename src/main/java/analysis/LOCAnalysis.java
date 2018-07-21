@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import artifact.ArtifactRepository;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Repository;
 
 import artifact.Artifact;
-import codeOwnership.PairStudentArtifact;
+import pair.PairStudentArtifact;
 import git.GitRepository;
 import student.Student;
 import student.StudentRepository;
@@ -21,15 +22,19 @@ public class LOCAnalysis extends AbstractAnalysis {
 
 	private static double DEFAULT_OWNERSHIP_VALUE = 100.0;
 
+	public LOCAnalysis(StudentRepository studentRepository, ArtifactRepository artifactRepository) {
+		super(studentRepository, artifactRepository);
+	}
+
 	@Override
-	public List<PairStudentArtifact> makePairs(GitRepository git, StudentRepository students) throws IOException, GitAPIException {
-		this.students = students;
-		List<String> paths = git.listRepositoryContents();
+	public List<PairStudentArtifact> makePairs(GitRepository git) throws IOException, GitAPIException {
+		this.studentRepository = studentRepository;
+		List<String> paths = git.listRepositoryJavaClasses();
 		List<PairStudentArtifact> pairs = new ArrayList<PairStudentArtifact>();
 
 		for (String className : paths) {
 			Student greater = this.getGreatestContributor(git.getRepository(), className);
-			Artifact artifact = new Artifact(className);
+			Artifact artifact = null; // TODO new Artifact(className);
 			PairStudentArtifact newPair = new PairStudentArtifact(greater, artifact, DEFAULT_OWNERSHIP_VALUE);
 			pairs.add(newPair);
 		}

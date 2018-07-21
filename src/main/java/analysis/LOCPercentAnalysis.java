@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import artifact.ArtifactRepository;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
@@ -15,22 +16,26 @@ import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Repository;
 
 import artifact.Artifact;
-import codeOwnership.PairStudentArtifact;
+import pair.PairStudentArtifact;
 import git.GitRepository;
 import student.Student;
 import student.StudentRepository;
 
 public class LOCPercentAnalysis extends AbstractAnalysis {
 
+	public LOCPercentAnalysis(StudentRepository studentRepository, ArtifactRepository artifactRepository) {
+		super(studentRepository, artifactRepository);
+	}
+
 	@Override
-	public List<PairStudentArtifact> makePairs(GitRepository git, StudentRepository students) throws IOException, GitAPIException {
-		this.students = students;
-		List<String> paths = git.listRepositoryContents();
+	public List<PairStudentArtifact> makePairs(GitRepository git) throws IOException, GitAPIException {
+		this.studentRepository = studentRepository;
+		List<String> paths = git.listRepositoryJavaClasses();
 		List<PairStudentArtifact> pairs = new ArrayList<PairStudentArtifact>();
 
 		for (String classPath : paths) {
 			Map<Student, Double> contributions = this.getContributions(git.getRepository(), classPath);
-			Artifact artifact = new Artifact(classPath);
+			Artifact artifact = null; // TODO new Artifact(classPath);
 			
 			Set<Student> keys = contributions.keySet();
 

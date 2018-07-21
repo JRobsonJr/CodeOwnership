@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.*;
 
 import artifact.Artifact;
-import codeOwnership.PairStudentArtifact;
+import artifact.ArtifactRepository;
+import pair.PairStudentArtifact;
+import git.GitUtil;
 import org.eclipse.jgit.api.BlameCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -22,35 +24,28 @@ import util.Util;
 
 public abstract class AbstractAnalysis {
 
-	protected StudentRepository students;
+	protected StudentRepository studentRepository;
+	protected ArtifactRepository artifactRepository;
 
-	public abstract List<PairStudentArtifact> makePairs(GitRepository git, StudentRepository students)
-			throws GitAPIException, IOException;
-
-	protected boolean isFirstCommit(RevCommit commit) {
-		boolean isFirstCommit = false;
-
-		try {
-			commit.getParent(0);
-		} catch (Exception e) {
-			isFirstCommit = true;
-		}
-
-		return isFirstCommit;
+	public AbstractAnalysis(StudentRepository studentRepository, ArtifactRepository artifactRepository) {
+		this.studentRepository = studentRepository;
+		this.artifactRepository = artifactRepository;
 	}
+
+	public abstract List<PairStudentArtifact> makePairs(GitRepository git) throws GitAPIException, IOException;
 
 	protected List<PairStudentArtifact> deleteRemovedArtifacts(GitRepository git, List<PairStudentArtifact> pairs) throws IOException, GitAPIException {
 		DiffFormatter diffFormatter = git.getDiffFormatter();
 		Iterator<RevCommit> iterator = git.getCommits().iterator();
 		RevCommit currentCommit;
 
-		while (!isFirstCommit(currentCommit = iterator.next())) {
+		while (!GitUtil.isFirstCommit(currentCommit = iterator.next())) {
 			for (DiffEntry entry : diffFormatter.scan(currentCommit.getParent(0), currentCommit)) {
 				String oldPath = entry.getOldPath();
 
-				if (isRemovedArtifact(entry) && Util.isJavaClass(oldPath)) {
-					Artifact artifact = new Artifact(oldPath);
-					pairs.removeIf(pair -> pair.compareArtifacts(artifact));
+				if (GitUtil.isRemovedEntry(entry) && Util.isJavaClass(oldPath)) {
+					// TODO Artifact artifact = new Artifact(oldPath);
+					// pairs.removeIf(pair -> pair.compareArtifacts(artifact));
 				}
 			}
 		}
@@ -81,7 +76,7 @@ public abstract class AbstractAnalysis {
 		for (int i = 0; i < lines; i++) {
 			RevCommit commit = blameResult.getSourceCommit(i);
 			if (isValidLine(blameResult.getResultContents().getString(i))) {
-				Student newStudent = students.getStudent(commit.getAuthorIdent().getName());
+				Student newStudent = studentRepository.getStudent(commit.getAuthorIdent().getName());
 				if(!frequency.containsKey(newStudent)) frequency.put(newStudent, 0);
 				frequency.put(newStudent, frequency.get(newStudent) + 1);
 			}
@@ -91,14 +86,7 @@ public abstract class AbstractAnalysis {
 	}
 
 	protected boolean isValidLine(String line) {
-		return !((line.contains("import") && (line.trim().equals("}") || line.trim().equals("{"))
-				&& line.trim().equals("")));
-	}
-
-	/**
-	 * Returns whether the change is the type DELETE.
-	 */
-	protected boolean isRemovedArtifact(DiffEntry entry) {
-		return entry.getChangeType() == DiffEntry.ChangeType.DELETE;
+		return !(line.contains("import") && (line.trim().equals("}") || line.trim().equals("{"))
+				&& line.trim().equals(""));
 	}
 }

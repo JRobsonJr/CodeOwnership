@@ -3,18 +3,11 @@ package app;
 import java.io.IOException;
 import java.util.Scanner;
 
+import analysis.AnalysisType;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.internal.storage.file.FileRepository;
-import org.eclipse.jgit.lib.Repository;
 
-import analysis.AbstractAnalysis;
-import analysis.CreationAnalysis;
-import analysis.LOCAnalysis;
-import analysis.LOCPercentAnalysis;
 import codeOwnership.CodeOwnership;
-import codeOwnership.PairRepository;
-import util.Util;
+import pair.PairRepository;
 
 import static util.Util.LS;
 
@@ -24,18 +17,14 @@ public class App {
 	private static Scanner in = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
-		String repositoryPath = inputRepositoryPath();
-		AbstractAnalysis analysis = chooseAnalysisType();
-		
-		co = new CodeOwnership(analysis, repositoryPath);
+		String repoPath = inputRepositoryPath();
+		AnalysisType analysisType = chooseAnalysisType();
 
-		printAllStudentsNames();
-		registerStudentsByJsonFile();
-
-
+		co = new CodeOwnership(analysisType, repoPath);
 		System.out.println(co.getPairRepository().toString());
 
-		// printAStudentPairs(pairs);
+		// printAllStudentsNames();
+		// TODO co.printAStudentPairs(pairs);
 
 		in.close();
 	}
@@ -45,24 +34,25 @@ public class App {
 		return in.nextLine();
 	}
 
-	private static AbstractAnalysis chooseAnalysisType() {
-		System.out.println("Choose the type of analysis:" + LS +
-                "1) Creation" + LS + "2) LOC" + LS + "3) Co-authorship");
-		int analysisType = Integer.parseInt(in.nextLine());
+	private static AnalysisType chooseAnalysisType() {
+		System.out.println("Choose the type of analysis:" + LS + "1) Creation" + LS + "2) LOC" + LS + "3) Co-authorship");
+		int input = Integer.parseInt(in.nextLine());
 
-		if (analysisType == 1) {
-			System.out.println("Analysis by creation was chosen" + LS);
-			return new CreationAnalysis();
-		} else if (analysisType == 2) {
-			System.out.println("Analysis by LOC was chosen" + LS);
-			return new LOCAnalysis();
-		} else if (analysisType == 3) {
-			System.out.println("Analysis by co-authorship was chosen" + LS);
-			return new LOCPercentAnalysis();
-		} else {
-		    System.out.println("Your input is invalid. Please, try again." + LS);
-		    return chooseAnalysisType();
-        }
+		for (AnalysisType type : AnalysisType.values()) {
+			if (type.getIndex() == input) {
+				System.out.println("Analysis by " + type + " was chosen." + LS);
+				return type;
+			}
+		}
+
+		System.out.println("Your input is invalid. Please, try again." + LS);
+
+		return chooseAnalysisType();
+	}
+
+	private static void printAllStudentsNames() throws GitAPIException, IOException {
+		System.out.println("Students names in the system:");
+		System.out.println(co.listAllStudentsNames().toString() + LS);
 	}
 
 	private static void printAStudentPairs(PairRepository pairs) {
@@ -81,26 +71,12 @@ public class App {
 			String studentAux = co.getArrayOfStudents()[studentIndex].getName();
 
 			try {
-				System.out.println(pairs.getPairsByStudentName(studentAux.toString()));
+				System.out.println(pairs.getPairsByStudentName(studentAux));
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 				System.out.println("Try another student.");
 			}
 		}
-	}
-
-	private static void registerStudentsByJsonFile() {
-		System.out.println("Enter the path to the .json file containing the aliases:");
-		String jsonPath = in.nextLine();
-
-		co.registerAllStudents(Util.getStudentsFromJson(jsonPath));
-
-		System.out.println("Registered students:" + LS + co.getStudentRepository());
-	}
-
-	private static void printAllStudentsNames() throws NoHeadException, GitAPIException, IOException {
-		System.out.println("Students names in the system:");
-		System.out.println(co.listAllStudentsNames().toString() + LS);
 	}
 
 }
