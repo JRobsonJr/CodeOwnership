@@ -27,7 +27,7 @@ public class ExpertiseExtractor {
 	}
 
 	private void listRepositoryContents(GitRepository git, String repoPath, PairRepository pairs) throws IOException {
-		TreeWalk treeWalk = git.getTreeWalk(git);
+		TreeWalk treeWalk = git.getTreeWalk();
 
 		while (treeWalk.next()) {
 			String pathString = treeWalk.getPathString();

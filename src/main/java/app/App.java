@@ -27,19 +27,15 @@ public class App {
 		String repositoryPath = inputRepositoryPath();
 		AbstractAnalysis analysis = chooseAnalysisType();
 		
-		co = new CodeOwnership(analysis, repositoryPath + "/.git");
+		co = new CodeOwnership(analysis, repositoryPath);
 
 		printAllStudentsNames();
 		registerStudentsByJsonFile();
 
-		Repository repo = new FileRepository(repositoryPath + "/.git");
 
-		PairRepository pairs = new PairRepository();
-		co.makePairs(repo, pairs, repositoryPath);
-		co.determineArtifactExpertises(repositoryPath, pairs);
-		System.out.println(pairs.toString());
+		System.out.println(co.getPairRepository().toString());
 
-		printAStudentPairs(pairs);
+		// printAStudentPairs(pairs);
 
 		in.close();
 	}

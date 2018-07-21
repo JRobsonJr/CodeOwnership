@@ -14,7 +14,7 @@ public class Util {
 
 	public static boolean isJavaClass(String string) {
 		String[] splitString = string.split("\\.");
-		
+
 		return splitString.length == 2 && splitString[1].equals("java");
 	}
 

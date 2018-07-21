@@ -7,7 +7,6 @@ import java.util.List;
 import analysis.AbstractAnalysis;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.lib.Repository;
 
 import git.GitRepository;
 import student.StudentRepository;
@@ -20,21 +19,35 @@ public class CodeOwnership {
 	private AbstractAnalysis analysis;
 	private StudentRepository studentRepository;
 	private ExpertiseExtractor expertiseExtractor;
+	private PairRepository pairRepository;
 	private GitRepository git;
 
 	public CodeOwnership(AbstractAnalysis analysis, String repoPath) throws IOException {
+		this.git = new GitRepository(repoPath + "/.git");
 		this.studentRepository = new StudentRepository();
 		this.analysis = analysis;
-		this.git = new GitRepository(repoPath);
 		this.expertiseExtractor = new ExpertiseExtractor();
+		this.pairRepository = new PairRepository();
+
+		this.makePairs();
+		this.determineArtifactExpertises(repoPath);
 	}
 
-	public void makePairs(Repository repo, PairRepository pairs, String path) throws Exception {
-		this.analysis.makePairs(git, pairs, studentRepository);
+	public PairRepository getPairRepository() {
+		return pairRepository;
 	}
 
-	public void determineArtifactExpertises(String repoPath, PairRepository pairs) throws IOException {
-		this.expertiseExtractor.listClassesAndExpertise(this.git,repoPath, pairs);
+	public void makePairs() {
+		try {
+			List<PairStudentArtifact> pairs = this.analysis.makePairs(git, studentRepository);
+			this.pairRepository.setPairs(pairs);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void determineArtifactExpertises(String repoPath) throws IOException {
+		this.expertiseExtractor.listClassesAndExpertise(this.git, repoPath, pairRepository);
 	}
 
 	public StudentRepository getStudentRepository() {

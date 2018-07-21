@@ -54,6 +54,10 @@ public class PairRepository {
 		return resp;
 	}
 
+	public void setPairs(List<PairStudentArtifact> pairs) {
+		this.pairs = pairs;
+	}
+
 	@Override
 	public String toString() {
 		String resp = "";

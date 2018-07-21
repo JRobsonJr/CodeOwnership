@@ -3,12 +3,15 @@ package git;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -16,6 +19,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import util.Util;
 
 public class GitRepository {
 
@@ -62,7 +66,7 @@ public class GitRepository {
 		return allStudentsNames;
 	}
 	
-	public TreeWalk getTreeWalk(GitRepository git) throws IOException {
+	public TreeWalk getTreeWalk() throws IOException {
 		Ref head = this.getRepository().getRef("HEAD");
 		RevWalk walk = this.getRevWalk();
 		RevCommit commit = walk.parseCommit(head.getObjectId());
@@ -72,5 +76,19 @@ public class GitRepository {
 		treeWalk.setRecursive(true);
 		
 		return treeWalk;
+	}
+
+	public List<String> listRepositoryContents()
+			throws IOException, RevisionSyntaxException {
+		List<String> classes = new ArrayList<String>();
+		TreeWalk treeWalk = this.getTreeWalk();
+
+		while (treeWalk.next()) {
+			if (Util.isJavaClass(treeWalk.getPathString())) {
+				classes.add(treeWalk.getPathString());
+			}
+		}
+
+		return classes;
 	}
 }
