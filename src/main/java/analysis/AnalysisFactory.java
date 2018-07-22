@@ -11,7 +11,7 @@ public class AnalysisFactory {
         } else if (analysisType.equals(AnalysisType.LOC)) {
             return new LOCAnalysis(studentRepository, artifactRepository);
         } else if (analysisType.equals(AnalysisType.CO_AUTHORSHIP)) {
-            return new LOCPercentAnalysis(studentRepository, artifactRepository);
+            return new CoAuthorshipAnalysis(studentRepository, artifactRepository);
         } else {
             return null;
         }

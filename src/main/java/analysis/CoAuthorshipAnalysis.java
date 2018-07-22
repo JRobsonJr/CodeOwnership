@@ -19,9 +19,9 @@ import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Repository;
 
-public class LOCPercentAnalysis extends AbstractAnalysis {
+public class CoAuthorshipAnalysis extends AbstractAnalysis {
 
-	public LOCPercentAnalysis(StudentRepository studentRepository, ArtifactRepository artifactRepository) {
+	public CoAuthorshipAnalysis(StudentRepository studentRepository, ArtifactRepository artifactRepository) {
 		super(studentRepository, artifactRepository);
 	}
 
