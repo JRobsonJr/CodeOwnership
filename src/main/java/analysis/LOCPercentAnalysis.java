@@ -29,17 +29,14 @@ public class LOCPercentAnalysis extends AbstractAnalysis {
 
 	@Override
 	public List<PairStudentArtifact> makePairs(GitRepository git) throws IOException, GitAPIException {
-		this.studentRepository = studentRepository;
 		List<String> paths = git.listRepositoryJavaClasses();
 		List<PairStudentArtifact> pairs = new ArrayList<PairStudentArtifact>();
 
 		for (String classPath : paths) {
 			Map<Student, Double> contributions = this.getContributions(git.getRepository(), classPath);
-			Artifact artifact = null; // TODO new Artifact(classPath);
-			
-			Set<Student> keys = contributions.keySet();
+			Artifact artifact = this.artifactRepository.getArtifact(classPath);
 
-			for (Student student : keys) {
+			for (Student student : contributions.keySet()) {
 				double ownershipPercentage = contributions.get(student);
 				PairStudentArtifact newPair = new PairStudentArtifact(student, artifact, ownershipPercentage);
 				pairs.add(newPair);
@@ -50,21 +47,22 @@ public class LOCPercentAnalysis extends AbstractAnalysis {
 	}
 
 	private Map<Student, Double> getContributions(Repository repository, String pathFile)
-			throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException,
-			GitAPIException {
-		BlameResult result = getBlameResult(repository, pathFile);
+			throws RevisionSyntaxException, IOException, GitAPIException {
+		BlameResult result = this.getBlameResult(repository, pathFile);
 		Map<Student, Integer> frequency = this.getFrequency(result.getResultContents().size(), result);
-		Set<Student> keys = frequency.keySet();
-		Map<Student, Double> contributions = new HashMap<Student, Double>();
-		
-		int numberOfLines = 0;
 
-		for (Student student : keys) {
-			numberOfLines += frequency.get(student);
+		int totalLines = 0;
+
+		Set<Student> frequencyKeys = frequency.keySet();
+
+		for (Student student : frequencyKeys) {
+			totalLines += frequency.get(student);
 		}
 
-		for (Student student : keys) {
-			contributions.put(student, 100.0 * frequency.get(student) / numberOfLines);
+		Map<Student, Double> contributions = new HashMap<Student, Double>();
+
+		for (Student student : frequencyKeys) {
+			contributions.put(student, 100.0 * frequency.get(student) / totalLines);
 		}
 
 		return contributions;

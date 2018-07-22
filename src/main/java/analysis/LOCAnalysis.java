@@ -28,29 +28,28 @@ public class LOCAnalysis extends AbstractAnalysis {
 
 	@Override
 	public List<PairStudentArtifact> makePairs(GitRepository git) throws IOException, GitAPIException {
-		this.studentRepository = studentRepository;
 		List<String> paths = git.listRepositoryJavaClasses();
 		List<PairStudentArtifact> pairs = new ArrayList<PairStudentArtifact>();
 
-		for (String className : paths) {
-			Student greater = this.getGreatestContributor(git.getRepository(), className);
-			Artifact artifact = null; // TODO new Artifact(className);
-			PairStudentArtifact newPair = new PairStudentArtifact(greater, artifact, DEFAULT_OWNERSHIP_VALUE);
+		for (String classPath : paths) {
+			Student greatest = this.getGreatestContributor(git.getRepository(), classPath);
+			Artifact artifact = this.artifactRepository.getArtifact(classPath);
+
+			PairStudentArtifact newPair = new PairStudentArtifact(greatest, artifact, DEFAULT_OWNERSHIP_VALUE);
 			pairs.add(newPair);
 		}
 
 		return pairs;
 	}
 
-	private Student getGreatestContributor(Repository repository, String pathFile)
-			throws RevisionSyntaxException, IOException, GitAPIException {
-		BlameResult result = getBlameResult(repository, pathFile);
+	private Student getGreatestContributor(Repository repository, String filePath) throws RevisionSyntaxException, IOException, GitAPIException {
+		BlameResult result = getBlameResult(repository, filePath);
 		Map<Student, Integer> frequency = getFrequency(result.getResultContents().size(), result);
+
 		Student greatestContributor = null;
 		int max = 0;
-		Set<Student> keys = frequency.keySet();
 
-		for (Student student : keys) {
+		for (Student student : frequency.keySet()) {
 			if (frequency.get(student) > max) {
 				max = frequency.get(student);
 				greatestContributor = student;

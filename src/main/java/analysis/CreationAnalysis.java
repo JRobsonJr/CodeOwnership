@@ -6,15 +6,8 @@ import java.util.List;
 
 import artifact.ArtifactRepository;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.diff.DiffEntry.ChangeType;
-import org.eclipse.jgit.lib.ObjectReader;
-import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevTree;
-import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import artifact.Artifact;
@@ -23,7 +16,6 @@ import git.GitRepository;
 import git.GitUtil;
 import student.Student;
 import student.StudentRepository;
-import util.Util;
 
 public class CreationAnalysis extends AbstractAnalysis {
 
@@ -53,7 +45,7 @@ public class CreationAnalysis extends AbstractAnalysis {
             pairs.addAll(this.createCommitPairs(studentName, newArtifacts));
 		}
 
-		return this.deleteRemovedArtifacts(git, pairs);
+		return pairs;
 	}
 
 	private List<PairStudentArtifact> createCommitPairs(String studentName, List<String> artifactPaths) {
