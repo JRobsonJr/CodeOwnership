@@ -3,11 +3,11 @@ package app;
 import java.io.IOException;
 import java.util.Scanner;
 
-import analysis.AnalysisType;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
+import analysis.AnalysisType;
 import codeOwnership.CodeOwnership;
-import pair.PairRepository;
+import exception.StudentNotFoundException;
 
 import static util.Util.LS;
 
@@ -19,19 +19,16 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		String repoPath = inputRepositoryPath();
 		AnalysisType analysisType = chooseAnalysisType();
-
 		co = new CodeOwnership(analysisType, repoPath);
-		System.out.println(co.getPairRepository().toString());
 
-		// printAllStudentsNames();
-		// TODO co.printAStudentPairs(pairs);
+		displayStudentInformation();
 
 		in.close();
 	}
 
 	private static String inputRepositoryPath() {
 		System.out.println("Enter the path to your repository:");
-		return in.nextLine();
+		return "/home/rob/Projects/homemade-dynamite"; // in.nextLine();
 	}
 
 	private static AnalysisType chooseAnalysisType() {
@@ -50,33 +47,28 @@ public class App {
 		return chooseAnalysisType();
 	}
 
+	private static void displayStudentInformation() {
+		System.out.println("Which student contributions would you like to see?");
+		System.out.println(co.listStudents());
+
+		System.out.println("Choose a valid number (an invalid number will end this program):");
+		int input = Integer.parseInt(in.nextLine());
+
+		try {
+			String studentName = co.getStudentByIndex(input - 1).getName();
+			System.out.println(co.getStudentContributionInfo(studentName));
+			displayStudentInformation();
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println(LS + "See ya!");
+		} catch (StudentNotFoundException e) {
+			System.out.println(e.getMessage());
+			System.out.println("Try another student.");
+		}
+	}
+
 	private static void printAllStudentsNames() throws GitAPIException, IOException {
 		System.out.println("Students names in the system:");
 		System.out.println(co.listAllStudentsNames().toString() + LS);
-	}
-
-	private static void printAStudentPairs(PairRepository pairs) {
-		String student = "";
-
-		while (true) {
-			System.out.println("Which student contribution would you like to see?");
-			System.out.println(co.listStudents());
-			System.out.println("Type student position in the array to see its contributions or press F to finish");
-			student = in.nextLine();
-
-			if (student.equalsIgnoreCase("F"))
-				break;
-
-			int studentIndex = Integer.parseInt(student) - 1;
-			String studentAux = co.getArrayOfStudents()[studentIndex].getName();
-
-			try {
-				System.out.println(pairs.getPairsByStudentName(studentAux));
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				System.out.println("Try another student.");
-			}
-		}
 	}
 
 }

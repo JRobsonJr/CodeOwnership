@@ -3,7 +3,6 @@ package pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import artifact.Artifact;
 import exception.StudentNotFoundException;
 import util.Util;
 
@@ -13,18 +12,6 @@ public class PairRepository {
 
 	public PairRepository() {
 		this.pairs = new ArrayList<PairStudentArtifact>();
-	}
-
-	public void addPair(PairStudentArtifact pair) {
-		this.pairs.add(pair);
-	}
-
-	public void removePairs(Artifact artifact) {
-		for (PairStudentArtifact pair : this.pairs) {
-			if (pair.compareArtifacts(artifact)) {
-				pairs.remove(pair);
-			}
-		}
 	}
 
 	public List<PairStudentArtifact> getPairsByArtifactName(String artifactName) {
@@ -39,16 +26,16 @@ public class PairRepository {
 		return pairs;
 	}
 
-	public String getPairsByStudentName(String studentName) throws StudentNotFoundException {
+	public String getStudentContributionInfo(String studentName) throws StudentNotFoundException {
 		if (!this.containsStudent(studentName)) {
 			throw new StudentNotFoundException("Student has currently no artifacts in this project.");
 		}
 
-		ArrayList<PairStudentArtifact> studentArtifacts = this.getStudentArtifacts(studentName);
-		String resp = "";
+		List<PairStudentArtifact> studentArtifacts = this.getStudentArtifacts(studentName);
+		String resp = studentName + "'s contributions:" + Util.LS;
 
 		for (int i = 0; i < studentArtifacts.size(); i++) {
-			resp += studentArtifacts.get(i).toString() + Util.LS;
+			resp += "=> " + studentArtifacts.get(i).toString() + Util.LS + Util.LS;
 		}
 
 		return resp;

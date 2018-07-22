@@ -6,6 +6,7 @@ import java.util.List;
 
 import analysis.AnalysisFactory;
 import analysis.AnalysisType;
+import exception.StudentNotFoundException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import analysis.AbstractAnalysis;
@@ -62,11 +63,7 @@ public class CodeOwnership {
 	}
 
 	public PairRepository getPairRepository() {
-		return pairRepository;
-	}
-
-	public StudentRepository getStudentRepository() {
-		return this.studentRepository;
+		return this.pairRepository;
 	}
 
 	/**
@@ -77,12 +74,15 @@ public class CodeOwnership {
 		return git.listAllStudentsNames();
 	}
 
-	public Student[] getArrayOfStudents() {
-		return this.studentRepository.getStudentsAsArray();
-	}
-
 	public String listStudents() {
 		return this.studentRepository.toString();
 	}
 
+	public Student getStudentByIndex(int index) {
+		return this.studentRepository.getStudents().get(index);
+	}
+
+	public String getStudentContributionInfo(String studentName) throws StudentNotFoundException {
+		return this.pairRepository.getStudentContributionInfo(studentName);
+	}
 }

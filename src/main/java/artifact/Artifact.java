@@ -50,7 +50,7 @@ public class Artifact {
 
 	@Override
 	public String toString() {
-		return "Path: " + this.relativePath + LS + "Expertise: " + this.expertise.toString();
+		return "Expertise: " + this.expertise.toString();
 	}	
 
 }
