@@ -20,7 +20,6 @@ public class App {
 		String repoPath = inputRepositoryPath();
 		AnalysisType analysisType = chooseAnalysisType();
 		co = new CodeOwnership(analysisType, repoPath);
-
 		displayStudentInformation();
 
 		in.close();
@@ -28,7 +27,7 @@ public class App {
 
 	private static String inputRepositoryPath() {
 		System.out.println("Enter the path to your repository:");
-		return "/home/rob/Projects/homemade-dynamite"; // in.nextLine();
+		return in.nextLine();
 	}
 
 	private static AnalysisType chooseAnalysisType() {
