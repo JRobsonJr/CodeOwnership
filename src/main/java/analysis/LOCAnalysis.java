@@ -4,19 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import artifact.ArtifactRepository;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.blame.BlameResult;
-import org.eclipse.jgit.errors.RevisionSyntaxException;
-import org.eclipse.jgit.lib.Repository;
 
 import artifact.Artifact;
+import artifact.ArtifactRepository;
 import pair.PairStudentArtifact;
 import git.GitRepository;
 import student.Student;
 import student.StudentRepository;
+
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.blame.BlameResult;
+import org.eclipse.jgit.errors.RevisionSyntaxException;
+import org.eclipse.jgit.lib.Repository;
 
 public class LOCAnalysis extends AbstractAnalysis {
 

@@ -5,17 +5,18 @@ import java.util.*;
 
 import artifact.ArtifactRepository;
 import pair.PairStudentArtifact;
-import org.eclipse.jgit.api.BlameCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 import git.GitRepository;
+import student.Student;
+import student.StudentRepository;
+
+import org.eclipse.jgit.api.BlameCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import student.Student;
-import student.StudentRepository;
 
 public abstract class AbstractAnalysis {
 

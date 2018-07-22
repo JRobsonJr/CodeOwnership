@@ -1,14 +1,15 @@
 package git;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.TreeWalk;
-import util.Util;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import util.Util;
 
 public final class GitUtil {
 

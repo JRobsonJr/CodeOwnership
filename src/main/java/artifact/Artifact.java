@@ -5,8 +5,6 @@ import expertise.ExpertiseExtractorUtil;
 
 import java.util.Set;
 
-import static util.Util.LS;
-
 public class Artifact {
 
 	private String absolutePath;

@@ -6,17 +6,17 @@ import java.util.List;
 
 import analysis.AnalysisFactory;
 import analysis.AnalysisType;
-import exception.StudentNotFoundException;
-import org.eclipse.jgit.api.errors.GitAPIException;
-
 import analysis.AbstractAnalysis;
 import artifact.ArtifactRepository;
+import exception.StudentNotFoundException;
 import git.GitRepository;
 import pair.PairRepository;
 import pair.PairStudentArtifact;
 import student.StudentRepository;
 import student.Student;
 import util.Util;
+
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class CodeOwnership {
 

@@ -3,11 +3,11 @@ package app;
 import java.io.IOException;
 import java.util.Scanner;
 
-import org.eclipse.jgit.api.errors.GitAPIException;
-
 import analysis.AnalysisType;
 import codeOwnership.CodeOwnership;
 import exception.StudentNotFoundException;
+
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import static util.Util.LS;
 

@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import artifact.Artifact;
 import artifact.ArtifactRepository;
+import git.GitRepository;
+import git.GitUtil;
+import pair.PairStudentArtifact;
+import student.Student;
+import student.StudentRepository;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.TreeWalk;
-
-import artifact.Artifact;
-import pair.PairStudentArtifact;
-import git.GitRepository;
-import git.GitUtil;
-import student.Student;
-import student.StudentRepository;
 
 public class CreationAnalysis extends AbstractAnalysis {
 
