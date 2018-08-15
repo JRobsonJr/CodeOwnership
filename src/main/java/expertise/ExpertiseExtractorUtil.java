@@ -39,11 +39,22 @@ public final class ExpertiseExtractorUtil {
 			Expertise expertise = extractExpertiseFromWord(word);
 
 			if (expertise != null) {
+				if (expertise.equals(Expertise.INHERITANCE)) {
+					String nextWord = splitLine[i + 1].trim();
+					Expertise otherExpertise = extractExpertiseFromBigram(word, nextWord);
+					if (otherExpertise != null) {
+						expertises.add(otherExpertise);
+					}
+				}
 				expertises.add(expertise);
 			}
 		}
 
 		return expertises;
+	}
+
+	private static Expertise extractExpertiseFromBigram(String word, String nextWord) {
+		return extractExpertiseFromWord(word + " " + nextWord);
 	}
 
 	private static Expertise extractExpertiseFromWord(String word) {
