@@ -1,6 +1,7 @@
 package util;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,10 +58,12 @@ public class Util {
 					"OWNERSHIP PERCENTAGE" + TSV_SEPARATOR +
 					"EXPERTISE LIST" + LS);
 
+			DecimalFormat df = new DecimalFormat("#.#");
+
 			for (PairStudentArtifact pair : pairs) {
 				String line = pair.getStudentName() + TSV_SEPARATOR +
 						pair.getArtifactName() + TSV_SEPARATOR +
-						pair.ownershipPercentage + TSV_SEPARATOR +
+						df.format(pair.ownershipPercentage) + TSV_SEPARATOR +
 						Arrays.toString(pair.getArtifact().getExpertiseArray()) + LS;
 				writer.write(line);
 			}
