@@ -5,7 +5,8 @@ public enum Expertise {
     INTERFACE("implements"),
     INHERITANCE("extends"),
     TESTS("@Test"),
-    EXCEPTIONS("throws"),
+    EXCEPTION_HIERARCHY("extends Exception", "extends RuntimeException"),
+    EXCEPTIONS("Exception", "RuntimeException", "throws"),
     EXCEPTION_HANDLING("try", "catch"),
     PERSISTENCE ("IOException", "File"),
     ABSTRACT_CLASSES("abstract");
