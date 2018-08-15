@@ -41,6 +41,10 @@ public class PairRepository {
 		return resp;
 	}
 
+	public List<PairStudentArtifact> getPairs() {
+		return pairs;
+	}
+
 	public void setPairs(List<PairStudentArtifact> pairs) {
 		this.pairs = pairs;
 	}
