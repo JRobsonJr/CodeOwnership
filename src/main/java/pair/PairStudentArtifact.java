@@ -38,8 +38,13 @@ public class PairStudentArtifact {
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.#");
 
-		return student.getName() + " is the owner of: " + artifact.getPath() + " (" + df.format(this.ownershipPercentage) + "%) "
-				+ Util.LS + "Artifact details:" + Util.LS + artifact.toString();
+		if (artifact != null) {
+			return student.getName() + " is the owner of: " + artifact.getPath() + " (" + df.format(this.ownershipPercentage) + "%) "
+					+ Util.LS + "Artifact details:" + Util.LS + artifact.toString();
+		}
+
+		return student.getName() + " is the owner of: <DELETED ARTIFACT> (" + df.format(this.ownershipPercentage) + "%) "
+				+ Util.LS;
 	}
 
 }
