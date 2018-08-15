@@ -8,6 +8,7 @@ import codeOwnership.CodeOwnership;
 import exception.StudentNotFoundException;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
+import util.Util;
 
 import static util.Util.LS;
 
@@ -20,13 +21,15 @@ public class App {
 		String repoPath = inputRepositoryPath();
 		AnalysisType analysisType = chooseAnalysisType();
 		co = new CodeOwnership(analysisType, repoPath);
+
+		generateTSV();
 		displayStudentInformation();
 
 		in.close();
 	}
 
 	private static String inputRepositoryPath() {
-		System.out.println("Enter the path to your repository:");
+		System.out.print("Enter the path to your repository: ");
 		return in.nextLine();
 	}
 
@@ -62,6 +65,14 @@ public class App {
 		} catch (StudentNotFoundException e) {
 			System.out.println(e.getMessage());
 			System.out.println("Try another student.");
+		}
+	}
+
+	private static void generateTSV() {
+		if (Util.generateTSV(co.getPairRepository().getPairs())) {
+			System.out.println("TSV successfully generated! Check outputs/analysis-result.tsv ;)" + LS);
+		} else {
+			System.out.println("There occurred an error during the generation of this project's TSV. :(" + LS);
 		}
 	}
 
