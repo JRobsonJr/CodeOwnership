@@ -21,6 +21,17 @@ public class Artifact {
 		return this.relativePath;
 	}
 
+	public String[] getExpertiseArray() {
+		Expertise[] expertiseArray = this.expertise.toArray(new Expertise[this.expertise.size()]);
+		String[] stringArray = new String[this.expertise.size()];
+
+		for (int i = 0; i < this.expertise.size(); i++) {
+			stringArray[i] = expertiseArray[i].name();
+		}
+
+		return stringArray;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
