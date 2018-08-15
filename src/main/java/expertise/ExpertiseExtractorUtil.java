@@ -47,8 +47,10 @@ public final class ExpertiseExtractorUtil {
 	}
 
 	private static Expertise extractExpertiseFromWord(String word) {
+		String cleanWord = removeUnwantedCharacters(word);
+
 		for (Expertise exp : Expertise.values()) {
-			if (exp.containsKeyword(word)) {
+			if (exp.containsKeyword(cleanWord)) {
 				return exp;
 			}
 		}
@@ -56,4 +58,14 @@ public final class ExpertiseExtractorUtil {
 		return null;
 	}
 
+	private static String removeUnwantedCharacters(String word) {
+		CharSequence[] unwantedCharacters = { "{", "}", ";" };
+		String cleanWord = word;
+
+		for (CharSequence character : unwantedCharacters) {
+			cleanWord = cleanWord.replace(character, "");
+		}
+
+		return cleanWord;
+	}
 }
