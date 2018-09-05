@@ -52,8 +52,15 @@ public class PairRepository {
 	@Override
 	public String toString() {
 		String resp = "";
+		
+		Object[] a = this.pairs.toArray();
+		System.out.println(a[30]);
+		a.toString();
 
 		for (int i = 0; i < pairs.size(); i++) {
+			System.out.println(i);
+			System.out.println(">>>>" +pairs.get(i));
+			
 			resp += pairs.get(i).toString() + Util.LS + Util.LS;
 		}
 

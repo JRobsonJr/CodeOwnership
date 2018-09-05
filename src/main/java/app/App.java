@@ -6,6 +6,8 @@ import java.util.Scanner;
 import analysis.AnalysisType;
 import codeOwnership.CodeOwnership;
 import exception.StudentNotFoundException;
+import expertise.Extractor;
+import git.GitRepository;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import util.Util;
@@ -16,11 +18,15 @@ public class App {
 
     private static CodeOwnership co;
 	private static Scanner in = new Scanner(System.in);
+	private static Extractor ex;
 
 	public static void main(String[] args) throws Exception {
 		String repoPath = inputRepositoryPath();
 		AnalysisType analysisType = chooseAnalysisType();
 		co = new CodeOwnership(analysisType, repoPath);
+		ex = new Extractor(new GitRepository(repoPath + "/.git"));
+		ex.get();
+		printAllStudentsNames();
 
 		generateTSV();
 		displayStudentInformation();

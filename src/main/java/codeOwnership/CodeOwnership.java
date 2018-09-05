@@ -63,6 +63,7 @@ public class CodeOwnership {
 	}
 
 	public PairRepository getPairRepository() {
+		System.out.println("uhu");
 		return this.pairRepository;
 	}
 
