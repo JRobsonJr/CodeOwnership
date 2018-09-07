@@ -1,4 +1,4 @@
-package util;
+package extractor;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,6 @@ import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.google.common.base.Strings;
 
 public class ComponentClass<Object> extends VoidVisitorAdapter<Object>{
 	

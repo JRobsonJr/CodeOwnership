@@ -1,12 +1,10 @@
-package expertise;
+package extractor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import git.GitRepository;
-import util.ComponentClass;
 
 public class Extractor {
 	
@@ -18,6 +16,11 @@ public class Extractor {
 		this.repository = repository;
 		this.ComponentClass = new ComponentClass<>();
 		this.methods = new HashMap<>();
+	}
+
+	public void get() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

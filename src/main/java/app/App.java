@@ -6,7 +6,7 @@ import java.util.Scanner;
 import analysis.AnalysisType;
 import codeOwnership.CodeOwnership;
 import exception.StudentNotFoundException;
-import expertise.Extractor;
+import extractor.Extractor;
 import git.GitRepository;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
