@@ -22,16 +22,16 @@ public class App {
 
 	public static void main(String[] args) throws Exception {
 		String repoPath = inputRepositoryPath();
-		AnalysisType analysisType = chooseAnalysisType();
-		co = new CodeOwnership(analysisType, repoPath);
+//		AnalysisType analysisType = chooseAnalysisType();
+//		co = new CodeOwnership(analysisType, repoPath);
 		ex = new Extractor(new GitRepository(repoPath + "/.git"));
 		ex.get();
-		printAllStudentsNames();
-
-		generateTSV();
-		displayStudentInformation();
-
-		in.close();
+//		printAllStudentsNames();
+//
+//		generateTSV();
+//		displayStudentInformation();
+//
+//		in.close();
 	}
 
 	private static String inputRepositoryPath() {

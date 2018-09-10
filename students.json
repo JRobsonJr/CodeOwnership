@@ -1,0 +1,29 @@
+{
+    "students": [
+      {
+        "name": "Mariana",
+        "aliases": [
+          "Mariana Mendes e Silva",
+          "Mariana Mendes",
+          "mariana-mendes",
+          "MARIANA MENDES E SILVA 115211452"
+        ]
+      },
+      {
+        "name": "Robson",
+        "aliases": [
+          "JRobsonJr",
+	  "Robson Junior",
+	  " JOSE ROBSON DA SILVA ARAUJO JUNIOR 116110648"
+        ]
+      },
+      {
+        "name": "David",
+        "aliases": [
+          "davidedup",
+	  "DAVID EDUARDO PEREIRA 116110322",
+
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,42 @@
+
+CLASS: /src/song/Song.java
+
+METHODS:  --------------- public boolean isMainstream()
+ --------------- public String getName()
+ --------------- public void setName(String name)
+ --------------- public int getLength()
+ --------------- public void setLength(int length)
+
+CLASS: /src/song/Pop.java
+
+METHODS: 
+CLASS: /src/exception/ArtistaException.java
+
+METHODS: 
+CLASS: /src/person/Person.java
+
+METHODS: 
+CLASS: /src/genre/Genre.java
+
+METHODS: 
+CLASS: /src/main/Main.java
+
+METHODS:  --------------- public static void main(String[] args)
+
+CLASS: /src/person/Producer.java
+
+METHODS: 
+CLASS: /src/album/Album.java
+
+METHODS: 
+CLASS: /src/genre/Rock.java
+
+METHODS: 
+CLASS: /tests/song/SongTest.java
+
+METHODS:  --------------- public void setUp()
+ --------------- public void isMainstreamTest()
+
+CLASS: /src/person/Artist.java
+
+METHODS: 
