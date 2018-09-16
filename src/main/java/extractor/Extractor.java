@@ -13,25 +13,22 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
-import git.GitRepository;
 
 public class Extractor {
 
 	public static final String LS = System.lineSeparator();
-	private GitRepository repository;
 	private ComponentClass<Object> componentClass;
 	private Map<String, String> extendedType;
 	private Map<String, List<String>> methodsFromClass;
 
-	public Extractor(GitRepository repository) {
-		this.repository = repository;
+	public Extractor() {
 		this.componentClass = new ComponentClass<>();
 		this.extendedType = new HashMap<>();
 		this.methodsFromClass = new HashMap<>();
 	}
 
 	public void get() throws ParseException, IOException {
-		this.componentClass.getAllMethods(new File("C:\\Users\\Mareana\\Desktop\\CodeOwnership\\src\\main\\java"));
+		this.componentClass.getAllMethods(new File("C:\\Users\\Mareana\\Desktop\\QuemMeAjuda\\src"));
 		this.printMethods();
 		this.printExtendTypes();
 	}
@@ -61,25 +58,27 @@ public class Extractor {
 
 	public void printCommonMethods() {
 		Set<String> classes = this.extendedType.keySet();
-		for (String string : classes) {
-			System.out.print(LS + "CLASS>>>" + string);
-			System.out.println("   EXTENDED>>>" + this.extendedType.get(string));
+		int total = 0;
+		int inheritance = 0;
+		for (String classe : classes) {
+			System.out.print(LS + "CLASS  >>>" + classe);
+			System.out.println("   EXTENDED  >>>" + this.extendedType.get(classe));
 
-			List<String> superMethods = this.methodsFromClass.get(this.extendedType.get(string));
+			List<String> superMethods = this.methodsFromClass.get(this.extendedType.get(classe));
 
-			List<String> methods = this.methodsFromClass.get(string);
-
-			System.out.println("Common methods beetwen " + string + " and " + this.extendedType.get(string));
-
+			List<String> methods = this.methodsFromClass.get(classe);
+			total = methods.size();
+			
 			for (String superMethod : superMethods) {
 				for (String method : methods) {
 					if (superMethod.equals(method)) {
-						System.out.println(method);
+						inheritance += 1;
 					}
 
 				}
 
 			}
+			System.out.println("Proporção métodos herdados/total de métodos da classe: " + inheritance +"/"+ total);
 		}
 	}
 }

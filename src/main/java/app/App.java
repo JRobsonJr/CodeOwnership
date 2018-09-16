@@ -24,7 +24,7 @@ public class App {
 		String repoPath = inputRepositoryPath();
 //		AnalysisType analysisType = chooseAnalysisType();
 //		co = new CodeOwnership(analysisType, repoPath);
-		ex = new Extractor(new GitRepository(repoPath + "/.git"));
+		ex = new Extractor();
 		ex.get();
 //		printAllStudentsNames();
 //
