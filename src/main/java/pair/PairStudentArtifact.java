@@ -34,6 +34,10 @@ public class PairStudentArtifact {
 		return this.artifact.getPath();
 	}
 
+	public double getOwnershipPercentage() {
+		return this.ownershipPercentage;
+	}
+	
 	@Override
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("#.#");
@@ -45,6 +49,10 @@ public class PairStudentArtifact {
 
 		return student.getName() + " is the owner of: <DELETED ARTIFACT> (" + df.format(this.ownershipPercentage) + "%) "
 				+ Util.LS;
+	}
+
+	public Student getStudent() {
+		return this.student;
 	}
 
 }

@@ -32,6 +32,12 @@ public class Artifact {
 		return stringArray;
 	}
 
+	
+	
+	public Set<Expertise> getExpertise() {
+		return this.expertise;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -59,7 +65,7 @@ public class Artifact {
 
 	@Override
 	public String toString() {
-		return "Expertise: " + this.expertise.toString();
+		return this.relativePath + "\n" + "Expertises: " + this.expertise.toString();
 	}	
 
 }
