@@ -3,8 +3,10 @@ package extractor;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
@@ -18,19 +20,30 @@ public class ComponentClass<Object> extends VoidVisitorAdapter<Object>{
 	
 	private Map<Object,List<MethodDeclaration>> methods;
 	private Map<Object,NodeList<ClassOrInterfaceType>> inheritance;
+	private Set<ClassOrInterfaceDeclaration> classes;
 	
 	 public ComponentClass() {
 		this.methods = new HashMap<Object,List<MethodDeclaration>>();
 		this.inheritance = (new HashMap<Object, NodeList<ClassOrInterfaceType>>());
+		this.classes = new HashSet<>();
 	}
 
 	public void visit(ClassOrInterfaceDeclaration n, Object arg) {
          super.visit(n, arg);
          this.getInheritance().put((Object) n.getNameAsString(), n.getExtendedTypes());
          this.methods.put((Object) n.getNameAsString(), n.getMethods());
+         this.classes.add(n);
      }
 	 
-	 public void getAllMethods(File projectDir) throws ParseException, IOException {
+	 public Set<ClassOrInterfaceDeclaration> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Set<ClassOrInterfaceDeclaration> classes) {
+		this.classes = classes;
+	}
+
+	public void getAllMethods(File projectDir) throws ParseException, IOException {
 	        new DirExplorer((level, path, file) -> path.endsWith(".java"), (level, path, file) -> {
 	        	Object a = (Object) path;
 	            try {

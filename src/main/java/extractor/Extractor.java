@@ -10,9 +10,10 @@ import java.util.Set;
 
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-
 
 public class Extractor {
 
@@ -27,13 +28,16 @@ public class Extractor {
 		this.methodsFromClass = new HashMap<>();
 	}
 
-	public void get() throws ParseException, IOException {
+	public void getMethodsFromProject() throws ParseException, IOException {
 		this.componentClass.getAllMethods(new File("C:\\Users\\Mareana\\Desktop\\QuemMeAjuda\\src"));
-		this.printMethods();
-		this.printExtendTypes();
+		this.linkClassToMethods();
+		this.linkExtendTypes();
+		this.printCommonMethods();
+		this.printClasses();
+
 	}
 
-	public void printMethods() {
+	private void linkClassToMethods() {
 		Set<Object> methods = this.componentClass.getMethods().keySet();
 		for (Object key : methods) {
 			this.methodsFromClass.put((String) key.toString(), new ArrayList<>());
@@ -44,7 +48,7 @@ public class Extractor {
 		}
 	}
 
-	public void printExtendTypes() {
+	private void linkExtendTypes() {
 		Map<Object, NodeList<ClassOrInterfaceType>> classes = this.componentClass.getInheritance();
 		Set<Object> c = classes.keySet();
 		for (Object object : c) {
@@ -53,14 +57,14 @@ public class Extractor {
 						classes.get(object).toString().substring(1, classes.get(object).toString().length() - 1));
 			}
 		}
-		printCommonMethods();
 	}
 
-	public void printCommonMethods() {
+	private void printCommonMethods() {
 		Set<String> classes = this.extendedType.keySet();
-		int total = 0;
-		int inheritance = 0;
+
 		for (String classe : classes) {
+			int total = 0;
+			int inheritance = 0;
 			System.out.print(LS + "CLASS  >>>" + classe);
 			System.out.println("   EXTENDED  >>>" + this.extendedType.get(classe));
 
@@ -68,17 +72,26 @@ public class Extractor {
 
 			List<String> methods = this.methodsFromClass.get(classe);
 			total = methods.size();
-			
-			for (String superMethod : superMethods) {
-				for (String method : methods) {
-					if (superMethod.equals(method)) {
-						inheritance += 1;
+
+			if (superMethods != null && methods != null) {
+				for (String superMethod : superMethods) {
+					for (String method : methods) {
+						if (superMethod.equals(method)) {
+							inheritance += 1;
+						}
 					}
-
 				}
-
+				System.out.println("Proporção métodos herdados/total de métodos da classe: " + inheritance + "/" + total);
 			}
-			System.out.println("Proporção métodos herdados/total de métodos da classe: " + inheritance +"/"+ total);
+		}
+	}
+	
+	
+	public void printClasses() {
+		Set<ClassOrInterfaceDeclaration> classes = this.componentClass.getClasses();
+		for (ClassOrInterfaceDeclaration c : classes) {
+			System.out.println(LS + c);
+			System.out.println("FIELDS: >>>");
 		}
 	}
 }

@@ -25,7 +25,7 @@ public class App {
 //		AnalysisType analysisType = chooseAnalysisType();
 //		co = new CodeOwnership(analysisType, repoPath);
 		ex = new Extractor();
-		ex.get();
+		ex.getMethodsFromProject();
 //		printAllStudentsNames();
 //
 //		generateTSV();
