@@ -7,8 +7,10 @@ import java.util.List;
 import analysis.AnalysisFactory;
 import analysis.AnalysisType;
 import analysis.AbstractAnalysis;
+import artifact.Artifact;
 import artifact.ArtifactRepository;
 import exception.StudentNotFoundException;
+import expertise.Expertise;
 import git.GitRepository;
 import pair.PairRepository;
 import pair.PairStudentArtifact;
@@ -63,6 +65,7 @@ public class CodeOwnership {
 	}
 
 	public PairRepository getPairRepository() {
+		System.out.println("uhu");
 		return this.pairRepository;
 	}
 
@@ -85,4 +88,49 @@ public class CodeOwnership {
 	public String getStudentContributionInfo(String studentName) throws StudentNotFoundException {
 		return this.pairRepository.getStudentContributionInfo(studentName);
 	}
+
+	public List<Student> getAllStudents() {
+		return this.studentRepository.getStudents();
+	}
+
+	public ArtifactRepository getArtifactRepository() {
+		return this.artifactRepository;
+	}
+	
+	/**
+	 * Count the total of class of each expertise
+	 * @return Each index of the array represents the total of class of a certain expertise. In the method 'countExpertise' 
+	 * is easy to understand wich index represent what
+	 */
+	public int[] totalOfClassOfEachExpertise() {
+		List<Artifact> artifacts = this.artifactRepository.getArtifacts();
+		int[] totalOfClassOfEachExpertise = new int[8];
+		
+		for (Artifact artifact : artifacts) {
+			
+			this.countExpertise(totalOfClassOfEachExpertise, artifact);		
+		}
+		
+		return totalOfClassOfEachExpertise;
+	}
+	
+	private static void countExpertise(int[] counterOfExpertises, Artifact artifact) {
+		if (artifact.getExpertise().contains(Expertise.INTERFACE))
+			counterOfExpertises[0]++;
+		if (artifact.getExpertise().contains(Expertise.INHERITANCE))
+			counterOfExpertises[1]++;
+		if (artifact.getExpertise().contains(Expertise.TESTS))
+			counterOfExpertises[2]++;
+		if (artifact.getExpertise().contains(Expertise.EXCEPTION_HIERARCHY))
+			counterOfExpertises[3]++;
+		if (artifact.getExpertise().contains(Expertise.EXCEPTIONS))
+			counterOfExpertises[4]++;
+		if (artifact.getExpertise().contains(Expertise.EXCEPTION_HANDLING))
+			counterOfExpertises[5]++;
+		if (artifact.getExpertise().contains(Expertise.PERSISTENCE))
+			counterOfExpertises[6]++;
+		if (artifact.getExpertise().contains(Expertise.ABSTRACT_CLASSES))
+			counterOfExpertises[7]++;
+	}
+	
 }
