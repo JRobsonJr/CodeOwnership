@@ -29,7 +29,7 @@ public class Extractor {
 	}
 
 	public void getMethodsFromProject() throws ParseException, IOException {
-		this.componentClass.getAllMethods(new File("C:\\Users\\Mareana\\Desktop\\QuemMeAjuda\\src"));
+		this.componentClass.getAllMethods(new File("/home/marianams/HotelGotemburgo/src"));
 		this.linkClassToMethods();
 		this.linkExtendTypes();
 		this.printCommonMethods();
