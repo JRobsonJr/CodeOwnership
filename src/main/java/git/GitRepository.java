@@ -12,11 +12,13 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import util.Util;
@@ -54,7 +56,7 @@ public class GitRepository {
 		return this.diffFormatter;
 	}
 
-    public TreeWalk getTreeWalk() throws IOException {
+	public TreeWalk getTreeWalk() throws IOException {
         Ref head = this.getRepository().getRef("HEAD");
         RevWalk walk = this.getRevWalk();
         RevCommit commit = walk.parseCommit(head.getObjectId());
@@ -65,6 +67,18 @@ public class GitRepository {
 
         return treeWalk;
     }
+
+    public TreeWalk getFirstCommitTreeWalk(RevCommit commit) throws IOException {
+		ObjectReader reader = this.repository.newObjectReader();
+		RevTree tree = walk.parseTree(commit);
+		CanonicalTreeParser parser = new CanonicalTreeParser();
+		parser.reset(reader, tree);
+		TreeWalk treeWalk = new TreeWalk(reader);
+		treeWalk.addTree(parser);
+		treeWalk.setRecursive(true);
+
+		return treeWalk;
+	}
 
 	public HashSet<String> listAllStudentsNames() throws GitAPIException, IOException {
 		HashSet<String> names = new HashSet<String>();

@@ -28,15 +28,15 @@ public class CreationAnalysis extends AbstractAnalysis {
 	@Override
 	public List<PairStudentArtifact> makePairs(GitRepository git) throws GitAPIException, IOException {
 		DiffFormatter diffFormatter = git.getDiffFormatter();
-
+		
 		List<PairStudentArtifact> pairs = new ArrayList<PairStudentArtifact>();
 
 		for (RevCommit commit : git.getCommits()) {
 			String studentName = commit.getAuthorIdent().getName();
 			List<String> newArtifacts;
-
+			
 			if (GitUtil.isFirstCommit(commit)) {
-				TreeWalk treeWalk = git.getTreeWalk();
+				TreeWalk treeWalk = git.getFirstCommitTreeWalk(commit);
 				newArtifacts = GitUtil.getArtifactsFromFirstCommit(treeWalk);
 			} else {
 				newArtifacts = GitUtil.getArtifactsFromCommit(diffFormatter, commit);
@@ -54,7 +54,8 @@ public class CreationAnalysis extends AbstractAnalysis {
 
 		for (String path : artifactPaths) {
 			Artifact artifact = this.artifactRepository.getArtifact(path);
-			pairs.add(new PairStudentArtifact(student, artifact, DEFAULT_OWNERSHIP_VALUE));
+			if (artifact != null)
+				pairs.add(new PairStudentArtifact(student, artifact, DEFAULT_OWNERSHIP_VALUE));
 		}
 
 		return pairs;
