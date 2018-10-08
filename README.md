@@ -1,10 +1,11 @@
 <h1> CodeOwnership </h1>
 
-Aplicação Java que analisa projetos do Git e determina ownership e expertise de código através de informações de logs do Git. A aplicação é voltada para projetos desenvolvidos na disciplina de Laboratório de Programação II na Universidade Federal de Campina Grande (UFCG), mas pode ser estendida a qualquer projeto que faz uso de Git para controle de versões.  
+Aplicação Java que analisa projetos do Git e determina <i>ownership<i> e <i>expertise<i> de código através de informações de logs do Git. A aplicação é voltada para projetos desenvolvidos na disciplina de Laboratório de Programação II na Universidade Federal de Campina Grande (UFCG), mas pode ser estendida a qualquer projeto que faz uso de Git para controle de versões. 
+Para utilizar a aplicação basta executar o comando abaixo e seguir as intruções.
 
 	$ java -jar codeOwnership.jar
 
-Caso o arquivo `codeOwnership.jar` esteja desatualizado, é possível executar o projeto como uma aplicação Java. Para obter os resultados da análise, basta indicar o caminho para a pasta do projeto que se deseja analisar (na qual está contido o `.git`). Nessa mesma pasta, é necessário ter um arquivo `students.json` contendo uma associação entre emails e nomes de usuários da seguinte forma:
+Caso o arquivo `codeOwnership.jar` esteja desatualizado, é possível executar o projeto como uma aplicação Java. Para obter os resultados da análise, basta indicar o caminho para a pasta do projeto que se deseja analisar (na qual está contido o diretório `.git`). Nessa mesma pasta, é necessário ter um arquivo `students.json` contendo uma associação entre nomes e aliases dos contribuidores do projeto da seguinte forma:
 
 ```
 // students.json
