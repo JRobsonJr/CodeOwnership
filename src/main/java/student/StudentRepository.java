@@ -19,7 +19,7 @@ public class StudentRepository {
 				return student;
 			}
 		}
-		return null;
+		return new Student(name, new String[]{});
 	}
 
 	public List<Student> getStudents() {
