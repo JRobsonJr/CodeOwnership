@@ -34,6 +34,10 @@ public class PairStudentArtifact {
 		return this.artifact.getPath();
 	}
 
+	public int getArtifactSize() {
+		return this.artifact.getSize();
+	}
+
 	public double getOwnershipPercentage() {
 		return this.ownershipPercentage;
 	}

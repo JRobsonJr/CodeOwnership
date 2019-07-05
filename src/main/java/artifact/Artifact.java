@@ -2,6 +2,7 @@ package artifact;
 
 import expertise.Expertise;
 import expertise.ExpertiseExtractorUtil;
+import util.Util;
 
 import java.util.Set;
 
@@ -9,16 +10,22 @@ public class Artifact {
 
 	private String absolutePath;
 	private String relativePath;
+	private int size;
 	private Set<Expertise> expertise;
 	
 	public Artifact(String projectPath, String path) {
 		this.absolutePath = projectPath + "/" + path;
 		this.relativePath = path;
 		this.expertise = ExpertiseExtractorUtil.extractExpertiseFromJavaClass(this.absolutePath);
+		this.size = Util.countLines(this.absolutePath);
 	}
 	
 	public String getPath() {
 		return this.relativePath;
+	}
+
+	public int getSize() {
+		return this.size;
 	}
 
 	public String[] getExpertiseArray() {

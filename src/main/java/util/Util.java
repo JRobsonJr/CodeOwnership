@@ -18,6 +18,36 @@ public class Util {
 	public static final String LS = System.lineSeparator();
 	private static final String TSV_SEPARATOR = "\t";
 
+	public static int countLines(String filename) {
+		InputStream is = null;
+		try {
+			is = new BufferedInputStream(new FileInputStream(filename));	
+			byte[] c = new byte[1024];
+			int count = 0;
+			int readChars = 0;
+			boolean empty = true;
+			while ((readChars = is.read(c)) != -1) {
+				empty = false;
+				for (int i = 0; i < readChars; ++i) {
+					if (c[i] == '\n') {
+						++count;
+					}
+				}
+			}
+			return (count == 0 && !empty) ? 1 : count;
+		} catch(IOException ioe) {
+			return -1;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException ioe) {
+					
+				}
+			}
+		}
+	}
+
 	public static boolean isJavaClass(String string) {
 		String[] splitString = string.split("\\.");
 
@@ -56,6 +86,7 @@ public class Util {
 			writer.write("STUDENT NAME" + TSV_SEPARATOR +
 					"CLASS PATH" + TSV_SEPARATOR +
 					"OWNERSHIP PERCENTAGE" + TSV_SEPARATOR +
+					"CLASS SIZE" + TSV_SEPARATOR +
 					"EXPERTISE LIST" + LS);
 
 			DecimalFormat df = new DecimalFormat("#.#");
@@ -64,6 +95,7 @@ public class Util {
 				String line = pair.getStudentName() + TSV_SEPARATOR +
 						pair.getArtifactName() + TSV_SEPARATOR +
 						df.format(pair.ownershipPercentage) + TSV_SEPARATOR +
+						pair.getArtifactSize() + TSV_SEPARATOR +
 						Arrays.toString(pair.getArtifact().getExpertiseArray()) + LS;
 				writer.write(line);
 			}
