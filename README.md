@@ -32,3 +32,6 @@ Caso o arquivo `codeOwnership.jar` esteja desatualizado, é possível executar o
 Fazemos uso desse arquivo `.json` já que muitas vezes os usuários de sistemas Git ficam associados a mais de um username quando não configuram corretamente suas máquinas.
 
 Caso o processo de análise ocorra com sucesso, um arquivo `analysis-result.tsv` será gerado na pasta `outputs`. Ele deverá seguir o [modelo que está contido neste repositório](./outputs/analysis-result.example.tsv).
+
+É utilizada a biblioteca [JGit](https://www.eclipse.org/jgit/) para obter as informações dos arquivos de log do repositório. 
+A análise de expertise é feita atráves de palavras chaves. Portando, só funcionará corretamente em códigos escritos na linguagem Java. 
