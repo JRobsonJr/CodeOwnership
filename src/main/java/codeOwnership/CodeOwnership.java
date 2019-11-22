@@ -41,7 +41,7 @@ public class CodeOwnership {
 
 	public void createStudentRepository() {
 	    this.studentRepository = new StudentRepository();
-        List<Student> students = Util.getStudentsFromJson(this.repoPath + "/students.json");
+        List<Student> students = Util.getStudentsFromJson(this.repoPath);
         this.studentRepository.setStudents(students);
 	}
 

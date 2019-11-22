@@ -1,6 +1,15 @@
 package util;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +18,8 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import com.opencsv.CSVReader;
 
 import pair.PairStudentArtifact;
 import student.Student;
@@ -55,26 +66,48 @@ public class Util {
 	}
 
 	public static List<Student> getStudentsFromJson(String jsonPath) {
+		
+		File f = new File(jsonPath + File.separator + "students.json");
 		List<Student> students = new ArrayList<Student>();
 
-		try {
+		if (f.exists()) {
 			JSONParser parser = new JSONParser();
-			JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(jsonPath));
+			JSONObject jsonObject = null;
+			try {
+				jsonObject = (JSONObject) parser.parse(new FileReader(jsonPath));
+			} catch (Exception e) {
+				System.err.println("Erro ao ler arquivo de estudantes.");
+				e.printStackTrace();
+			}
 			JSONArray jsonStudents = (JSONArray) jsonObject.get("students");
-
+			
 			for (int index = 0; index < jsonStudents.size(); index++) {
 				JSONObject jsonStudent = (JSONObject) jsonStudents.get(index);
 				String studentName = (String) jsonStudent.get("name");
 				JSONArray studentAliasesJson = (JSONArray) jsonStudent.get("aliases");
 				String[] studentAliases = convertToStringArray(studentAliasesJson);
-
+				
 				students.add(new Student(studentName, studentAliases));
 			}
-		} catch (Exception e) {
-			System.err.printf("Error trying to open the file: %s.", e.getMessage());
-
 		}
 
+		f = new File(jsonPath + File.separator + "students.csv");
+		if (f.exists()) {
+			CSVReader reader = null;
+			try {
+				reader = new CSVReader(new FileReader(f));
+				String[] line;
+				while ((line = reader.readNext()) != null) {
+					String studentName = line[0];
+					String[] studentAliases = new String[line.length - 1];
+					System.arraycopy(line, 1, studentAliases, 0, line.length - 1);
+					students.add(new Student(studentName, studentAliases));
+				}
+			} catch (IOException e) {
+				System.err.println("Erro ao ler arquivo de estudantes.");
+				e.printStackTrace();
+			}
+		}
 		return students;
 	}
 
@@ -104,6 +137,7 @@ public class Util {
 
 			return true;
 		} catch (IOException ex) {
+			System.err.println("Error: " + ex.getMessage());
 			return false;
 		}
 	}

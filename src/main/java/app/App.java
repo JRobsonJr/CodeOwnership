@@ -30,8 +30,15 @@ public class App {
 	private static Scanner in = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
-		String repoPath = inputRepositoryPath();
-		AnalysisType analysisType = chooseAnalysisType();
+		String repoPath;
+		AnalysisType analysisType;
+		if (args.length == 2) {
+			repoPath = args[0];
+			analysisType = chooseAnalysisType(Integer.parseInt(args[1]));
+		} else {
+			repoPath = inputRepositoryPath();
+			analysisType = chooseAnalysisType();
+		}
 		co = new CodeOwnership(analysisType, repoPath);
 		printAllStudentsNames();
 		
@@ -71,16 +78,24 @@ public class App {
 				.println("Choose the type of analysis:" + LS + "1) Creation" + LS + "2) LOC" + LS + "3) Co-authorship");
 		int input = Integer.parseInt(in.nextLine());
 
+		AnalysisType chooseAnalysisType = chooseAnalysisType(input);
+
+		if (chooseAnalysisType != null) {
+			return chooseAnalysisType;
+		}
+		System.out.println("Your input is invalid. Please, try again." + LS);
+
+		return chooseAnalysisType();
+	}
+
+	private static AnalysisType chooseAnalysisType(int input) {
 		for (AnalysisType type : AnalysisType.values()) {
 			if (type.getIndex() == input) {
 				System.out.println("Analysis by " + type + " was chosen." + LS);
 				return type;
 			}
 		}
-
-		System.out.println("Your input is invalid. Please, try again." + LS);
-
-		return chooseAnalysisType();
+		return null;
 	}
 
 	private static void displayStudentInformation() {
