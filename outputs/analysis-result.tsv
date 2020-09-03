@@ -1,4 +1,20 @@
 STUDENT NAME	CLASS PATH	OWNERSHIP PERCENTAGE	EXPERTISE LIST
+<<<<<<< HEAD
+Robson	src/exception/ArtistaException.java	100	[EXCEPTIONS, INHERITANCE, EXCEPTION_HIERARCHY]
+Mariana	src/song/Pop.java	100	[INTERFACE]
+Mariana	src/genre/Rock.java	100	[INTERFACE]
+Robson	src/album/Album.java	100	[]
+Robson	src/exception/ArtistaException.java	100	[EXCEPTIONS, INHERITANCE, EXCEPTION_HIERARCHY]
+Robson	src/genre/Genre.java	100	[]
+Robson	src/genre/Rock.java	100	[INTERFACE]
+Robson	src/main/Main.java	100	[]
+Robson	src/person/Artist.java	100	[INHERITANCE]
+Robson	src/person/Person.java	100	[ABSTRACT_CLASSES]
+Robson	src/person/Producer.java	100	[INHERITANCE]
+Robson	src/song/Pop.java	100	[INTERFACE]
+Robson	src/song/Song.java	100	[]
+Robson	tests/song/SongTest.java	100	[TESTS]
+=======
 Mikael	QuemMeAjuda/easyAccept/Main.java	38,1	[]
 Diego	QuemMeAjuda/easyAccept/Main.java	33,3	[]
 Jesse	QuemMeAjuda/easyAccept/Main.java	23,8	[]
@@ -75,3 +91,4 @@ Jesse	QuemMeAjuda/testes/tutor/TutorControllerTest.java	70,2	[TESTS, EXCEPTIONS]
 Mikael	QuemMeAjuda/testes/tutor/TutorTest.java	98,8	[TESTS, EXCEPTIONS]
 Diego	QuemMeAjuda/testes/tutor/TutorTest.java	0,6	[TESTS, EXCEPTIONS]
 Jesse	QuemMeAjuda/testes/tutor/TutorTest.java	0,6	[TESTS, EXCEPTIONS]
+>>>>>>> origin/master

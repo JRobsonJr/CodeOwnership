@@ -10,6 +10,7 @@ import analysis.AnalysisType;
 import artifact.Artifact;
 import codeOwnership.CodeOwnership;
 import exception.StudentNotFoundException;
+import extractor.Extractor;
 import expertise.Expertise;
 import git.GitRepository;
 import pair.PairStudentArtifact;
